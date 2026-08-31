@@ -1,0 +1,56 @@
+{
+  "item.pezntz.tela": "Tela",
+  "item.pezntz.backpack": "Mochila",
+  "item.pezntz.chatarra": "Chatarra",
+  "item.pezntz.candado": "Candado",
+  "item.pezntz.llave_candado": "Llave de Candado",
+  "item.pezntz.llave_vehiculo": "Llave de Vehiculo",
+  "item.pezntz.peznsinita_brute": "Peznsinita en bruto",
+  "item.pezntz.peznsinita_ingot": "Lingote de Peznsinita",
+  "item.pezntz.titanium_brute": "Titanio en bruto",
+  "item.pezntz.titanium_ingot": "Lingote de Titanio",
+  "item.pezntz.clavos": "Clavos",
+  "item.pezntz.placa_acero": "Placa de Acero",
+  "item.pezntz.aguja_hilo": "kit de Costura",
+  "item.pezntz.azufre": "Azufre",
+  "item.pezntz.carbon_nitrido": "Carbón Nítrido",
+  "item.pezntz.lata_vacia": "Lata vacía",
+  "item.pezntz.botella_alcohol": "Botella de Alcohol",
+  "item.pezntz.resorte": "Resorte",
+  "item.pezntz.tuerca": "Tuerca",
+  "item.pezntz.chatarra_reforzada": "Chatarra Reforzada",
+  "item.pezntz.chatarra_electronica": "Chatarra Electrónica",
+  "item.pezntz.cables": "Cables",
+  "item.pezntz.cinta": "Cinta Adhesiva",
+  "item.pezntz.lata_atun_cerrada": "Lata de Atún Cerrada",
+  "item.pezntz.lata_pollo_cerrada": "Cinta Adhesiva",
+  "item.pezntz.lata_carne_cerrada": "Cinta Adhesiva",
+
+  "item.pezntz.lata_atun": "Lata de Atún",
+  "item.pezntz.lata_pollo": "Lata de Pollo",
+  "item.pezntz.lata_carne": "Lata de Carne",
+  "item.pezntz.cereales": "Cereales",
+  "item.pezntz.nachos": "Nachos",
+  "item.pezntz.paquete_mre": "Paquete MRE",
+  "item.pezntz.barra_chocolate": "Barra de Chocolate",
+  "item.pezntz.barra_granola": "Barra de Granola",
+
+  "item.pezntz.adrenalina": "Adrenalina",
+  "item.pezntz.vendas": "Vendas",
+  "item.pezntz.bola_acido": "Bola de ácido",
+
+  "item.pezntz.lantern": "Linterna",
+  "item.pezntz.abrelatas": "Abrelatas",
+
+
+  "entity.pezntz.zombie_hinchado": "Hinchado",
+  "entity.pezntz.zombie_tanque": "Tanque",
+  "entity.pezntz.zombie_arrastrador": "Arrastrador",
+  "entity.pezntz.zombie_toxico": "Fundidor",
+  "entity.pezntz.zombie_parasitador": "Parasitador",
+  "entity.pezntz.rata_carronera": "Rata Carroñera",
+  "entity.pezntz.mosquito_zumbador": "Mosquito Zumbador",
+
+  "creativetab.items": "Items"
+
+}

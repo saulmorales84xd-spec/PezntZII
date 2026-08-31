@@ -1,0 +1,10 @@
+{
+  "vertex": "pezntz:flashlight_volumetric",
+  "fragment": "pezntz:flashlight_copy",
+  "samplers": [
+    { "name": "uSourceSampler" }
+  ],
+  "uniforms": [
+    { "name": "uScreenSize", "type": "float", "count": 2, "values": [1024.0, 768.0] }
+  ]
+}

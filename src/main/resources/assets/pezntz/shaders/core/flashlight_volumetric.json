@@ -1,0 +1,41 @@
+{
+  "vertex": "pezntz:flashlight_volumetric",
+  "fragment": "pezntz:flashlight_volumetric",
+  "samplers": [
+    { "name": "uColorSampler" },
+    { "name": "uDepthSampler" }
+  ],
+  "uniforms": [
+    { "name": "uInvMVP", "type": "matrix4x4", "count": 16, "values": [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1] },
+    { "name": "uScreenSize", "type": "float", "count": 2, "values": [1024.0, 768.0] },
+    { "name": "uLightCount", "type": "int", "count": 1, "values": [0] },
+    { "name": "uLightColor", "type": "float", "count": 3, "values": [1.0, 0.95, 0.85] },
+    { "name": "uBrightnessMultiplier", "type": "float", "count": 1, "values": [10.0] },
+    { "name": "uSelfLitLow", "type": "float", "count": 1, "values": [0.4] },
+    { "name": "uSelfLitHigh", "type": "float", "count": 1, "values": [0.75] },
+    { "name": "uVolumetricSteps", "type": "int", "count": 1, "values": [24] },
+    { "name": "uVolumetricIntensity", "type": "float", "count": 1, "values": [0.5] },
+    { "name": "uVolumetricNoise", "type": "float", "count": 1, "values": [0.35] },
+    { "name": "uGameTime", "type": "float", "count": 1, "values": [0.0] },
+    { "name": "uLightOrigin0", "type": "float", "count": 3, "values": [0, 0, 0] },
+    { "name": "uLightOrigin1", "type": "float", "count": 3, "values": [0, 0, 0] },
+    { "name": "uLightOrigin2", "type": "float", "count": 3, "values": [0, 0, 0] },
+    { "name": "uLightOrigin3", "type": "float", "count": 3, "values": [0, 0, 0] },
+    { "name": "uLightDir0", "type": "float", "count": 3, "values": [0, 0, 1] },
+    { "name": "uLightDir1", "type": "float", "count": 3, "values": [0, 0, 1] },
+    { "name": "uLightDir2", "type": "float", "count": 3, "values": [0, 0, 1] },
+    { "name": "uLightDir3", "type": "float", "count": 3, "values": [0, 0, 1] },
+    { "name": "uConeAngleCos0", "type": "float", "count": 1, "values": [0.9] },
+    { "name": "uConeAngleCos1", "type": "float", "count": 1, "values": [0.9] },
+    { "name": "uConeAngleCos2", "type": "float", "count": 1, "values": [0.9] },
+    { "name": "uConeAngleCos3", "type": "float", "count": 1, "values": [0.9] },
+    { "name": "uRange0", "type": "float", "count": 1, "values": [0] },
+    { "name": "uRange1", "type": "float", "count": 1, "values": [0] },
+    { "name": "uRange2", "type": "float", "count": 1, "values": [0] },
+    { "name": "uRange3", "type": "float", "count": 1, "values": [0] },
+    { "name": "uIntensity0", "type": "float", "count": 1, "values": [1] },
+    { "name": "uIntensity1", "type": "float", "count": 1, "values": [1] },
+    { "name": "uIntensity2", "type": "float", "count": 1, "values": [1] },
+    { "name": "uIntensity3", "type": "float", "count": 1, "values": [1] }
+  ]
+}
