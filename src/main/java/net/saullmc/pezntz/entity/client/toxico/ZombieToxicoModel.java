@@ -104,6 +104,6 @@ public class ZombieToxicoModel<T extends Entity> extends HierarchicalModel<T> {
 
     @Override
     public ModelPart root() {
-        return bone; // Corregido: ya no devuelve "null"
+        return bone;
     }
 }

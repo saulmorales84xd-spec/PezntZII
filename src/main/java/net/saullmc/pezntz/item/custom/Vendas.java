@@ -44,6 +44,7 @@ public class Vendas extends Item implements GeoItem {
 
     public static final int USE_TICKS = 60;
 
+    /** Espera tras terminar de vendarse. 10 ticks = medio segundo. */
     public static final int COOLDOWN_TICKS = 10;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -54,7 +55,13 @@ public class Vendas extends Item implements GeoItem {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, CONTROLLER, 0,
+        // El 4 es el tiempo de transicion en ticks entre una animacion y otra.
+        //
+        // Estaba en 0 y por eso el cambio de idle a use era un salto seco. Tu "idle" deja
+        // los huesos en Z -3 y el frame 0 de "use" los pone en Z 0: son 3 unidades de
+        // golpe. Con 4 ticks (0.2 s) GeckoLib mezcla las dos poses y el arranque de cada
+        // vendaje se ve suave, igual que el regreso al soltar.
+        controllers.add(new AnimationController<>(this, CONTROLLER, 4,
                 state -> state.setAndContinue(playingUseAnimation ? USE : IDLE)));
     }
 
@@ -92,6 +99,11 @@ public class Vendas extends Item implements GeoItem {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
 
+        // El cooldown hay que comprobarlo a mano: vanilla dibuja el barrido gris sobre el
+        // icono de la hotbar, pero NO bloquea el uso por su cuenta.
+        //
+        // Sin esto, con el click derecho apretado el siguiente vendaje arrancaria al tick
+        // siguiente de terminar el anterior.
         if (pPlayer.getCooldowns().isOnCooldown(this)) {
             return InteractionResultHolder.fail(stack);
         }
@@ -144,6 +156,9 @@ public class Vendas extends Item implements GeoItem {
             }
         }
 
+        // Fuera del bloque de servidor a proposito: se aplica en ambos lados para que el
+        // barrido de la hotbar salga al instante, sin esperar el paquete del servidor.
+        // Se aplica curara o no: igual evita el spam.
         if (pLivingEntity instanceof Player player) {
             player.getCooldowns().addCooldown(this, COOLDOWN_TICKS);
         }
