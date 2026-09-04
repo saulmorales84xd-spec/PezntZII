@@ -43,16 +43,6 @@ public class VendasRenderer extends GeoItemRenderer<Vendas> {
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack,
                              MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         this.perspective = transformType;
-
-        // OJO: aqui NO se decide que animacion suena.
-        //
-        // renderByItem corre varias veces por frame (mano en primera persona, miniatura de
-        // la hotbar, etc.) y todas comparten el mismo AnimationController, porque comparten
-        // el mismo stack. Si cada pase pedia una animacion distinta, el controlador hacia
-        // setAnimation() dos veces por frame, y eso pone shouldResetTick = true: "use"
-        // reiniciaba desde el frame 0 eternamente y parecia congelada.
-        //
-        // Ahora la bandera se escribe una sola vez por tick, en VendasHandRenderer.
         super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
     }
 
