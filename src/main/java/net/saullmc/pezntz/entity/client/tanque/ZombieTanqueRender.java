@@ -23,6 +23,7 @@ public class ZombieTanqueRender extends MobRenderer<ZombieTanque, ZombieTanqueMo
 
     public ZombieTanqueRender(EntityRendererProvider.Context pContext) {
         super(pContext, new ZombieTanqueModel<>(pContext.bakeLayer(ModModelLayers.ZOMBIE_TANQUE_LAYER)), 2f);
+        this.shadowRadius = 0.0F;
     }
 
     @Override

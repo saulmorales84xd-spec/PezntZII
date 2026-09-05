@@ -40,5 +40,8 @@ public class ModOverlays {
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("mancha_zombie_overlay", MANCHA_OVERLAY);
+
+        event.registerBelow(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.CHAT_PANEL.id(),
+                "pickup_log_overlay", PickupLogOverlay.OVERLAY);
     }
 }

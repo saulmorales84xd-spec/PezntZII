@@ -21,6 +21,7 @@ public class ZombieToxicoRender extends MobRenderer<ZombieToxico, ZombieToxicoMo
 
     public ZombieToxicoRender(EntityRendererProvider.Context pContext) {
         super(pContext, new ZombieToxicoModel<>(pContext.bakeLayer(ModModelLayers.ZOMBIE_TOXICO_LAYER)), 2f);
+        this.shadowRadius = 0.0F;
     }
 
     @Override

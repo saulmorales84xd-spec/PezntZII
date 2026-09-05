@@ -182,7 +182,8 @@ public class PlayerDamageEvents {
                 if (player.tickCount % 20 == 0) {
                     if (cap.getHead() <= 0) {
                         player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false));
-                        player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0, false, false));
+
+                        player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0, false, false));
                     }
                     if (cap.getLegs() <= 0) player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2, false, false));
                 }

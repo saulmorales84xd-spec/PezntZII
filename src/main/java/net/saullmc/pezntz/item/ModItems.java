@@ -125,10 +125,13 @@ public class ModItems {
             () -> new Adrenalina(new Item.Properties()));
 
     public static final RegistryObject<Item> VENDAS = ITEMS.register("vendas",
-            () -> new Vendas(new Item.Properties()));
+            () -> new Vendas(new Item.Properties().stacksTo(16)));
 
     public static final RegistryObject<Item> BOTIQUIN = ITEMS.register("botiquin",
-            () -> new Botiquin(new Item.Properties()));
+            () -> new Botiquin(new Item.Properties().stacksTo(2)));
+
+    public static final RegistryObject<Item> SOLICITUD_EMPLEO = ITEMS.register("solitud_empleo",
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> BOLA_ACIDO = ITEMS.register("bola_acido",
             () -> new Item(new Item.Properties()));

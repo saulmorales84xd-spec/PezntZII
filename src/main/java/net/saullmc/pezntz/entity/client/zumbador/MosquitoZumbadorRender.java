@@ -12,6 +12,7 @@ import net.saullmc.pezntz.entity.custom.MosquitoZumbador;
 public class MosquitoZumbadorRender extends MobRenderer<MosquitoZumbador, MosquitoZumbadorModel<MosquitoZumbador>> {
     public MosquitoZumbadorRender(EntityRendererProvider.Context pContext) {
         super(pContext, new MosquitoZumbadorModel<>(pContext.bakeLayer(ModModelLayers.MOSQUITO_ZUMBADOR_LAYER)), 2f);
+        this.shadowRadius = 0.0F;
     }
 
     @Override

@@ -23,6 +23,7 @@ public class ZombieHinchadoRender extends MobRenderer<ZombieHinchado, ZombieHinc
 
     public ZombieHinchadoRender(EntityRendererProvider.Context pContext) {
         super(pContext, new ZombieHinchadoModel<>(pContext.bakeLayer(ModModelLayers.ZOMBIE_HINCHADO_LAYER)), 2f);
+        this.shadowRadius = 0.0F;
     }
 
     @Override

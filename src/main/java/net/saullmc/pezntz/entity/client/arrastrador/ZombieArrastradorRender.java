@@ -21,6 +21,7 @@ public class ZombieArrastradorRender extends MobRenderer<ZombieArrastrador, Zomb
 
     public ZombieArrastradorRender(EntityRendererProvider.Context pContext) {
         super(pContext, new ZombieArrastradorModel<>(pContext.bakeLayer(ModModelLayers.ZOMBIE_ARRASTRADOR_LAYER)), 2f);
+        this.shadowRadius = 0.0F;
     }
 
     @Override

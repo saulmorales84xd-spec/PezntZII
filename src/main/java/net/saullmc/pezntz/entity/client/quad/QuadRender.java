@@ -12,6 +12,7 @@ import net.saullmc.pezntz.entity.custom.Quad;
 public class QuadRender extends MobRenderer<Quad, QuadModel<Quad>> {
     public QuadRender(EntityRendererProvider.Context pContext) {
         super(pContext, new QuadModel<>(pContext.bakeLayer(ModModelLayers.QUAD_LAYER)), 1.5f);
+        this.shadowRadius = 0.0F;
     }
 
     @Override

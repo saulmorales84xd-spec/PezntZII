@@ -12,6 +12,7 @@ import net.saullmc.pezntz.entity.custom.RataCarronera;
 public class RataCarroneraRender extends MobRenderer<RataCarronera, RataCarroneraModel<RataCarronera>> {
     public RataCarroneraRender(EntityRendererProvider.Context pContext) {
         super(pContext, new RataCarroneraModel<>(pContext.bakeLayer(ModModelLayers.RATA_CARRONERA_LAYER)), 2f);
+        this.shadowRadius = 0.0F;
     }
 
     @Override

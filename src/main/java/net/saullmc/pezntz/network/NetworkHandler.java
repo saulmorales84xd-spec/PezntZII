@@ -38,6 +38,11 @@ public class NetworkHandler {
                 .consumerMainThread(RemovePlagaC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(ItemPickupPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ItemPickupPacket::new)
+                .encoder(ItemPickupPacket::toBytes)
+                .consumerMainThread(ItemPickupPacket::handle).add();
+
         net.messageBuilder(HealSpecificPartPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(HealSpecificPartPacket::new)
                 .encoder(HealSpecificPartPacket::toBytes)
@@ -46,6 +51,10 @@ public class NetworkHandler {
 
     public static <MSG> void sendToClients(MSG message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), message);
+    }
+
+    public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
     public static <MSG> void sendToServer(MSG message) {
