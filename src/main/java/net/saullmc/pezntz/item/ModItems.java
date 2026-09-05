@@ -6,10 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.saullmc.pezntz.PezntZMod;
-import net.saullmc.pezntz.item.custom.Adrenalina;
-import net.saullmc.pezntz.item.custom.Backpack;
-import net.saullmc.pezntz.item.custom.FlashlightItem;
-import net.saullmc.pezntz.item.custom.Vendas;
+import net.saullmc.pezntz.item.custom.*;
 
 public class ModItems {
 
@@ -129,6 +126,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> VENDAS = ITEMS.register("vendas",
             () -> new Vendas(new Item.Properties()));
+
+    public static final RegistryObject<Item> BOTIQUIN = ITEMS.register("botiquin",
+            () -> new Botiquin(new Item.Properties()));
 
     public static final RegistryObject<Item> BOLA_ACIDO = ITEMS.register("bola_acido",
             () -> new Item(new Item.Properties()));

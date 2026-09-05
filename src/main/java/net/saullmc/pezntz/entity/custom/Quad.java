@@ -14,6 +14,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
@@ -56,6 +58,20 @@ public class Quad extends PathfinderMob {
 
     @Override
     public boolean showVehicleHealth() {
+        return false;
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pState) {
+    }
+
+    @Override
+    public boolean canFreeze() {
         return false;
     }
 
@@ -163,6 +179,13 @@ public class Quad extends PathfinderMob {
     @Override
     public void travel(Vec3 travelVector) {
         LivingEntity driver = this.getControllingPassenger();
+
+        if (this.isUnderWater()) {
+            this.currentSpeed = 0.0F;
+            super.travel(travelVector);
+            return;
+        }
+
         if (this.isVehicle() && driver != null) {
 
             float steer = driver.xxa;

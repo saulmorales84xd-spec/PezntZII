@@ -55,10 +55,11 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.BARRA_CHOCOLATE.get());
                         pOutput.accept(ModItems.BARRA_GRANOLA.get());
 
+                        pOutput.accept(ModItems.VENDAS.get());
+                        pOutput.accept(ModItems.BOTIQUIN.get());
+
                         pOutput.accept(ModItems.LANTERN.get());
                         pOutput.accept(ModItems.ABRELATAS.get());
-
-
 
                     })
                     .build());
