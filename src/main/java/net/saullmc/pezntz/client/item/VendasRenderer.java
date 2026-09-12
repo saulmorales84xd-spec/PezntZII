@@ -50,7 +50,9 @@ public class VendasRenderer extends GeoItemRenderer<Vendas> {
         return this.perspective == ItemDisplayContext.GUI
                 || this.perspective == ItemDisplayContext.GROUND
                 || this.perspective == ItemDisplayContext.FIXED
-                || this.perspective == ItemDisplayContext.HEAD;
+                || this.perspective == ItemDisplayContext.HEAD
+                || this.perspective == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND
+                || this.perspective == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
     }
 
     private static void resetToRestPose(GeoBone bone) {

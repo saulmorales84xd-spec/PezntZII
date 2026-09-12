@@ -1,5 +1,9 @@
 package net.saullmc.pezntz.entity.custom;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -62,11 +66,33 @@ public class BolaAcido extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         if (pResult.getEntity() instanceof LivingEntity targetHit) {
-            targetHit.hurt(this.damageSources().thrown(this, this.getOwner()), 4.0F);
-            targetHit.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
+
+            targetHit.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0));
             targetHit.addEffect(new MobEffectInstance(ModEffects.MANCHA_ZOMBIE.get(), 60, 0, false, false, false));
         }
         this.discard();
+    }
+
+    @Override
+    public boolean isPickable() {
+        return true;
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (!this.level().isClientSide()) {
+            this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.4F);
+
+            if (this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.ITEM_SLIME,
+                        this.getX(), this.getY(), this.getZ(),
+                        12, 0.2D, 0.2D, 0.2D, 0.0D);
+            }
+
+            this.discard();
+        }
+
+        return true;
     }
 
     @Override

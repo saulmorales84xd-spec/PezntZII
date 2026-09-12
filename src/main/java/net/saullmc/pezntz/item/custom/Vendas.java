@@ -95,6 +95,18 @@ public class Vendas extends Item implements GeoItem {
             return InteractionResultHolder.fail(stack);
         }
 
+
+        boolean hayHerida = pPlayer.getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH)
+                .map(cap -> cap.getHead() < BodyHealthData.MAX_HEALTH
+                        || cap.getBody() < BodyHealthData.MAX_HEALTH
+                        || cap.getArms() < BodyHealthData.MAX_HEALTH
+                        || cap.getLegs() < BodyHealthData.MAX_HEALTH)
+                .orElse(true);
+
+        if (!hayHerida) {
+            return InteractionResultHolder.fail(stack);
+        }
+
         pPlayer.startUsingItem(pUsedHand);
 
         return InteractionResultHolder.consume(stack);

@@ -65,28 +65,33 @@ public class JeringaOverlay {
 
                 int progressAngle = (int) (360 * progress);
                 if (progressAngle > 0) {
-                    bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
-                    bufferbuilder.vertex(matrix, x, y, 0).color(255, 255, 255, 255).endVertex();
+                    int innerRadius = radius - 2;
+
+                    bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+
                     for (int i = 0; i <= progressAngle; i += 5) {
                         double angle = Math.toRadians(i - 90);
-                        float dx = (float) Math.cos(angle) * radius;
-                        float dy = (float) Math.sin(angle) * radius;
-                        bufferbuilder.vertex(matrix, x + dx, y + dy, 0).color(255, 255, 255, 255).endVertex();
-                    }
-                    tesselator.end();
+                        float cos = (float) Math.cos(angle);
+                        float sin = (float) Math.sin(angle);
 
-                    int innerRadius = radius - 2;
-                    bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
-                    bufferbuilder.vertex(matrix, x, y, 0).color(0, 0, 0, 150).endVertex();
-                    for (int i = 0; i <= 360; i += 10) {
-                        double angle = Math.toRadians(i - 90);
-                        float dx = (float) Math.cos(angle) * innerRadius;
-                        float dy = (float) Math.sin(angle) * innerRadius;
-                        bufferbuilder.vertex(matrix, x + dx, y + dy, 0).color(0, 0, 0, 150).endVertex();
+                        bufferbuilder.vertex(matrix, x + cos * radius, y + sin * radius, 0)
+                                .color(255, 255, 255, 255).endVertex();
+                        bufferbuilder.vertex(matrix, x + cos * innerRadius, y + sin * innerRadius, 0)
+                                .color(255, 255, 255, 255).endVertex();
                     }
-                    tesselator.end();
 
-                    RenderSystem.lineWidth(1.0f);
+                    if (progressAngle % 5 != 0) {
+                        double angle = Math.toRadians(progressAngle - 90);
+                        float cos = (float) Math.cos(angle);
+                        float sin = (float) Math.sin(angle);
+
+                        bufferbuilder.vertex(matrix, x + cos * radius, y + sin * radius, 0)
+                                .color(255, 255, 255, 255).endVertex();
+                        bufferbuilder.vertex(matrix, x + cos * innerRadius, y + sin * innerRadius, 0)
+                                .color(255, 255, 255, 255).endVertex();
+                    }
+
+                    tesselator.end();
                 }
 
                 RenderSystem.enableCull();
