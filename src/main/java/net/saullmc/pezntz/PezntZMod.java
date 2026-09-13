@@ -88,8 +88,10 @@ public class PezntZMod {
             EntityRenderers.register(ModEntities.ZOMBIE_PARASITADOR.get(), ZombieParasitadorRender::new);
             EntityRenderers.register(ModEntities.RATA_CARRONERA.get(), RataCarroneraRender::new);
             EntityRenderers.register(ModEntities.MOSQUITO_ZUMBADOR.get(), MosquitoZumbadorRender::new);
-            EntityRenderers.register(ModEntities.BOLA_ACIDO.get(), ThrownItemRenderer::new);
             EntityRenderers.register(ModEntities.QUAD.get(), QuadRender::new);
+
+            EntityRenderers.register(ModEntities.BOLA_ACIDO.get(),
+                    context -> new ThrownItemRenderer<>(context, 2.5F, false));
 
         }
     }

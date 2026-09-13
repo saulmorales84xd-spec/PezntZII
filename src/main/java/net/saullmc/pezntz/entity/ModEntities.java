@@ -28,11 +28,11 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<ZombieToxico>> ZOMBIE_TOXICO =
             ENTITY_TYPES.register("zombie_toxico", () -> EntityType.Builder.of(ZombieToxico::new, MobCategory.MONSTER)
-                    .sized(1f, 2.0f).build("zombie_toxico"));
+                    .sized(0.7f, 2.0f).build("zombie_toxico"));
 
     public static final RegistryObject<EntityType<ZombieParasitador>> ZOMBIE_PARASITADOR =
             ENTITY_TYPES.register("zombie_parasitador", () -> EntityType.Builder.of(ZombieParasitador::new, MobCategory.MONSTER)
-                    .sized(1f, 2.0f).build("zombie_parasitador"));
+                    .sized(0.7f, 2.0f).build("zombie_parasitador"));
 
     public static final RegistryObject<EntityType<RataCarronera>> RATA_CARRONERA =
             ENTITY_TYPES.register("rata_carronera", () -> EntityType.Builder.of(RataCarronera::new, MobCategory.MONSTER)
@@ -44,7 +44,7 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<BolaAcido>> BOLA_ACIDO =
             ENTITY_TYPES.register("bola_acido", () -> EntityType.Builder.<BolaAcido>of(BolaAcido::new, MobCategory.MISC)
-                    .sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build("bola_acido"));
+                    .sized(0.7f, 0.7f).clientTrackingRange(4).updateInterval(10).build("bola_acido"));
 
     public static final RegistryObject<EntityType<Quad>> QUAD =
             ENTITY_TYPES.register("quad", () -> EntityType.Builder.of(Quad::new, MobCategory.MISC)

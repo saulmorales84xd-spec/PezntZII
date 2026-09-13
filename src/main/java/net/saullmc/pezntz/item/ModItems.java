@@ -122,7 +122,7 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> ADRENALINA = ITEMS.register("adrenalina",
-            () -> new Adrenalina(new Item.Properties()));
+            () -> new Adrenalina(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> VENDAS = ITEMS.register("vendas",
             () -> new Vendas(new Item.Properties().stacksTo(16)));

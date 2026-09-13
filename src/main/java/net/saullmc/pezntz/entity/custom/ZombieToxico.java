@@ -105,7 +105,10 @@ public class ZombieToxico extends Zombie implements RangedAttackMob {
         double d2 = d0 - projectile.getY();
         double d3 = pTarget.getZ() - this.getZ();
 
-        projectile.shoot(d1, d2, d3, 1.6F, 0.0F);
+        projectile.shoot(d1, d2, d3, 0.8F, 0.0F);
+
+        this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.SHULKER_SHOOT, this.getSoundSource(), 2.0F, 1.0F);
 
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
                 SoundEvents.SPLASH_POTION_THROW, SoundSource.HOSTILE, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
