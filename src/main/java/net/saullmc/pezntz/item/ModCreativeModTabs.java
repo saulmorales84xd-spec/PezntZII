@@ -57,9 +57,22 @@ public class ModCreativeModTabs {
 
                         pOutput.accept(ModItems.VENDAS.get());
                         pOutput.accept(ModItems.BOTIQUIN.get());
+                        pOutput.accept(ModItems.ADRENALINA.get());
+                        pOutput.accept(ModItems.MORFINA.get());
+                        pOutput.accept(ModItems.COAGULANTE.get());
+                        pOutput.accept(ModItems.QUELANTE.get());
+                        pOutput.accept(ModItems.CURA.get());
 
                         pOutput.accept(ModItems.LANTERN.get());
                         pOutput.accept(ModItems.ABRELATAS.get());
+                        pOutput.accept(ModItems.CUCHILLO.get());
+                        pOutput.accept(ModItems.BATE.get());
+                        pOutput.accept(ModItems.LUCILLE.get());
+                        pOutput.accept(ModItems.PALANCA.get());
+                        pOutput.accept(ModItems.MOTOSIERRA.get());
+                        pOutput.accept(ModItems.GUITARRA.get());
+                        pOutput.accept(ModItems.KATANA.get());
+                        pOutput.accept(ModItems.LANZALLAMAS.get());
 
                     })
                     .build());

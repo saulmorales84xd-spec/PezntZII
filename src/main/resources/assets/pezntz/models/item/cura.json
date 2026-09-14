@@ -1,0 +1,149 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    128,
+    128
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        -1.949999999999818,
+        0.3000000000001819,
+        10.25
+      ],
+      "translation": [
+        0.25,
+        -0.75,
+        0
+      ],
+      "scale": [
+        0.13,
+        0.13,
+        0.16
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -1.949999999999818,
+        0.3000000000001819,
+        10.25
+      ],
+      "translation": [
+        0.25,
+        -0.75,
+        0
+      ],
+      "scale": [
+        0.13,
+        0.13,
+        0.16
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        -6.2,
+        -1.41
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        -6.2,
+        -1.41
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -58,
+        15,
+        9
+      ],
+      "translation": [
+        0.75,
+        2,
+        0
+      ],
+      "scale": [
+        0.16,
+        0.13,
+        0.19
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -89.69999999999982,
+        41.98999999999978,
+        116.67000000000007
+      ],
+      "translation": [
+        2,
+        -2.25,
+        -0.5
+      ],
+      "scale": [
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "head": {
+      "rotation": [
+        -79.53999999999996,
+        0.4600000000000364,
+        -12.809999999999945
+      ],
+      "translation": [
+        1,
+        0.75,
+        0.75
+      ],
+      "scale": [
+        0.22,
+        0.16,
+        0.24
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -79.53999999999996,
+        0.4600000000000364,
+        -12.809999999999945
+      ],
+      "translation": [
+        1,
+        0.75,
+        0.75
+      ],
+      "scale": [
+        0.22,
+        0.16,
+        0.24
+      ]
+    }
+  },
+  "textures": {
+    "particle": "pezntz:item/adrenalina"
+  }
+}

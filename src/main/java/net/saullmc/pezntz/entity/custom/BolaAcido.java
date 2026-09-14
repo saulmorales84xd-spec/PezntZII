@@ -20,8 +20,6 @@ import net.saullmc.pezntz.item.ModItems;
 
 public class BolaAcido extends ThrowableItemProjectile {
 
-    private static final double MAX_SPEED = 0.8D;
-
     private LivingEntity target;
 
     public BolaAcido(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
@@ -38,7 +36,7 @@ public class BolaAcido extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.LANTERN.get();
+        return ModItems.BOLA_ACIDO.get();
     }
 
     @Override
@@ -57,8 +55,8 @@ public class BolaAcido extends ThrowableItemProjectile {
 
             Vec3 direction = targetPos.subtract(currentPos).normalize();
 
-            double currentSpeed = Math.min(this.getDeltaMovement().length(), MAX_SPEED);
-            if (currentSpeed < 0.1D) currentSpeed = MAX_SPEED;
+            double currentSpeed = this.getDeltaMovement().length();
+            if (currentSpeed < 0.1D) currentSpeed = 1.6D;
 
             this.setDeltaMovement(direction.scale(currentSpeed));
         }

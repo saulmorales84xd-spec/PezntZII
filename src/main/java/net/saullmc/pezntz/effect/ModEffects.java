@@ -18,6 +18,12 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> PLAGA = MOB_EFFECTS.register("plaga",
             PlagaEffect::new);
 
+    public static final RegistryObject<MobEffect> RADIACION = MOB_EFFECTS.register("radiacion",
+            RadiacionEffect::new);
+
+    public static final RegistryObject<MobEffect> Infeccion = MOB_EFFECTS.register("infeccion",
+            InfeccionEffect::new);
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

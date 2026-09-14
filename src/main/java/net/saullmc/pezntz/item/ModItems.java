@@ -82,6 +82,9 @@ public class ModItems {
     public static final RegistryObject<Item> CINTA = ITEMS.register("cinta",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> SOLICITUD_EMPLEO = ITEMS.register("solitud_empleo",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> LATA_ATUN_CERRADA = ITEMS.register("lata_atun_cerrada",
             () -> new Item(new Item.Properties()));
 
@@ -121,19 +124,52 @@ public class ModItems {
     public static final RegistryObject<Item> ABRELATAS = ITEMS.register("abrelatas",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> ADRENALINA = ITEMS.register("adrenalina",
-            () -> new Adrenalina(new Item.Properties().stacksTo(1)));
-
     public static final RegistryObject<Item> VENDAS = ITEMS.register("vendas",
             () -> new Vendas(new Item.Properties().stacksTo(16)));
 
     public static final RegistryObject<Item> BOTIQUIN = ITEMS.register("botiquin",
             () -> new Botiquin(new Item.Properties().stacksTo(2)));
 
-    public static final RegistryObject<Item> SOLICITUD_EMPLEO = ITEMS.register("solitud_empleo",
-            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> ADRENALINA = ITEMS.register("adrenalina",
+            () -> new Adrenalina(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> MORFINA = ITEMS.register("morfina",
+            () -> new Morfina(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> COAGULANTE = ITEMS.register("coagulante",
+            () -> new Coagulante(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> QUELANTE = ITEMS.register("quelante",
+            () -> new Quelante(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> CURA = ITEMS.register("cura",
+            () -> new Cura(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> BOLA_ACIDO = ITEMS.register("bola_acido",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> CUCHILLO = ITEMS.register("cuchillo",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> BATE = ITEMS.register("bate",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> LUCILLE = ITEMS.register("lucille",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> PALANCA = ITEMS.register("palanca",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> MOTOSIERRA = ITEMS.register("motosierra",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> GUITARRA = ITEMS.register("guitarra",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> KATANA = ITEMS.register("katana",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> LANZALLAMAS = ITEMS.register("lanzallamas",
             () -> new Item(new Item.Properties()));
 
     public static void register (IEventBus eventBus) {

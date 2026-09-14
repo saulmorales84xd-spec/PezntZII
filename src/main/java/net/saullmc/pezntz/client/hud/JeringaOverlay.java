@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.saullmc.pezntz.item.custom.Adrenalina;
+import net.saullmc.pezntz.item.custom.JeringaItem;
 import net.saullmc.pezntz.item.custom.Botiquin;
 import net.saullmc.pezntz.item.custom.Vendas;
 import org.joml.Matrix4f;
@@ -27,7 +27,7 @@ public class JeringaOverlay {
 
         ItemStack useItem = player.getUseItem();
 
-        if (useItem.getItem() instanceof Adrenalina
+        if (useItem.getItem() instanceof JeringaItem
                 || useItem.getItem() instanceof Vendas
                 || useItem.getItem() instanceof Botiquin) {
             int ticksRemaining = player.getUseItemRemainingTicks();
