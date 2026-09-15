@@ -1,12 +1,14 @@
 package net.saullmc.pezntz.item;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.item.custom.*;
+import net.saullmc.pezntz.sound.ModSounds;
 
 public class ModItems {
 
@@ -149,28 +151,36 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> CUCHILLO = ITEMS.register("cuchillo",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.MADERA, 1, -2F,
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> BATE = ITEMS.register("bate",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.MADERA, 3, -2.4F,
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> LUCILLE = ITEMS.register("lucille",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.ACERO, 3, -2.4F,
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> PALANCA = ITEMS.register("palanca",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.MADERA, 3, -2.4F,
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> MOTOSIERRA = ITEMS.register("motosierra",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.METAL, 8, -2.9F,
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> GUITARRA = ITEMS.register("guitarra",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.ACERO, 3, -2.4F,
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> KATANA = ITEMS.register("katana",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.ACERO, 3, -2.4F,
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> LANZALLAMAS = ITEMS.register("lanzallamas",
-            () -> new Item(new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.METAL, 4, -3.0F,
+                    new Item.Properties()));
 
     public static void register (IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,0 +1,62 @@
+{
+  "golpe_bate": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.golpe_bate",
+    "sounds": [
+      {
+        "name": "pezntz:bate",
+        "stream": false
+      }
+    ]
+  },
+  "golpe_lucille": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.golpe_lucille",
+    "sounds": [
+      {
+        "name": "pezntz:lucille",
+        "stream": false
+      }
+    ]
+  },
+  "golpe_palanca": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.golpe_palanca",
+    "sounds": [
+      {
+        "name": "pezntz:palanca",
+        "stream": false
+      }
+    ]
+  },
+  "golpe_motosierra": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.golpe_motosierra",
+    "sounds": [
+      {
+        "name": "pezntz:motosierra",
+        "stream": false
+      }
+    ]
+  },
+  "golpe_guitarra": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.golpe_guitarra",
+    "sounds": [
+      {
+        "name": "pezntz:guitarra",
+        "stream": false
+      }
+    ]
+  },
+  "golpe_lanzallamas": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.golpe_lanzallamas",
+    "sounds": [
+      {
+        "name": "pezntz:lanzallamas",
+        "stream": false
+      }
+    ]
+  }
+}

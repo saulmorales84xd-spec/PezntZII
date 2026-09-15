@@ -1,7 +1,6 @@
 package net.saullmc.pezntz;
 
 import com.mojang.logging.LogUtils;
-import com.tacz.guns.api.TimelessAPI;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -29,6 +28,7 @@ import net.saullmc.pezntz.init.ModMenuTypes;
 import net.saullmc.pezntz.item.ModCreativeModTabs;
 import net.saullmc.pezntz.item.ModItems;
 import net.saullmc.pezntz.network.NetworkHandler;
+import net.saullmc.pezntz.sound.ModSounds;
 import org.slf4j.Logger;
 import software.bernie.geckolib.GeckoLib;
 
@@ -50,6 +50,7 @@ public class PezntZMod {
 
         ModEntities.register(modEventBus);
         ModEffects.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         GeckoLib.initialize();
 

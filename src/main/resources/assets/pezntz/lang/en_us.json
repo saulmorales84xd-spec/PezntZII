@@ -64,6 +64,11 @@
   "entity.pezntz.rata_carronera": "Rata Carroñera",
   "entity.pezntz.mosquito_zumbador": "Mosquito Zumbador",
 
+  "effect.pezntz.mancha_zombie": "Toxinas",
+  "effect.pezntz.plaga": "Plaga",
+  "effect.pezntz.radiacion": "Radiación",
+  "effect.pezntz.infeccion": "Virus",
+
   "creativetab.items": "Items"
 
 }
