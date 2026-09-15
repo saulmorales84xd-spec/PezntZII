@@ -96,11 +96,11 @@
 			"scale": [0.8, 0.8, 0.8]
 		},
 		"firstperson_righthand": {
-			"translation": [0.75, -2.25, 0],
+			"translation": [0.75, 1, 0],
 			"scale": [0.8, 0.8, 0.8]
 		},
 		"firstperson_lefthand": {
-			"translation": [0.75, -2.25, 0],
+			"translation": [0.75, 1, 0],
 			"scale": [0.8, 0.8, 0.8]
 		},
 		"ground": {
