@@ -55,6 +55,10 @@
   "item.pezntz.guitarra": "Guitarra",
   "item.pezntz.katana": "Katana",
   "item.pezntz.lanzallamas": "Lanzallamas",
+  "item.pezntz.peznsinita_pickaxe": "Pico de Peznsinita",
+  "item.pezntz.peznsinita_axe": "Hacha de Peznsinita",
+  "item.pezntz.peznsinita_shovel": "Pala de Peznsinita",
+  "item.pezntz.peznsinita_hoe": "Azada de Peznsinita",
 
   "entity.pezntz.zombie_hinchado": "Hinchado",
   "entity.pezntz.zombie_tanque": "Tanque",

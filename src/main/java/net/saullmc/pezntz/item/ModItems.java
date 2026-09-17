@@ -1,7 +1,6 @@
 package net.saullmc.pezntz.item;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -180,6 +179,22 @@ public class ModItems {
 
     public static final RegistryObject<Item> LANZALLAMAS = ITEMS.register("lanzallamas",
             () -> new SwordItem(ModToolTiers.METAL, 4, -3.0F,
+                    new Item.Properties()));
+
+    public static final RegistryObject<Item> PEZNSINITA_PICKAXE = ITEMS.register("peznsinita_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.PEZNSINITA, 1, -2.8F,
+                    new Item.Properties()));
+
+    public static final RegistryObject<Item> PEZNSINITA_AXE = ITEMS.register("peznsinita_axe",
+            () -> new AxeItem(ModToolTiers.PEZNSINITA, 6, -3.0F,
+                    new Item.Properties()));
+
+    public static final RegistryObject<Item> PEZNSINITA_SHOVEL = ITEMS.register("peznsinita_shovel",
+            () -> new ShovelItem(ModToolTiers.PEZNSINITA, 1, -3.0F,
+                    new Item.Properties()));
+
+    public static final RegistryObject<Item> PEZNSINITA_HOE = ITEMS.register("peznsinita_hoe",
+            () -> new HoeItem(ModToolTiers.PEZNSINITA, -1, -3.0F,
                     new Item.Properties()));
 
     public static void register (IEventBus eventBus) {

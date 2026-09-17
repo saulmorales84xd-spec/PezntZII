@@ -73,6 +73,11 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.GUITARRA.get());
                         pOutput.accept(ModItems.KATANA.get());
                         pOutput.accept(ModItems.LANZALLAMAS.get());
+                        pOutput.accept(ModItems.PEZNSINITA_PICKAXE.get());
+                        pOutput.accept(ModItems.PEZNSINITA_AXE.get());
+                        pOutput.accept(ModItems.PEZNSINITA_SHOVEL.get());
+                        pOutput.accept(ModItems.PEZNSINITA_HOE.get());
+
 
                     })
                     .build());

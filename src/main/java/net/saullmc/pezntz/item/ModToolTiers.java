@@ -30,7 +30,7 @@ public class ModToolTiers {
             new ResourceLocation(PezntZMod.MOD_ID, "madera"), List.of(Tiers.NETHERITE), List.of());
 
     public static final Tier PEZNSINITA = TierSortingRegistry.registerTier(
-            new ForgeTier(5, 1500, 5f, 4f, 25,
+            new ForgeTier(5, 2500, 11f, 4f, 25,
                     Tags.Blocks.STORAGE_BLOCKS_IRON, () -> Ingredient.of(ModItems.PEZNSINITA_INGOT.get())),
             new ResourceLocation(PezntZMod.MOD_ID, "peznsinita"), List.of(Tiers.NETHERITE), List.of());
 
