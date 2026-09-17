@@ -150,35 +150,35 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> CUCHILLO = ITEMS.register("cuchillo",
-            () -> new SwordItem(ModToolTiers.MADERA, 1, -2F,
+            () -> new ArmaMelee(ModToolTiers.MADERA, 1, -2F,
                     new Item.Properties()));
 
     public static final RegistryObject<Item> BATE = ITEMS.register("bate",
-            () -> new SwordItem(ModToolTiers.MADERA, 3, -2.4F,
-                    new Item.Properties()));
+            () -> new ArmaMelee(ModToolTiers.MADERA, 3, -2.4F,
+                    new Item.Properties(), ModSounds.GOLPE_BATE));
 
     public static final RegistryObject<Item> LUCILLE = ITEMS.register("lucille",
-            () -> new SwordItem(ModToolTiers.ACERO, 3, -2.4F,
-                    new Item.Properties()));
+            () -> new ArmaMelee(ModToolTiers.ACERO, 3, -2.4F,
+                    new Item.Properties(), ModSounds.GOLPE_LUCILLE));
 
     public static final RegistryObject<Item> PALANCA = ITEMS.register("palanca",
-            () -> new SwordItem(ModToolTiers.MADERA, 3, -2.4F,
-                    new Item.Properties()));
+            () -> new ArmaMelee(ModToolTiers.MADERA, 3, -2.4F,
+                    new Item.Properties(), ModSounds.GOLPE_PALANCA));
 
     public static final RegistryObject<Item> MOTOSIERRA = ITEMS.register("motosierra",
-            () -> new SwordItem(ModToolTiers.METAL, 8, -2.9F,
+            () -> new Motosierra(ModToolTiers.METAL, 8, -2.9F,
                     new Item.Properties()));
 
     public static final RegistryObject<Item> GUITARRA = ITEMS.register("guitarra",
-            () -> new SwordItem(ModToolTiers.ACERO, 3, -2.4F,
-                    new Item.Properties()));
+            () -> new ArmaMelee(ModToolTiers.ACERO, 3, -2.4F,
+                    new Item.Properties(), ModSounds.GOLPE_GUITARRA));
 
     public static final RegistryObject<Item> KATANA = ITEMS.register("katana",
-            () -> new SwordItem(ModToolTiers.ACERO, 3, -2.4F,
-                    new Item.Properties()));
+            () -> new ArmaMelee(ModToolTiers.ACERO, 3, -2.4F,
+                    new Item.Properties(), null, 1.5D));
 
     public static final RegistryObject<Item> LANZALLAMAS = ITEMS.register("lanzallamas",
-            () -> new SwordItem(ModToolTiers.METAL, 4, -3.0F,
+            () -> new Lanzallamas(ModToolTiers.METAL, 4, -3.0F,
                     new Item.Properties()));
 
     public static final RegistryObject<Item> PEZNSINITA_PICKAXE = ITEMS.register("peznsinita_pickaxe",

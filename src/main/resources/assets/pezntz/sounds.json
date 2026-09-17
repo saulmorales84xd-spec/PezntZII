@@ -58,5 +58,25 @@
         "stream": false
       }
     ]
+  },
+  "motosierra_activa": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.motosierra_activa",
+    "sounds": [
+      {
+        "name": "pezntz:motosierra_activa",
+        "stream": false
+      }
+    ]
+  },
+  "lanzallamas_activo": {
+    "category": "player",
+    "subtitle": "subtitles.pezntz.lanzallamas_activo",
+    "sounds": [
+      {
+        "name": "pezntz:lanzallamas_activo",
+        "stream": false
+      }
+    ]
   }
 }
