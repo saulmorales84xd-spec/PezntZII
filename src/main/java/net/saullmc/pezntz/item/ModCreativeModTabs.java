@@ -42,6 +42,9 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.CHATARRA_ELECTRONICA.get());
                         pOutput.accept(ModItems.CABLES.get());
                         pOutput.accept(ModItems.CINTA.get());
+                        pOutput.accept(ModItems.BATERIAS.get());
+                        pOutput.accept(ModItems.GLANDULA_APESTOSA.get());
+                        pOutput.accept(ModItems.ESPORAS.get());
                         pOutput.accept(ModItems.LATA_ATUN_CERRADA.get());
                         pOutput.accept(ModItems.LATA_POLLO_CERRADA.get());
                         pOutput.accept(ModItems.LATA_CARNE_CERRADA.get());
@@ -54,6 +57,7 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.PAQUETE_MRE.get());
                         pOutput.accept(ModItems.BARRA_CHOCOLATE.get());
                         pOutput.accept(ModItems.BARRA_GRANOLA.get());
+                        pOutput.accept(ModItems.FRUTO_ESTIMULANTE.get());
 
                         pOutput.accept(ModItems.VENDAS.get());
                         pOutput.accept(ModItems.BOTIQUIN.get());

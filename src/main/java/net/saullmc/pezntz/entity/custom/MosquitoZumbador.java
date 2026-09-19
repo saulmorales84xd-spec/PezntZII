@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
+import net.saullmc.pezntz.entity.ai.PerseguirDirectoGoal;
 
 public class MosquitoZumbador extends Monster {
 
@@ -44,7 +45,7 @@ public class MosquitoZumbador extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(1, new PerseguirDirectoGoal(this, 1.2D));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
@@ -87,9 +88,6 @@ public class MosquitoZumbador extends Monster {
     private void setupAnimationStates() {
         boolean isFlying = !this.onGround() || this.walkAnimation.speed() > 0.015F;
 
-        // LA SOLUCIÓN: Eliminamos la condición que frenaba el vuelo.
-        // Ahora el mosquito NUNCA dejará de aletear, incluso cuando la animación
-        // de ataque se dispare por separado.
         if (isFlying) {
             this.idleAnimationState.stop();
             this.flyAnimationState.startIfStopped(this.tickCount);

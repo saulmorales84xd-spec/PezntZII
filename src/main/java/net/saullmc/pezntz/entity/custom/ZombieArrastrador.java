@@ -9,6 +9,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.saullmc.pezntz.entity.ai.PerseguirDirectoGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -37,7 +39,10 @@ public class ZombieArrastrador extends Zombie {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.getAvailableGoals().removeIf(
+                envoltorio -> envoltorio.getGoal() instanceof MeleeAttackGoal);
+
+        this.goalSelector.addGoal(2, new PerseguirDirectoGoal(this, 1.0D));
     }
 
     public static AttributeSupplier.Builder createAttributes(){

@@ -38,7 +38,7 @@ public class Lanzallamas extends ArmaMelee {
     private static final int TICKS_POR_USO = 10;
 
     public Lanzallamas(Tier tier, int danio, float velocidad, Properties properties) {
-        super(tier, danio, velocidad, properties, ModSounds.GOLPE_LANZALLAMAS);
+        super(tier, danio, velocidad, properties, null, 0.0D, true);
     }
 
     @Override

@@ -83,6 +83,15 @@ public class ModItems {
     public static final RegistryObject<Item> CINTA = ITEMS.register("cinta",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> BATERIAS = ITEMS.register("baterias",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> GLANDULA_APESTOSA = ITEMS.register("glandula_apestosa",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> ESPORAS = ITEMS.register("esporas",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> SOLICITUD_EMPLEO = ITEMS.register("solitud_empleo",
             () -> new Item(new Item.Properties()));
 
@@ -119,8 +128,11 @@ public class ModItems {
     public static final RegistryObject<Item> BARRA_GRANOLA = ITEMS.register("barra_granola",
             () -> new Item(new Item.Properties().food(ModFoods.BARRA_GRANOLA)));
 
+    public static final RegistryObject<Item> FRUTO_ESTIMULANTE = ITEMS.register("fruto_estimulante",
+            () -> new Item(new Item.Properties().food(ModFoods.FRUTO_ESTIMULANTE)));
+
     public static final RegistryObject<Item> LANTERN = ITEMS.register("lantern",
-            () -> new FlashlightItem(new Item.Properties()));
+            () -> new FlashlightItem(new Item.Properties().durability(600)));
 
     public static final RegistryObject<Item> ABRELATAS = ITEMS.register("abrelatas",
             () -> new Item(new Item.Properties()));

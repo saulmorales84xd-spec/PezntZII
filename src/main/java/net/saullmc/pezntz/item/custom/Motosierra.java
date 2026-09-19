@@ -32,7 +32,7 @@ public class Motosierra extends ArmaMelee {
     private static final int MORDISCOS_POR_USO = 2;
 
     public Motosierra(Tier tier, int danio, float velocidad, Properties properties) {
-        super(tier, danio, velocidad, properties, ModSounds.GOLPE_MOTOSIERRA);
+                super(tier, danio, velocidad, properties, null, 0.0D, true);
     }
 
     @Override

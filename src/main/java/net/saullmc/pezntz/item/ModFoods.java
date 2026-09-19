@@ -28,4 +28,7 @@ public class ModFoods {
     public static final FoodProperties BARRA_GRANOLA = new FoodProperties.Builder().nutrition(8)
             .saturationMod(0.8f).build();
 
+    public static final FoodProperties FRUTO_ESTIMULANTE = new FoodProperties.Builder().nutrition(2).fast()
+            .saturationMod(0.1f).build();
+
 }

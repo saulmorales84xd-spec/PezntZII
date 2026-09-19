@@ -16,7 +16,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-import java.util.jar.Attributes;
 
 public class ArmaMelee extends SwordItem {
 
@@ -26,21 +25,32 @@ public class ArmaMelee extends SwordItem {
     private final RegistryObject<SoundEvent> sonidoGolpe;
 
     private final double alcanceExtra;
+    private final boolean esSinGolpe;
 
-    public ArmaMelee (Tier tier, int danio, float velocidad, Properties properties) {
-        this(tier, danio, velocidad, properties, null, 0.00);
+    public ArmaMelee(Tier tier, int danio, float velocidad, Properties properties) {
+        this(tier, danio, velocidad, properties, null, 0.0D, false);
     }
 
-    public ArmaMelee (Tier tier, int danio, float velocidad, Properties properties,
-                      @Nullable RegistryObject<SoundEvent> sonidoGolpe) {
-        this(tier, danio, velocidad, properties, sonidoGolpe, 0.00);
+    public ArmaMelee(Tier tier, int danio, float velocidad, Properties properties,
+                     @Nullable RegistryObject<SoundEvent> sonidoGolpe) {
+        this(tier, danio, velocidad, properties, sonidoGolpe, 0.0D, false);
     }
 
-    public ArmaMelee (Tier tier, int danio, float velocidad, Properties properties,
-                      @Nullable RegistryObject<SoundEvent> sonidoGolpe, double alcanceExtra) {
+    public ArmaMelee(Tier tier, int danio, float velocidad, Properties properties,
+                     @Nullable RegistryObject<SoundEvent> sonidoGolpe, double alcanceExtra) {
+        this(tier, danio, velocidad, properties, sonidoGolpe, alcanceExtra, false);
+    }
+
+    public ArmaMelee(Tier tier, int danio, float velocidad, Properties properties,
+                     @Nullable RegistryObject<SoundEvent> sonidoGolpe, double alcanceExtra, boolean esSinGolpe) {
         super(tier, danio, velocidad, properties);
         this.sonidoGolpe = sonidoGolpe;
         this.alcanceExtra = alcanceExtra;
+        this.esSinGolpe = esSinGolpe;
+    }
+
+    public boolean esSinGolpe() {
+        return this.esSinGolpe;
     }
 
     @Override
@@ -54,8 +64,8 @@ public class ArmaMelee extends SwordItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot){
-        if (slot != EquipmentSlot.MAINHAND || this.alcanceExtra <= 0.0D){
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+        if (slot != EquipmentSlot.MAINHAND || this.alcanceExtra <= 0.0D) {
             return super.getDefaultAttributeModifiers(slot);
         }
 

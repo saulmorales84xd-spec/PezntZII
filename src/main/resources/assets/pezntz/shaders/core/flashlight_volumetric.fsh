@@ -10,6 +10,12 @@ uniform int   uLightCount;
 uniform vec3  uLightColor;
 uniform float uBrightnessMultiplier;
 
+uniform float uAmbient;
+
+uniform float uAmbientInfluence;
+
+uniform float uNearFade;
+
 uniform float uSelfLitLow;
 uniform float uSelfLitHigh;
 
@@ -118,10 +124,13 @@ void evaluateSurfaceLight(int i, vec3 worldPos, out float lit) {
     float outerCos   = getConeAngleCos(i);
     if (cosAngle < outerCos) { lit = 0.0; return; }
 
-    float edgeSoft  = smoothstep(outerCos, mix(outerCos, 1.0, 0.2), cosAngle);
-    float distAtten = pow(clamp(1.0 - dist / range, 0.0, 1.0), 1.2);
+    float halo   = smoothstep(outerCos, mix(outerCos, 1.0, 0.55), cosAngle);
+    float nucleo = smoothstep(mix(outerCos, 1.0, 0.45), mix(outerCos, 1.0, 0.85), cosAngle);
+    float forma  = halo * 0.35 + nucleo * 0.65;
 
-    lit = edgeSoft * distAtten * getIntensity(i);
+    float distAtten = pow(clamp(1.0 - dist / range, 0.0, 1.0), 2.0);
+
+    lit = forma * distAtten * getIntensity(i);
 }
 
 bool volumetricInterval(int i, vec3 ro, vec3 rd, float tMax, out float t0, out float t1) {
@@ -217,6 +226,8 @@ vec3 sampleVolumetric(vec3 rayOrigin, vec3 worldPos, int i) {
         float proximityT = clamp(1.0 - dist / lightRange, 0.0, 1.0);
         float rangeAtten = pow(proximityT, 1.5);
 
+        float nearFade = smoothstep(0.0, max(uNearFade, 0.001), dist);
+
         float density = 1.0;
         if (uVolumetricNoise > 0.0) {
             vec3  noiseCoord = samplePos * 1.2 + vec3(0.0, 0.0, uGameTime * 0.05);
@@ -224,7 +235,7 @@ vec3 sampleVolumetric(vec3 rayOrigin, vec3 worldPos, int i) {
             density = clamp(mix(1.0, n * 1.3, clamp(uVolumetricNoise, 0.0, 1.0)), 0.2, 1.3);
         }
 
-        accum += edgeSoft * rangeAtten * density;
+        accum += edgeSoft * rangeAtten * density * nearFade;
     }
 
     vec3 result = uLightColor * getIntensity(i) * uVolumetricIntensity
@@ -259,14 +270,21 @@ void main() {
 
     vec3 darkBase = sceneColor;
 
+    float ambientDamp = 1.0 - clamp(uAmbient, 0.0, 1.0) * clamp(uAmbientInfluence, 0.0, 1.0);
+    totalLit *= ambientDamp;
+    glow     *= ambientDamp;
+
     float selfLit = smoothstep(uSelfLitLow, uSelfLitHigh, luminance);
-    vec3 gain = vec3(1.0) + uBrightnessMultiplier * uLightColor * totalLit;
-    gain = mix(gain, vec3(1.0), selfLit);
-    vec3 litColor = sceneColor * gain;
+    float fuerza  = totalLit * (1.0 - selfLit);
 
-    vec3 result = mix(darkBase, litColor, totalLit);
+    vec3 multiplicativo = vec3(1.0) + uBrightnessMultiplier * uLightColor * fuerza;
+    vec3 aditivo        = uLightColor * fuerza * 0.12;
 
-    result += glow * 0.35 * (1.0 - selfLit);
+    vec3 litColor = sceneColor * multiplicativo + aditivo;
+
+    vec3 result = mix(darkBase, litColor, clamp(totalLit, 0.0, 1.0));
+
+    result += glow * 0.30 * (1.0 - selfLit);
 
     vec3  tonemapped = result / (1.0 + result * 0.35);
     float tonemapAmount = clamp(totalLit + max(max(glow.r, glow.g), glow.b), 0.0, 1.0);
