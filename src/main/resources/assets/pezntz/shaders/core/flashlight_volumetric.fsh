@@ -362,9 +362,36 @@ void main() {
 
     result += glow * 0.30 * (1.0 - selfLit);
 
-    vec3  tonemapped = result / (1.0 + result * 0.35);
-    float tonemapAmount = clamp(totalLit + max(max(glow.r, glow.g), glow.b), 0.0, 1.0);
-    result = mix(result, tonemapped, tonemapAmount);
+    // ================= COMPRESION DE BRILLO =================
+    //
+    // AQUI ESTABA LA DISTORSION DE COLOR AL MIRAR UNA LUZ.
+    //
+    // Dos fallos que se sumaban:
+    //
+    // 1) El tonemap se aplicaba canal por canal. Un naranja intenso como el de una antorcha
+    //    llega con algo asi como (1.5, 0.9, 0.4); al comprimir cada canal por separado, el
+    //    rojo baja muchisimo mas que el azul, y el color acaba siendo otro. Lo que se veia
+    //    no era mas brillo, era un tono cambiado.
+    //
+    // 2) La cantidad de compresion salia de totalLit, que dice si el pixel esta DENTRO DEL
+    //    CONO, no si la linterna le ha añadido algo. Una pared ya iluminada por el sol,
+    //    dentro del cono, recibia compresion completa aunque la linterna no aportara nada.
+    //
+    // Ahora se comprime la LUMINANCIA y se reparte el resultado entre los tres canales por
+    // igual: baja el brillo sin tocar el tono. Y la cantidad sale de la luz que la linterna
+    // ha añadido de verdad, asi que un pixel que ya era brillante pasa intacto.
+    float luzAniadida = clamp(fuerza + max(max(glow.r, glow.g), glow.b), 0.0, 1.0);
+
+    if (luzAniadida > 0.001) {
+        float brillo = dot(result, vec3(0.299, 0.587, 0.114));
+
+        if (brillo > 0.0001) {
+            float brilloComprimido = brillo / (1.0 + brillo * 0.35);
+            vec3  comprimido = result * (brilloComprimido / brillo);
+
+            result = mix(result, comprimido, luzAniadida);
+        }
+    }
 
     fragColor = vec4(result, 1.0);
 }

@@ -37,13 +37,22 @@ public class Quad extends PathfinderMob {
     /** Deposito lleno. */
     public static final float MAX_FUEL = 1000.0F;
 
-    /** Cuanta gasolina gasta por tick a maxima velocidad. */
-    private static final float GASTO_POR_TICK = 0.15F;
+    /**
+     * Gasolina por bloque recorrido.
+     *
+     * Con el deposito en 1000 y este valor, el quad da unos 400 bloques por deposito.
+     * Subelo para que gaste mas, bajalo para que rinda mas.
+     */
+    private static final float GASTO_POR_BLOQUE = 2.5F;
 
     /** Lo que repone un item de combustible. */
     public static final float RECARGA_POR_ITEM = 250.0F;
 
     private float currentSpeed;
+
+    /** Posicion del tick anterior, para medir cuanto avanzo. */
+    private double ultimaX;
+    private double ultimaZ;
 
     public Quad(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -81,6 +90,27 @@ public class Quad extends PathfinderMob {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setFuel(tag.contains("Fuel") ? tag.getFloat("Fuel") : MAX_FUEL);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (this.level().isClientSide()) return;
+
+        if (this.isVehicle() && this.getFuel() > 0.0F) {
+            double dx = this.getX() - this.ultimaX;
+            double dz = this.getZ() - this.ultimaZ;
+            double avance = Math.sqrt(dx * dx + dz * dz);
+
+            // El umbral filtra el temblor de la sincronizacion cuando esta parado.
+            if (avance > 0.02D) {
+                this.setFuel(this.getFuel() - (float) (avance * GASTO_POR_BLOQUE));
+            }
+        }
+
+        this.ultimaX = this.getX();
+        this.ultimaZ = this.getZ();
     }
 
     @Override
@@ -281,11 +311,6 @@ public class Quad extends PathfinderMob {
             Vec3 forward = Vec3.directionFromRotation(0, this.getYRot()).scale(this.currentSpeed);
 
             this.entityData.set(WHEEL_ROTATION, this.entityData.get(WHEEL_ROTATION) + this.currentSpeed);
-
-            if (!this.level().isClientSide() && Math.abs(this.currentSpeed) > 0.01F) {
-                float proporcion = Math.abs(this.currentSpeed) / 0.6F;
-                this.setFuel(this.getFuel() - GASTO_POR_TICK * proporcion);
-            }
 
             double motionY = this.onGround() ? 0.0D : this.getDeltaMovement().y - 0.08D;
 
