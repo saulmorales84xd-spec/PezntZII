@@ -19,12 +19,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
+import net.saullmc.pezntz.item.ModItems;
 
 public class Quad extends PathfinderMob {
 
     private static final EntityDataAccessor<Integer> DRIVER_ID = SynchedEntityData.defineId(Quad.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PASSENGER_ID = SynchedEntityData.defineId(Quad.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> WHEEL_ROTATION = SynchedEntityData.defineId(Quad.class, EntityDataSerializers.FLOAT);
+
+    private static final EntityDataAccessor<Float> FUEL =
+            SynchedEntityData.defineId(Quad.class, EntityDataSerializers.FLOAT);
+
+    /** Deposito lleno. */
+    public static final float MAX_FUEL = 1000.0F;
+
+    /** Cuanta gasolina gasta por tick a maxima velocidad. */
+    private static final float GASTO_POR_TICK = 0.15F;
+
+    /** Lo que repone un item de combustible. */
+    public static final float RECARGA_POR_ITEM = 250.0F;
 
     private float currentSpeed;
 
@@ -39,6 +56,31 @@ public class Quad extends PathfinderMob {
         this.entityData.define(DRIVER_ID, -1);
         this.entityData.define(PASSENGER_ID, -1);
         this.entityData.define(WHEEL_ROTATION, 0.0F);
+        this.entityData.define(FUEL, MAX_FUEL);
+    }
+
+    public float getFuel() {
+        return this.entityData.get(FUEL);
+    }
+
+    public void setFuel(float cantidad) {
+        this.entityData.set(FUEL, Mth.clamp(cantidad, 0.0F, MAX_FUEL));
+    }
+
+    public boolean tieneGasolina() {
+        return this.getFuel() > 0.0F;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putFloat("Fuel", this.getFuel());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setFuel(tag.contains("Fuel") ? tag.getFloat("Fuel") : MAX_FUEL);
     }
 
     @Override
@@ -75,8 +117,32 @@ public class Quad extends PathfinderMob {
         return false;
     }
 
+    /**
+     * Click derecho sobre el quad.
+     *
+     * Primero se mira si traes combustible: asi puedes repostar sin subirte encima. Solo
+     * si no, se pasa a montar.
+     */
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+
+        ItemStack enMano = pPlayer.getItemInHand(pHand);
+
+        if (enMano.is(ModItems.BOTELLA_ALCOHOL.get()) && this.getFuel() < MAX_FUEL) {
+            if (!this.level().isClientSide()) {
+                this.setFuel(this.getFuel() + RECARGA_POR_ITEM);
+
+                if (!pPlayer.getAbilities().instabuild) {
+                    enMano.shrink(1);
+                }
+
+                this.level().playSound(null, this.blockPosition(),
+                        SoundEvents.BUCKET_FILL, SoundSource.NEUTRAL, 0.8F, 1.2F);
+            }
+
+            return InteractionResult.sidedSuccess(this.level().isClientSide());
+        }
+
         if (!this.level().isClientSide) {
             if (this.entityData.get(DRIVER_ID) == -1) {
                 pPlayer.setYRot(this.getYRot());
@@ -191,6 +257,13 @@ public class Quad extends PathfinderMob {
             float steer = driver.xxa;
             float throttle = driver.zza;
 
+            // Sin gasolina el motor no responde. Se deja frenar hasta pararse en vez de
+            // clavarlo en seco, que se siente como chocar contra una pared invisible.
+            if (!this.tieneGasolina()) {
+                throttle = 0.0F;
+                this.currentSpeed *= 0.90F;
+            }
+
             float maxSpeed = 0.6F;
             if (throttle > 0) this.currentSpeed = Mth.clamp(this.currentSpeed + 0.02F, -maxSpeed * 0.5F, maxSpeed);
             else if (throttle < 0) this.currentSpeed = Mth.clamp(this.currentSpeed - 0.02F, -maxSpeed * 0.5F, maxSpeed);
@@ -208,6 +281,11 @@ public class Quad extends PathfinderMob {
             Vec3 forward = Vec3.directionFromRotation(0, this.getYRot()).scale(this.currentSpeed);
 
             this.entityData.set(WHEEL_ROTATION, this.entityData.get(WHEEL_ROTATION) + this.currentSpeed);
+
+            if (!this.level().isClientSide() && Math.abs(this.currentSpeed) > 0.01F) {
+                float proporcion = Math.abs(this.currentSpeed) / 0.6F;
+                this.setFuel(this.getFuel() - GASTO_POR_TICK * proporcion);
+            }
 
             double motionY = this.onGround() ? 0.0D : this.getDeltaMovement().y - 0.08D;
 

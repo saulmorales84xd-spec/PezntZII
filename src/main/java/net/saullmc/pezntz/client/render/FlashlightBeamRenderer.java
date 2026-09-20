@@ -30,7 +30,6 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID, value = Dist.CLIENT)
 public class FlashlightBeamRenderer {
 
-    /** Alcance del haz en bloques. */
     private static final float RANGE = 22.0f;
 
     /**
@@ -43,7 +42,7 @@ public class FlashlightBeamRenderer {
     private static final int VOLUMETRIC_STEPS = 24;
 
     /** Cuanta niebla se ve en el haz. Bajado de 0.5: antes tapaba lo que iluminaba. */
-    private static final float VOLUMETRIC_INTENSITY = 0.26f;
+    private static final float VOLUMETRIC_INTENSITY = 0.15f;
 
     private static final float VOLUMETRIC_NOISE = 0.30f;
 
@@ -55,7 +54,7 @@ public class FlashlightBeamRenderer {
      * juego parecia arreglarlo a medias. Con 3.0 la luz se nota y la textura conserva su
      * color; el shader ademas reparte parte de la ganancia como suma en vez de producto.
      */
-    private static final float BRIGHTNESS_MULTIPLIER = 9.0f;
+    private static final float BRIGHTNESS_MULTIPLIER = 5.0f;
 
     /**
      * Rango donde el shader considera que un pixel "ya tiene luz propia" y deja de
@@ -68,13 +67,27 @@ public class FlashlightBeamRenderer {
      * Cuanto le hace caso a la luz del entorno. 0.85 = de dia a cielo abierto la linterna
      * queda al 15% de fuerza; en una cueva, al 100%.
      */
-    private static final float AMBIENT_INFLUENCE = 0.85f;
+    // Atenuado por luz natural: DESACTIVADO. En 0 alumbra igual de dia que de noche.
+    // Si algun dia lo quieres de vuelta, 0.85 la dejaba al 15% a cielo abierto.
+    private static final float AMBIENT_INFLUENCE = 0.0f;
 
     /**
      * Bloques desde el foco en los que no se acumula niebla. Es lo que quita el punto
      * blanco que salia en la cara al verse en tercera persona.
      */
     private static final float NEAR_FADE = 1.6f;
+
+    /**
+     * Pasos del rastreo de sombras. Mas pasos = sombras mas limpias y mas coste de GPU.
+     * Por debajo de 12 se empiezan a colar luces por las esquinas.
+     */
+    private static final int SHADOW_STEPS = 20;
+
+    /**
+     * Tolerancia al comparar profundidades. Si la subes se escapan luces por los bordes;
+     * si la bajas salen rayas en paredes que SI deberian estar iluminadas.
+     */
+    private static final float SHADOW_BIAS = 0.0015f;
 
     /**
      * Cuanto se adelanta el foco respecto al ojo. Una linterna se lleva en la mano, no
@@ -145,8 +158,10 @@ public class FlashlightBeamRenderer {
         Vec3 camPos = camera.getPosition();
         poseStack.pushPose();
         poseStack.translate(-camPos.x, -camPos.y, -camPos.z);
-        Matrix4f mvp = new Matrix4f(projectionMatrix);
-        mvp.mul(poseStack.last().pose());
+        Matrix4f mvpDirecta = new Matrix4f(projectionMatrix);
+        mvpDirecta.mul(poseStack.last().pose());
+
+        Matrix4f mvp = new Matrix4f(mvpDirecta);
         mvp.invert();
         poseStack.popPose();
 
@@ -165,6 +180,8 @@ public class FlashlightBeamRenderer {
         lightingShader.setSampler("uDepthSampler", mainTarget.getDepthTextureId());
 
         setMat4(lightingShader, "uInvMVP", mvp);
+
+        setMat4(lightingShader, "uMVP", mvpDirecta);
         setFloat2(lightingShader, "uScreenSize", (float) width, (float) height);
         setInt(lightingShader, "uLightCount", lights.size());
 
@@ -175,6 +192,8 @@ public class FlashlightBeamRenderer {
         setFloat(lightingShader, "uAmbient", luzAqui / 15.0f);
         setFloat(lightingShader, "uAmbientInfluence", AMBIENT_INFLUENCE);
         setFloat(lightingShader, "uNearFade", NEAR_FADE);
+        setInt(lightingShader, "uShadowSteps", SHADOW_STEPS);
+        setFloat(lightingShader, "uShadowBias", SHADOW_BIAS);
 
         setFloat(lightingShader, "uSelfLitLow", SELF_LIT_LOW);
         setFloat(lightingShader, "uSelfLitHigh", SELF_LIT_HIGH);

@@ -86,6 +86,11 @@ public class FlashlightItem extends Item {
     }
 
     @Override
+    public boolean shouldCauseReequipAnimation(ItemStack anterior, ItemStack nuevo, boolean cambioDeCasilla) {
+        return cambioDeCasilla;
+    }
+
+    @Override
     public boolean isValidRepairItem(ItemStack linterna, ItemStack material) {
         return material.is(ModItems.CHATARRA_ELECTRONICA.get());
     }

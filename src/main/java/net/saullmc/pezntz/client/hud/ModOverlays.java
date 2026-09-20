@@ -41,6 +41,8 @@ public class ModOverlays {
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("mancha_zombie_overlay", MANCHA_OVERLAY);
 
+        event.registerAboveAll("quad_overlay", QuadOverlay.OVERLAY);
+
         event.registerBelow(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.CHAT_PANEL.id(),
                 "pickup_log_overlay", PickupLogOverlay.OVERLAY);
     }

@@ -4,6 +4,13 @@ uniform sampler2D uColorSampler;
 uniform sampler2D uDepthSampler;
 
 uniform mat4  uInvMVP;
+
+// Matriz sin invertir: para pasar de coordenadas de mundo a pantalla y poder consultar
+// el buffer de profundidad. Es la base del rastreo de sombras.
+uniform mat4  uMVP;
+
+uniform int   uShadowSteps;
+uniform float uShadowBias;
 uniform vec2  uScreenSize;
 
 uniform int   uLightCount;
@@ -111,6 +118,67 @@ vec3 reconstructWorldPos(vec2 uv, float rawDepth) {
     return worldH.xyz / wSafe;
 }
 
+/**
+ * Cuanta luz llega de verdad desde el foco hasta un punto, de 0 (tapado) a 1 (despejado).
+ *
+ * POR QUE LA LUZ ATRAVESABA BLOQUES
+ *
+ * El shader solo comprobaba dos cosas para iluminar un pixel: que estuviera dentro del cono
+ * y dentro del alcance. Nunca miraba si habia algo EN MEDIO, asi que una pared con el foco
+ * al otro lado quedaba igual de iluminada.
+ *
+ * COMO SE ARREGLA SIN SALIR DEL SHADER
+ *
+ * Se camina en linea recta desde la superficie hacia el foco. En cada paso se proyecta ese
+ * punto a pantalla y se compara su profundidad con la que ya hay guardada en el buffer. Si
+ * lo que la camara ve en ese pixel esta MAS CERCA que nuestro punto, es que hay geometria
+ * delante: el camino esta tapado y la luz no llega.
+ *
+ * La limitacion de la tecnica: solo conoce lo que la camara ve. Un bloque fuera de pantalla
+ * no proyecta sombra. En una linterna en primera persona casi todo lo que iluminas lo estas
+ * mirando, asi que se nota poco.
+ */
+float trazarSombra(vec3 worldPos, vec3 lightOrigin) {
+    int pasos = max(uShadowSteps, 1);
+
+    vec3  haciaLuz = lightOrigin - worldPos;
+    float largo    = length(haciaLuz);
+    if (largo < 0.05) return 1.0;
+
+    vec3 dir = haciaLuz / largo;
+
+    // Se arranca despegado de la superficie para no leerse a si misma como obstaculo.
+    float inicio = min(0.12, largo * 0.25);
+    float paso   = (largo - inicio) / float(pasos);
+    if (paso <= 0.0) return 1.0;
+
+    // El ruido rompe el patron de bandas: en vez de una escalera se ve grano fino.
+    float jitter = interleavedGradientNoise(gl_FragCoord.xy);
+
+    for (int s = 0; s < pasos; s++) {
+        vec3 muestra = worldPos + dir * (inicio + (float(s) + jitter) * paso);
+
+        vec4 clip = uMVP * vec4(muestra, 1.0);
+        if (clip.w <= 0.0) continue;
+
+        vec3 ndc = clip.xyz / clip.w;
+        if (any(greaterThan(abs(ndc.xy), vec2(1.0)))) continue;
+
+        vec2  uv = ndc.xy * 0.5 + 0.5;
+        float profundidadEscena = texture(uDepthSampler, uv).r;
+        float profundidadMuestra = ndc.z * 0.5 + 0.5;
+
+        // El cielo no tapa nada.
+        if (profundidadEscena >= 0.9999) continue;
+
+        if (profundidadEscena < profundidadMuestra - uShadowBias) {
+            return 0.0;
+        }
+    }
+
+    return 1.0;
+}
+
 void evaluateSurfaceLight(int i, vec3 worldPos, out float lit) {
     float range = getRange(i);
     if (range <= 0.0) { lit = 0.0; return; }
@@ -131,6 +199,11 @@ void evaluateSurfaceLight(int i, vec3 worldPos, out float lit) {
     float distAtten = pow(clamp(1.0 - dist / range, 0.0, 1.0), 2.0);
 
     lit = forma * distAtten * getIntensity(i);
+
+    // Y lo ultimo: comprobar que de verdad haya linea de vision hasta el foco.
+    if (lit > 0.0) {
+        lit *= trazarSombra(worldPos, getLightOrigin(i));
+    }
 }
 
 bool volumetricInterval(int i, vec3 ro, vec3 rd, float tMax, out float t0, out float t1) {
@@ -235,7 +308,10 @@ vec3 sampleVolumetric(vec3 rayOrigin, vec3 worldPos, int i) {
             density = clamp(mix(1.0, n * 1.3, clamp(uVolumetricNoise, 0.0, 1.0)), 0.2, 1.3);
         }
 
-        accum += edgeSoft * rangeAtten * density * nearFade;
+        // La niebla tambien se corta: si no, el haz se veia flotando dentro de la pared.
+        float visible = trazarSombra(samplePos, lightOrigin);
+
+        accum += edgeSoft * rangeAtten * density * nearFade * visible;
     }
 
     vec3 result = uLightColor * getIntensity(i) * uVolumetricIntensity

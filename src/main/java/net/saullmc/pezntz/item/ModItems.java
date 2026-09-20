@@ -209,6 +209,18 @@ public class ModItems {
             () -> new HoeItem(ModToolTiers.PEZNSINITA, -1, -3.0F,
                     new Item.Properties()));
 
+    public static final RegistryObject<Item> HELMET_ARMADURA_TACTICA = ITEMS.register("helmet_armadura_tactica",
+            () -> new ArmorItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> CHESTPLATE_ARMADURA_TACTICA = ITEMS.register("chestplate_armadura_tactica",
+            () -> new ArmorItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> LEGGINS_ARMADURA_TACTICA = ITEMS.register("leggins_armadura_tactica",
+            () -> new ArmorItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> BOOTS_ARMADURA_TACTICA = ITEMS.register("boots_armadura_tactica",
+            () -> new ArmorItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.BOOTS, new Item.Properties()));
+
     public static void register (IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

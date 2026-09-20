@@ -82,6 +82,12 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.PEZNSINITA_SHOVEL.get());
                         pOutput.accept(ModItems.PEZNSINITA_HOE.get());
 
+                        pOutput.accept(ModItems.HELMET_ARMADURA_TACTICA.get());
+                        pOutput.accept(ModItems.CHESTPLATE_ARMADURA_TACTICA.get());
+                        pOutput.accept(ModItems.LEGGINS_ARMADURA_TACTICA.get());
+                        pOutput.accept(ModItems.BOOTS_ARMADURA_TACTICA.get());
+
+
 
                     })
                     .build());
