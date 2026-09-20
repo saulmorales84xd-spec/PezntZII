@@ -18,72 +18,39 @@ import net.saullmc.pezntz.entity.custom.Quad;
 @OnlyIn(Dist.CLIENT)
 public class QuadOverlay {
 
-    /** Separacion desde el borde DERECHO, en pixeles. Mas alto = mas a la izquierda. */
     public static final int OFFSET_X = 8;
 
-    /** Separacion desde el borde SUPERIOR. Mas alto = mas abajo. */
     public static final int OFFSET_Y = 8;
 
-    /** Escala del conjunto entero, marco y barras. 1.0 es el tamaño de la interfaz. */
     public static final float SCALE = 1.0F;
 
-    /** Tamaño del marco en pixeles. Tiene que coincidir con tu png. */
     public static final int PANEL = 96;
 
-    /** Tamaño del quad dentro del marco. Subelo si lo ves pequeño en su hueco. */
     public static final int TAMANIO_ENTIDAD = 20;
 
-    /** Desplazamiento del quad dentro del marco, por si tu textura no esta centrada. */
     public static final int ENTIDAD_OFFSET_X = 0;
     public static final int ENTIDAD_OFFSET_Y = 12;
 
-    /** Inclinacion y giro con que se ve el quad, en grados. */
     public static final float ENTIDAD_PITCH = 12.0F;
     public static final float ENTIDAD_YAW = -35.0F;
 
-    /** Tamaño del FONDO de la barra, o sea del png. Tu barra_vida.png mide 96x16. */
     public static final int BARRA_ANCHO = 112;
     public static final int BARRA_ALTO = 20;
 
-    /**
-     * Tamaño del RELLENO de color, independiente del fondo.
-     *
-     * Van separados a proposito: asi puedes hacer la parte verde y la roja tan finas como
-     * quieras sin encoger ni deformar tu textura.
-     */
     public static final int RELLENO_ANCHO = 78;
     public static final int RELLENO_ALTO = 7;
 
-    /**
-     * Si el relleno se centra solo dentro del fondo.
-     *
-     * Con true se centra y los OFFSET de abajo lo mueven DESDE ese centro. Con false el
-     * relleno arranca en la esquina superior izquierda del fondo y los OFFSET son su
-     * posicion exacta.
-     */
     public static final boolean RELLENO_CENTRAR = true;
 
-    /**
-     * Ajuste fino del relleno dentro del fondo. Se suma siempre, centrado o no.
-     *
-     * Negativo mueve a la IZQUIERDA y hacia ARRIBA; positivo a la derecha y hacia abajo.
-     *
-     * (Antes esto no admitia negativos: usaba -1 como señal de "centrar" y el chequeo era
-     * >= 0, asi que cualquier numero negativo se leia como centrar y no movia nada.)
-     */
     public static final int RELLENO_OFFSET_X = 13;
     public static final int RELLENO_OFFSET_Y = 0;
 
-    /** Hueco entre el marco y la primera barra. */
     public static final int HUECO_TRAS_PANEL = 1;
 
-    /** Hueco entre una barra y la otra. */
     public static final int HUECO_ENTRE_BARRAS = -7;
 
-    /** Mueve las DOS barras en horizontal. Positivo = a la derecha, negativo = izquierda. */
     public static final float BARRAS_OFFSET_X = -7.2F;
 
-    /** Mueve las DOS barras en vertical. Positivo = hacia abajo. */
     public static final int BARRAS_OFFSET_Y = -4;
 
     public static final float BARRAS_SCALE = 1F;
@@ -91,11 +58,27 @@ public class QuadOverlay {
     public static final int COLOR_VIDA = 0xFF4CC24C;
     public static final int COLOR_GASOLINA = 0xFFC2402F;
 
+    public static final boolean MOSTRAR_TEXTO = true;
+
+    public static final int TEXTO_OFFSET_X = 10;
+    public static final int TEXTO_OFFSET_Y = 0;
+
+    public static final float TEXTO_SCALE = 0.75F;
+
+    public static final int TEXTO_COLOR = 0xFFFFFFFF;
+
+    public static final boolean TEXTO_SOMBRA = true;
+
+    public static final int TEXTO_COMBUSTIBLE_MAX = 100;
+
     private static final ResourceLocation TEX_PANEL =
             new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/menu_vehiculo.png");
 
-    private static final ResourceLocation TEX_BARRA =
+    private static final ResourceLocation TEX_BARRA_VIDA =
             new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/barra_vida.png");
+
+    private static final ResourceLocation TEX_BARRA_COMBUSTIBLE =
+            new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/barra_combustible.png");
 
     public static final IGuiOverlay OVERLAY = (ForgeGui gui, GuiGraphics g, float partialTick,
                                                int screenWidth, int screenHeight) -> {
@@ -128,22 +111,28 @@ public class QuadOverlay {
         g.pose().translate(anclaX, anclaY, 0.0F);
         g.pose().scale(BARRAS_SCALE, BARRAS_SCALE, 1.0F);
 
-        float vida = quad.getHealth() / quad.getMaxHealth();
-        dibujarBarra(g, 0, 0, vida, COLOR_VIDA);
+        int vidaActual = (int) Math.ceil(quad.getHealth());
+        int vidaMaxima = (int) quad.getMaxHealth();
+        dibujarBarra(g, 0, 0,
+                quad.getHealth() / quad.getMaxHealth(), COLOR_VIDA, TEX_BARRA_VIDA,
+                vidaActual + "/" + vidaMaxima);
 
-        float gasolina = quad.getFuel() / Quad.MAX_FUEL;
-        dibujarBarra(g, 0, BARRA_ALTO + HUECO_ENTRE_BARRAS, gasolina, COLOR_GASOLINA);
+        float proporcionGasolina = quad.getFuel() / Quad.MAX_FUEL;
+        int gasolinaActual = Math.round(proporcionGasolina * TEXTO_COMBUSTIBLE_MAX);
+        dibujarBarra(g, 0, BARRA_ALTO + HUECO_ENTRE_BARRAS,
+                proporcionGasolina, COLOR_GASOLINA, TEX_BARRA_COMBUSTIBLE,
+                gasolinaActual + "/" + TEXTO_COMBUSTIBLE_MAX);
 
         g.pose().popPose();
 
         g.pose().popPose();
     };
 
-    private static void dibujarBarra(GuiGraphics g, int x, int y, float proporcion, int color) {
-        g.blit(TEX_BARRA, x, y, 0, 0, BARRA_ANCHO, BARRA_ALTO, BARRA_ANCHO, BARRA_ALTO);
+    private static void dibujarBarra(GuiGraphics g, int x, int y, float proporcion, int color,
+                                     ResourceLocation fondo, String texto) {
+        g.blit(fondo, x, y, 0, 0, BARRA_ANCHO, BARRA_ALTO, BARRA_ANCHO, BARRA_ALTO);
 
         proporcion = Math.max(0.0F, Math.min(1.0F, proporcion));
-
 
         int centradoX = RELLENO_CENTRAR ? (BARRA_ANCHO - RELLENO_ANCHO) / 2 : 0;
         int centradoY = RELLENO_CENTRAR ? (BARRA_ALTO - RELLENO_ALTO) / 2 : 0;
@@ -152,9 +141,31 @@ public class QuadOverlay {
         int rellenoY = y + centradoY + RELLENO_OFFSET_Y;
 
         int ancho = Math.round(RELLENO_ANCHO * proporcion);
-        if (ancho <= 0) return;
+        if (ancho > 0) {
+            g.fill(rellenoX, rellenoY, rellenoX + ancho, rellenoY + RELLENO_ALTO, color);
+        }
 
-        g.fill(rellenoX, rellenoY, rellenoX + ancho, rellenoY + RELLENO_ALTO, color);
+        if (MOSTRAR_TEXTO && texto != null) {
+            dibujarTexto(g, x, y, texto);
+        }
+    }
+
+    private static void dibujarTexto(GuiGraphics g, int x, int y, String texto) {
+        Minecraft mc = Minecraft.getInstance();
+
+        int anchoTexto = mc.font.width(texto);
+
+        g.pose().pushPose();
+
+        float centradoX = (BARRA_ANCHO - anchoTexto * TEXTO_SCALE) / 2.0F;
+        float centradoY = (BARRA_ALTO - mc.font.lineHeight * TEXTO_SCALE) / 2.0F;
+
+        g.pose().translate(x + centradoX + TEXTO_OFFSET_X, y + centradoY + TEXTO_OFFSET_Y, 0.0F);
+        g.pose().scale(TEXTO_SCALE, TEXTO_SCALE, 1.0F);
+
+        g.drawString(mc.font, texto, 0, 0, TEXTO_COLOR, TEXTO_SOMBRA);
+
+        g.pose().popPose();
     }
 
     private static void dibujarEntidad(GuiGraphics g, Quad quad, int x, int y) {

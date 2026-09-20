@@ -42,7 +42,7 @@ public class FlashlightBeamRenderer {
     private static final int VOLUMETRIC_STEPS = 24;
 
     /** Cuanta niebla se ve en el haz. Bajado de 0.5: antes tapaba lo que iluminaba. */
-    private static final float VOLUMETRIC_INTENSITY = 0.15f;
+    private static final float VOLUMETRIC_INTENSITY = 0.001f;
 
     private static final float VOLUMETRIC_NOISE = 0.30f;
 
@@ -54,14 +54,14 @@ public class FlashlightBeamRenderer {
      * juego parecia arreglarlo a medias. Con 3.0 la luz se nota y la textura conserva su
      * color; el shader ademas reparte parte de la ganancia como suma en vez de producto.
      */
-    private static final float BRIGHTNESS_MULTIPLIER = 5.0f;
+    private static final float BRIGHTNESS_MULTIPLIER = 7.0f;
 
     /**
      * Rango donde el shader considera que un pixel "ya tiene luz propia" y deja de
      * aplicarle la linterna. Bajado de 0.4/0.75 para que respete antes las zonas claras.
      */
-    private static final float SELF_LIT_LOW = 0.22f;
-    private static final float SELF_LIT_HIGH = 0.58f;
+    private static final float SELF_LIT_LOW = 0.6f;
+    private static final float SELF_LIT_HIGH = 0.9f;
 
     /**
      * Cuanto le hace caso a la luz del entorno. 0.85 = de dia a cielo abierto la linterna
@@ -69,7 +69,7 @@ public class FlashlightBeamRenderer {
      */
     // Atenuado por luz natural: DESACTIVADO. En 0 alumbra igual de dia que de noche.
     // Si algun dia lo quieres de vuelta, 0.85 la dejaba al 15% a cielo abierto.
-    private static final float AMBIENT_INFLUENCE = 0.0f;
+    private static final float AMBIENT_INFLUENCE = 0.85f;
 
     /**
      * Bloques desde el foco en los que no se acumula niebla. Es lo que quita el punto

@@ -48,9 +48,9 @@ public class ZombieTanque extends Zombie {
 
     public static AttributeSupplier.Builder createAttributes(){
         return Zombie.createAttributes()
-                .add(Attributes.MAX_HEALTH, 150.0D)
+                .add(Attributes.MAX_HEALTH, 200.0D) //100 corazones
                 .add(Attributes.MOVEMENT_SPEED, 0.23D)
-                .add(Attributes.ATTACK_DAMAGE, 12.0D)
+                .add(Attributes.ATTACK_DAMAGE, 14.0D) //7 corazones de daño
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 

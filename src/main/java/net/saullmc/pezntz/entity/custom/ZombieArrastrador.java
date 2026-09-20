@@ -47,9 +47,9 @@ public class ZombieArrastrador extends Zombie {
 
     public static AttributeSupplier.Builder createAttributes(){
         return Zombie.createAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.23D)
-                .add(Attributes.ATTACK_DAMAGE, 3.0D);
+                .add(Attributes.MAX_HEALTH, 30.0D) //15 corazones
+                .add(Attributes.MOVEMENT_SPEED, 0.30D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D); //2.5 corazones de daño
     }
 
     @Override

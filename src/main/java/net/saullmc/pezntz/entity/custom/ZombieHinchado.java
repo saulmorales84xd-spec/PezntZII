@@ -65,8 +65,8 @@ public class ZombieHinchado extends Zombie {
 
     public static AttributeSupplier.Builder createAttributes(){
         return Zombie.createAttributes()
-                .add(Attributes.MAX_HEALTH, 30)
-                .add(Attributes.MOVEMENT_SPEED, 0.23D)
+                .add(Attributes.MAX_HEALTH, 100) // 50 corazones
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D);
     }
 

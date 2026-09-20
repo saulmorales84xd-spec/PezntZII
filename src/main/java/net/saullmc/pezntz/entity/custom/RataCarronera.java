@@ -39,10 +39,10 @@ public class RataCarronera extends Zombie {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Zombie.createAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.28D)
-                .add(Attributes.ATTACK_DAMAGE, 3.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 2.5D);
+                .add(Attributes.MAX_HEALTH, 60.0D) // 30 corazones
+                .add(Attributes.MOVEMENT_SPEED, 0.35D)
+                .add(Attributes.ATTACK_DAMAGE, 8.0D) // 4 corazones de daño
+                .add(Attributes.ATTACK_KNOCKBACK, 1.75D);
     }
 
     @Override

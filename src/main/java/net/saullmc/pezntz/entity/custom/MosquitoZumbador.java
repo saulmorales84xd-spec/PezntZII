@@ -56,10 +56,10 @@ public class MosquitoZumbador extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0D)
-                .add(Attributes.FLYING_SPEED, 0.6D)
-                .add(Attributes.MOVEMENT_SPEED, 0.3D)
-                .add(Attributes.ATTACK_DAMAGE, 2.0D);
+                .add(Attributes.MAX_HEALTH, 40.0D) // 20 corazones
+                .add(Attributes.FLYING_SPEED, 1.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.40D)
+                .add(Attributes.ATTACK_DAMAGE, 6.0D); // 3 corazones de daño
     }
 
     @Override
