@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -31,68 +32,18 @@ import java.util.List;
 public class FlashlightBeamRenderer {
 
     private static final float RANGE = 22.0f;
-
-    /**
-     * Medio angulo del cono. Estaba en 50, o sea 100 grados de apertura: eso es un foco de
-     * obra, no una linterna. 24 da un haz reconocible con su nucleo y su halo.
-     */
     private static final float HALF_ANGLE_DEG = 50.0f;
-
     private static final int MAX_VOLUMETRIC_LIGHTS = 4;
     private static final int VOLUMETRIC_STEPS = 24;
-
-    /** Cuanta niebla se ve en el haz. Bajado de 0.5: antes tapaba lo que iluminaba. */
-    private static final float VOLUMETRIC_INTENSITY = 0.001f;
-
+    private static final float VOLUMETRIC_INTENSITY = 0.008f;
     private static final float VOLUMETRIC_NOISE = 0.30f;
-
-    /**
-     * LA CAUSA DE QUE SE PERDIERAN LOS COLORES.
-     *
-     * Este numero multiplica el color de la escena. Estaba en 12: cualquier textura con algo
-     * de claridad se iba directa a blanco y perdia su tono, y por eso bajar el brillo del
-     * juego parecia arreglarlo a medias. Con 3.0 la luz se nota y la textura conserva su
-     * color; el shader ademas reparte parte de la ganancia como suma en vez de producto.
-     */
     private static final float BRIGHTNESS_MULTIPLIER = 7.0f;
-
-    /**
-     * Rango donde el shader considera que un pixel "ya tiene luz propia" y deja de
-     * aplicarle la linterna. Bajado de 0.4/0.75 para que respete antes las zonas claras.
-     */
     private static final float SELF_LIT_LOW = 0.6f;
     private static final float SELF_LIT_HIGH = 0.9f;
-
-    /**
-     * Cuanto le hace caso a la luz del entorno. 0.85 = de dia a cielo abierto la linterna
-     * queda al 15% de fuerza; en una cueva, al 100%.
-     */
-    // Atenuado por luz natural: DESACTIVADO. En 0 alumbra igual de dia que de noche.
-    // Si algun dia lo quieres de vuelta, 0.85 la dejaba al 15% a cielo abierto.
-    private static final float AMBIENT_INFLUENCE = 0.85f;
-
-    /**
-     * Bloques desde el foco en los que no se acumula niebla. Es lo que quita el punto
-     * blanco que salia en la cara al verse en tercera persona.
-     */
+    private static final float AMBIENT_INFLUENCE = 0.35f;
     private static final float NEAR_FADE = 1.6f;
-
-    /**
-     * Pasos del rastreo de sombras. Mas pasos = sombras mas limpias y mas coste de GPU.
-     * Por debajo de 12 se empiezan a colar luces por las esquinas.
-     */
     private static final int SHADOW_STEPS = 20;
-
-    /**
-     * Tolerancia al comparar profundidades. Si la subes se escapan luces por los bordes;
-     * si la bajas salen rayas en paredes que SI deberian estar iluminadas.
-     */
     private static final float SHADOW_BIAS = 0.0015f;
-
-    /**
-     * Cuanto se adelanta el foco respecto al ojo. Una linterna se lleva en la mano, no
-     * entre los ojos, y de paso ayuda a que el arranque del haz no toque la cabeza.
-     */
     private static final float OFFSET_ADELANTE = 0.45f;
 
     private record ActiveLight(Vec3 origin, Vec3 dir) {}
@@ -180,7 +131,6 @@ public class FlashlightBeamRenderer {
         lightingShader.setSampler("uDepthSampler", mainTarget.getDepthTextureId());
 
         setMat4(lightingShader, "uInvMVP", mvp);
-
         setMat4(lightingShader, "uMVP", mvpDirecta);
         setFloat2(lightingShader, "uScreenSize", (float) width, (float) height);
         setInt(lightingShader, "uLightCount", lights.size());
@@ -188,8 +138,8 @@ public class FlashlightBeamRenderer {
         setFloat3(lightingShader, "uLightColor", 1.0f, 0.95f, 0.85f);
         setFloat(lightingShader, "uBrightnessMultiplier", BRIGHTNESS_MULTIPLIER);
 
-        int luzAqui = level.getMaxLocalRawBrightness(BlockPos.containing(camPos));
-        setFloat(lightingShader, "uAmbient", luzAqui / 15.0f);
+        int luzBloque = level.getBrightness(LightLayer.BLOCK, BlockPos.containing(camPos));
+        setFloat(lightingShader, "uAmbient", luzBloque / 15.0f);
         setFloat(lightingShader, "uAmbientInfluence", AMBIENT_INFLUENCE);
         setFloat(lightingShader, "uNearFade", NEAR_FADE);
         setInt(lightingShader, "uShadowSteps", SHADOW_STEPS);
