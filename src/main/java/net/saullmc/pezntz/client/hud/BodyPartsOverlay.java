@@ -56,10 +56,10 @@ public class BodyPartsOverlay {
                 guiGraphics.pose().popPose();
                 RenderSystem.disableBlend();
 
-                drawBar(guiGraphics, font, myCap.getHead(), barX, startY);
-                drawBar(guiGraphics, font, myCap.getBody(), barX, startY + spacingY);
-                drawBar(guiGraphics, font, myCap.getArms(), barX, startY + (spacingY * 2));
-                drawBar(guiGraphics, font, myCap.getLegs(), barX, startY + (spacingY * 3));
+                drawBar(guiGraphics, font, myCap.getHead(), myCap.getMaxHead(), barX, startY);
+                drawBar(guiGraphics, font, myCap.getBody(), myCap.getMaxBody(), barX, startY + spacingY);
+                drawBar(guiGraphics, font, myCap.getArms(), myCap.getMaxArms(), barX, startY + (spacingY * 2));
+                drawBar(guiGraphics, font, myCap.getLegs(), myCap.getMaxLegs(), barX, startY + (spacingY * 3));
 
                 if (mc.crosshairPickEntity instanceof Player targetPlayer) {
                     targetPlayer.getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).ifPresent(targetCap -> {
@@ -121,8 +121,8 @@ public class BodyPartsOverlay {
         guiGraphics.fill(fillLeft, barY, fillRight, barY + barHeight, 0xFFFFFFFF);
     }
 
-    private static void drawBar(GuiGraphics guiGraphics, Font font, float currentHealth, int x, int y) {
-        int maxHealth = 6;
+    private static void drawBar(GuiGraphics guiGraphics, Font font, float currentHealth, float maxHealth,
+                                int x, int y) {
         int maxBarWidth = 60;
         int barHeight = 7;
         int borderThickness = 1;
@@ -142,7 +142,13 @@ public class BodyPartsOverlay {
         int barColor = currentHealth <= 4.0f ? colorCritico : colorNormal;
         guiGraphics.fill(barStartX, y, barStartX + currentBarWidth, y + barHeight, barColor);
 
-        String hpText = (int)currentHealth + "/" + maxHealth;
+        String hpText = formatear(currentHealth) + "/" + formatear(maxHealth);
         guiGraphics.drawString(font, hpText, barStartX + maxBarWidth + 5, y, 0xFFFFFF, true);
+    }
+
+    private static String formatear(float valor) {
+        return valor == Math.floor(valor)
+                ? Integer.toString((int) valor)
+                : String.format("%.1f", valor);
     }
 }

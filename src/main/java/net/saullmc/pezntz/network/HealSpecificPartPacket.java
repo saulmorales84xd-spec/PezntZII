@@ -43,8 +43,8 @@ public class HealSpecificPartPacket {
                             case "legs" -> currentHealth = cap.getLegs();
                         }
 
-                        if (currentHealth < BodyHealthData.MAX_HEALTH) {
-                            float newHealth = Math.min(BodyHealthData.MAX_HEALTH, currentHealth + BodyHealthData.HEAL_GUI);
+                        if (currentHealth < cap.getMax(part)) {
+                            float newHealth = Math.min(cap.getMax(part), currentHealth + BodyHealthData.HEAL_GUI);
                             switch (part) {
                                 case "head" -> cap.setHead(newHealth);
                                 case "body" -> cap.setBody(newHealth);

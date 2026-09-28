@@ -43,10 +43,10 @@ public class ModCommands {
         for (ServerPlayer player : objetivos) {
 
             player.getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).ifPresent(cap -> {
-                cap.setHead(BodyHealthData.MAX_HEALTH);
-                cap.setBody(BodyHealthData.MAX_HEALTH);
-                cap.setArms(BodyHealthData.MAX_HEALTH);
-                cap.setLegs(BodyHealthData.MAX_HEALTH);
+                cap.setHead(cap.getMaxHead());
+                cap.setBody(cap.getMaxBody());
+                cap.setArms(cap.getMaxArms());
+                cap.setLegs(cap.getMaxLegs());
 
                 NetworkHandler.sendToClients(new SyncBodyHealthPacket(player.getId(), cap), player);
             });

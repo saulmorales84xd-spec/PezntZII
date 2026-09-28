@@ -120,7 +120,6 @@ public class HealingScreen extends Screen {
         }
         lastHoveredPart = currentlyHovering;
 
-        // 5. DIBUJA LOS BOTONES Y TEXTOS
         drawCustomButton(guiGraphics, "Cabeza", startX, startY, mouseX, mouseY, "head");
         drawCustomButton(guiGraphics, "Cuerpo", startX, startY + spacingY, mouseX, mouseY, "body");
         drawCustomButton(guiGraphics, "Brazos", startX, startY + spacingY * 2, mouseX, mouseY, "arms");
@@ -135,10 +134,10 @@ public class HealingScreen extends Screen {
                 int textX = startX + textOffsetX;
                 int baseTextY = startY + ((buttonHeight - mc.font.lineHeight) / 2) + textOffsetY;
 
-                guiGraphics.drawString(mc.font, (int)cap.getHead() + "/6", textX, baseTextY, 0xFFFFFF, false);
-                guiGraphics.drawString(mc.font, (int)cap.getBody() + "/6", textX, baseTextY + spacingY, 0xFFFFFF, false);
-                guiGraphics.drawString(mc.font, (int)cap.getArms() + "/6", textX, baseTextY + spacingY * 2, 0xFFFFFF, false);
-                guiGraphics.drawString(mc.font, (int)cap.getLegs() + "/6", textX, baseTextY + spacingY * 3, 0xFFFFFF, false);
+                guiGraphics.drawString(mc.font, formatear(cap.getHead()) + "/" + formatear(cap.getMaxHead()), textX, baseTextY, 0xFFFFFF, false);
+                guiGraphics.drawString(mc.font, formatear(cap.getBody()) + "/" + formatear(cap.getMaxBody()), textX, baseTextY + spacingY, 0xFFFFFF, false);
+                guiGraphics.drawString(mc.font, formatear(cap.getArms()) + "/" + formatear(cap.getMaxArms()), textX, baseTextY + spacingY * 2, 0xFFFFFF, false);
+                guiGraphics.drawString(mc.font, formatear(cap.getLegs()) + "/" + formatear(cap.getMaxLegs()), textX, baseTextY + spacingY * 3, 0xFFFFFF, false);
             });
         }
     }
@@ -178,5 +177,11 @@ public class HealingScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    private static String formatear(float valor) {
+        return valor == Math.floor(valor)
+                ? Integer.toString((int) valor)
+                : String.format("%.1f", valor);
     }
 }

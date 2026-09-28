@@ -97,10 +97,10 @@ public class Vendas extends Item implements GeoItem {
 
 
         boolean hayHerida = pPlayer.getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH)
-                .map(cap -> cap.getHead() < BodyHealthData.MAX_HEALTH
-                        || cap.getBody() < BodyHealthData.MAX_HEALTH
-                        || cap.getArms() < BodyHealthData.MAX_HEALTH
-                        || cap.getLegs() < BodyHealthData.MAX_HEALTH)
+                .map(cap -> cap.getHead() < cap.getMaxHead()
+                        || cap.getBody() < cap.getMaxBody()
+                        || cap.getArms() < cap.getMaxArms()
+                        || cap.getLegs() < cap.getMaxLegs())
                 .orElse(true);
 
         if (!hayHerida) {
@@ -132,8 +132,8 @@ public class Vendas extends Item implements GeoItem {
                         case "legs" -> currentHealth = cap.getLegs();
                     }
 
-                    if (currentHealth < BodyHealthData.MAX_HEALTH) {
-                        float newHealth = Math.min(BodyHealthData.MAX_HEALTH, currentHealth + BodyHealthData.HEAL_QUICK);
+                    if (currentHealth < cap.getMax(part)) {
+                        float newHealth = Math.min(cap.getMax(part), currentHealth + BodyHealthData.HEAL_QUICK);
 
                         switch (part) {
                             case "head" -> cap.setHead(newHealth);

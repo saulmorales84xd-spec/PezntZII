@@ -82,7 +82,7 @@ public class Botiquin extends Item implements GeoItem {
 
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
-      return UseAnim.NONE;
+        return UseAnim.NONE;
     }
 
     @Override
@@ -102,10 +102,10 @@ public class Botiquin extends Item implements GeoItem {
         if (!pLevel.isClientSide && pLivingEntity instanceof ServerPlayer serverPlayer) {
 
             serverPlayer.getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).ifPresent(cap -> {
-                cap.setHead(BodyHealthData.MAX_HEALTH);
-                cap.setBody(BodyHealthData.MAX_HEALTH);
-                cap.setArms(BodyHealthData.MAX_HEALTH);
-                cap.setLegs(BodyHealthData.MAX_HEALTH);
+                cap.setHead(cap.getMaxHead());
+                cap.setBody(cap.getMaxBody());
+                cap.setArms(cap.getMaxArms());
+                cap.setLegs(cap.getMaxLegs());
 
                 NetworkHandler.sendToClients(new SyncBodyHealthPacket(serverPlayer.getId(), cap), serverPlayer);
             });
