@@ -1,6 +1,10 @@
 package net.saullmc.pezntz.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -12,8 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.ibm.icu.impl.Utility.hex;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID)
 public class ModTooltips {
@@ -34,42 +38,177 @@ public class ModTooltips {
     public static final String MORADO_OSCURO = "§5";
     public static final String NEGRO = "§0";
 
-    public static final String KEYS = hex(0xD2691E);
+    public static final String NARANJA_OXIDO = hex(0xD2691E);
+    public static final String VERDE_LIMA = hex(0x9ACD32);
+    public static final String ROJO_SANGRE = hex(0x8B1A1A);
+    public static final String AZUL_MEDICO = hex(0x4FA3D1);
+    public static final String VERDE_TOXICO = hex(0x7ACB4A);
+    public static final String MORADO_INFECCION = hex(0x8A5FB0);
+    public static final String ARENA = hex(0xC2B280);
+    public static final String ACERO = hex(0x8C9AA6);
 
-    public static final String CURSIVA = "§o";
-    public static final String NEGRITA = "§l";
-    public static final String SUBRAYADO = "§n";
+    public static final String RESET = "{/}";
 
-    private static final Map<Item, List<String>> LINEAS = new HashMap<>();
+    public static final String CURSIVA = "{o}";
+    public static final String NEGRITA = "{l}";
+    public static final String SUBRAYADO = "{n}";
+
+    public static final int COLOR_BASE = 0xAAAAAA;
+
+    public static final int MAX_CARACTERES = 45;
+
+    public static String hex(int rgb) {
+        return String.format("{#%06X}", rgb & 0xFFFFFF);
+    }
+
+    private static final Map<Item, List<Component>> LINEAS = new HashMap<>();
+
+    private static final Map<Item, Integer> COLORES_NOMBRE = new HashMap<>();
+
+    public static void colorNombre(Item item, int rgb) {
+        COLORES_NOMBRE.put(item, rgb);
+    }
 
     public static void registrar(Item item, String... lineas) {
-        LINEAS.put(item, List.of(lineas));
+        List<Component> componentes = new ArrayList<>();
+        for (String linea : lineas) {
+            componentes.addAll(parsear(linea));
+        }
+        LINEAS.put(item, componentes);
     }
 
     public static void registrarTodos() {
 
-        registrar(ModItems.VENDAS.get(),
-                GRIS + "Cura" + ROJO + "6 de vida principal " + GRIS + " y " + CIAN + "1 Punto " + GRIS + "aletorio en una zona especifica del cuerpo si se aplica con"
-                        + KEYS + "Click Derecho.");
+        registrar(ModItems.TELA.get(),
+                "Combina este material con otros recursos para obtener nuevos objetos");
 
-        registrar(Items.ROTTEN_FLESH,
-                GRIS + "Carne " + VERDE_OSCURO + "infectada" + GRIS + ". Comer bajo tu riesgo");
+        registrar(ModItems.LATA_ATUN.get(),
+                "Objeto consumible");
+
+        registrar(ModItems.LATA_POLLO.get(),
+                "Objeto consumible");
+
+        registrar(ModItems.LATA_CARNE.get(),
+                "Objeto consumible");
+
+        registrar(ModItems.VENDAS.get(),
+                "Cura " + ROJO + "6 de Vida Principal" + GRIS + " y " + CIAN + "1 Punto " + GRIS + "aleatorio en una zona del cuerpo si se aplica con "
+                        + NARANJA_OXIDO + "Click Derecho                                                " +
+                        GRIS + "Si ingresas en el menú de de curacion con la tecla " + NARANJA_OXIDO + "H " + GRIS + "podras escoger una parte del cuerpo para curarla," +
+                        "recibiendo " + CIAN + "3 Puntos " + GRIS + "en la zona seleccionada");
+
+        colorNombre(ModItems.VENDAS.get(), 0xD2691E);
+    }
+
+    private static final Pattern MARCAS =
+            Pattern.compile("§([0-9a-fk-or])|\\{#([0-9a-fA-F]{6})}|\\{([/oln])}");
+
+
+    private record Segmento(String texto, Style estilo) { }
+
+    private static List<Segmento> segmentar(String texto) {
+        Style base = Style.EMPTY.withColor(TextColor.fromRgb(COLOR_BASE));
+        Style actual = base;
+
+        List<Segmento> segmentos = new ArrayList<>();
+
+        Matcher matcher = MARCAS.matcher(texto);
+        int desde = 0;
+
+        while (matcher.find()) {
+            if (matcher.start() > desde) {
+                segmentos.add(new Segmento(texto.substring(desde, matcher.start()), actual));
+            }
+
+            if (matcher.group(1) != null) {
+                ChatFormatting formato = ChatFormatting.getByCode(matcher.group(1).charAt(0));
+                if (formato != null) {
+                    actual = formato.isColor()
+                            ? Style.EMPTY.withColor(formato)
+                            : actual.applyFormat(formato);
+                }
+            } else if (matcher.group(2) != null) {
+                actual = actual.withColor(TextColor.fromRgb(Integer.parseInt(matcher.group(2), 16)));
+            } else {
+                switch (matcher.group(3)) {
+                    case "/" -> actual = base;
+                    case "o" -> actual = actual.withItalic(true);
+                    case "l" -> actual = actual.withBold(true);
+                    case "n" -> actual = actual.withUnderlined(true);
+                }
+            }
+
+            desde = matcher.end();
+        }
+
+        if (desde < texto.length()) {
+            segmentos.add(new Segmento(texto.substring(desde), actual));
+        }
+
+        return segmentos;
+    }
+
+    private static List<Component> parsear(String texto) {
+        List<Component> renglones = new ArrayList<>();
+
+        MutableComponent renglon = Component.empty();
+        int usados = 0;
+
+        for (Segmento segmento : segmentar(texto)) {
+            String resto = segmento.texto();
+
+            while (!resto.isEmpty()) {
+                int hueco = MAX_CARACTERES - usados;
+
+                if (resto.length() <= hueco) {
+                    renglon.append(Component.literal(resto).withStyle(segmento.estilo()));
+                    usados += resto.length();
+                    break;
+                }
+
+                int corte = hueco > 0 ? resto.lastIndexOf(' ', hueco) : -1;
+
+                if (corte <= 0) {
+
+                    if (usados > 0) {
+                        renglones.add(renglon);
+                        renglon = Component.empty();
+                        usados = 0;
+                        continue;
+                    }
+                    corte = Math.max(1, hueco);
+                }
+
+                renglon.append(Component.literal(resto.substring(0, corte)).withStyle(segmento.estilo()));
+                renglones.add(renglon);
+
+                renglon = Component.empty();
+                usados = 0;
+                resto = resto.substring(corte).stripLeading();
+            }
+        }
+
+        if (usados > 0) {
+            renglones.add(renglon);
+        }
+
+        return renglones;
     }
 
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
-        List<String> lineas = LINEAS.get(event.getItemStack().getItem());
-        if (lineas == null) return;
-
+        Item item = event.getItemStack().getItem();
         List<Component> tooltip = event.getToolTip();
 
-        int posicion = Math.min(1, tooltip.size());
-
-        List<Component> nuevas = new ArrayList<>();
-        for (String linea : lineas) {
-            nuevas.add(Component.literal(linea));
+        Integer color = COLORES_NOMBRE.get(item);
+        if (color != null && !tooltip.isEmpty()) {
+            tooltip.set(0, event.getItemStack().getHoverName().copy()
+                    .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(color))));
         }
 
-        tooltip.addAll(posicion, nuevas);
+        List<Component> lineas = LINEAS.get(item);
+        if (lineas == null) return;
+
+        tooltip.addAll(Math.min(1, tooltip.size()), lineas);
     }
 }

@@ -22,22 +22,16 @@ public class DamageNumbers {
 
     public static final int DURACION = 30;
 
-    /** Cuanto sube en total mientras vive, en bloques. */
-    public static final float SUBIDA = 0.9F;
+    public static final float SUBIDA = 2.2F;
 
-    /** Altura de salida por encima de la cabeza de la entidad. */
-    public static final float ALTURA_EXTRA = 0.45F;
+    public static final float ALTURA_EXTRA = 0.55F;
 
-    /** Cuanto se separa del centro. Evita que el numero quede tapado por la entidad. */
     public static final float DESPLAZAMIENTO_LATERAL = 0.35F;
 
-    /** Tamaño del texto. 0.025 es el de las placas de nombre. */
-    public static final float ESCALA = 0.028F;
+    public static final float ESCALA = 0.05F;
 
-    /** A partir de esta distancia no se dibujan, en bloques. */
     public static final double DISTANCIA_MAXIMA = 32.0D;
 
-    /** Maximo de numeros a la vez, por si hay una pelea grande. */
     public static final int MAXIMO = 60;
 
     public static final int COLOR_DANIO = 0xFF5555;
@@ -50,13 +44,15 @@ public class DamageNumbers {
         final String texto;
         final int color;
         final float lado;
-        int edad;
 
-        Numero(int entityId, String texto, int color, float lado) {
+        final long nacimiento;
+
+        Numero(int entityId, String texto, int color, float lado, long nacimiento) {
             this.entityId = entityId;
             this.texto = texto;
             this.color = color;
             this.lado = lado;
+            this.nacimiento = nacimiento;
         }
     }
 
@@ -67,7 +63,8 @@ public class DamageNumbers {
 
         float lado = (NUMEROS.size() % 2 == 0 ? 1.0F : -1.0F) * DESPLAZAMIENTO_LATERAL;
 
-        NUMEROS.add(new Numero(entityId, texto, curacion ? COLOR_CURACION : COLOR_DANIO, lado));
+        NUMEROS.add(new Numero(entityId, texto, curacion ? COLOR_CURACION : COLOR_DANIO, lado,
+                Minecraft.getInstance().level.getGameTime()));
 
         while (NUMEROS.size() > MAXIMO) {
             NUMEROS.remove(0);
@@ -101,10 +98,8 @@ public class DamageNumbers {
 
         float parcial = event.getPartialTick();
 
-        NUMEROS.removeIf(n -> {
-            n.edad++;
-            return n.edad > DURACION;
-        });
+        long ahora = mc.level.getGameTime();
+        NUMEROS.removeIf(n -> ahora - n.nacimiento > DURACION);
 
         for (Numero numero : NUMEROS) {
             Entity entidad = mc.level.getEntity(numero.entityId);
@@ -113,7 +108,7 @@ public class DamageNumbers {
             double distancia = entidad.position().distanceTo(origen);
             if (distancia > DISTANCIA_MAXIMA) continue;
 
-            float avance = numero.edad / (float) DURACION;
+            float avance = ((ahora - numero.nacimiento) + parcial) / (float) DURACION;
 
             float alpha = avance < 0.66F ? 1.0F : 1.0F - (avance - 0.66F) / 0.34F;
             if (alpha <= 0.02F) continue;
@@ -127,9 +122,10 @@ public class DamageNumbers {
 
             poseStack.mulPose(camara.rotation());
 
-            poseStack.scale(ESCALA, -ESCALA, ESCALA);
 
-            poseStack.translate(numero.lado / ESCALA * 0.5F, 0.0F, 0.0F);
+            poseStack.scale(-ESCALA, -ESCALA, ESCALA);
+
+            poseStack.translate(-numero.lado / ESCALA * 0.5F, 0.0F, 0.0F);
 
             int ancho = font.width(numero.texto);
             int color = (Math.max(4, (int) (alpha * 255)) << 24) | numero.color;
