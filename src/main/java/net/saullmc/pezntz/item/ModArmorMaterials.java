@@ -17,15 +17,19 @@ public enum ModArmorMaterials implements ArmorMaterial {
 
     CHATARRA_REFORZADA("chatarra_reforzada", 33, new int[]{ 3, 6, 8, 3 }, 10,
             SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0f, 0f,
-            () -> Ingredient.of(ModItems.CHATARRA_REFORZADA.get())),
+            () -> Ingredient.of(ModItems.AGUJA_HILO.get())),
 
     CONTENCION("contencion", 37, new int[]{ 3, 6, 8, 3 }, 15,
             SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0f, 0.1f,
-            () -> Ingredient.of(ModItems.TITANIUM_INGOT.get())),
+            () -> Ingredient.of(ModItems.AGUJA_HILO.get())),
 
-    BLINDADA("blindada", 37, new int[]{ 3, 6, 8, 3 }, 15,
-            SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0f, 0.1f,
-            () -> Ingredient.of(ModItems.PEZNSINITA_INGOT.get()));
+    BLINDADA("blindada", 48, new int[]{ 4, 7, 9, 4 }, 18,
+            SoundEvents.ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f,
+            () -> Ingredient.of(ModItems.AGUJA_HILO.get())),
+
+    TRAJE_BIOSEGURIDAD("traje_bioseguridad", 15, new int[]{ 2, 5, 6, 2 }, 9,
+            SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0f,
+            () -> Ingredient.of(ModItems.AGUJA_HILO.get()));
 
     private final String name;
     private final int durabilityMultiplier;

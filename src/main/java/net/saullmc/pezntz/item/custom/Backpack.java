@@ -50,22 +50,12 @@ public class Backpack extends Item {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-
-            CompoundTag nbt = stack.getOrCreateTag();
-
-            if (!nbt.contains(OWNER_TAG)) {
-                nbt.putString(OWNER_TAG, player.getName().getString());
-            }
-
-            getOrCreateId(stack);
-
-            String ownerName = nbt.getString(OWNER_TAG);
-            Component title = Component.literal("Mochila de " + ownerName);
+            Component title = Component.literal("Mochila de " + player.getName().getString());
 
             NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
-                    (containerId, playerInventory, playerEntity) -> new BackpackMenu(containerId, playerInventory, stack),
+                    (containerId, playerInventory, playerEntity) -> new BackpackMenu(containerId, playerInventory),
                     title
-            ), buf -> buf.writeItem(stack));
+            ));
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());

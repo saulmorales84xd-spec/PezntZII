@@ -99,6 +99,10 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.CHESTPLATE_ARMADURA_BLINDADA.get());
                         pOutput.accept(ModItems.LEGGINS_ARMADURA_BLINDADA.get());
                         pOutput.accept(ModItems.BOOTS_ARMADURA_BLINDADA.get());
+                        pOutput.accept(ModItems.HELMET_TRAJE_BIOSEGURIDAD.get());
+                        pOutput.accept(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD.get());
+                        pOutput.accept(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get());
+                        pOutput.accept(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get());
 
 
 

@@ -225,7 +225,7 @@ public class ModItems {
     public static final RegistryObject<Item> BOOTS_ARMADURA_TACTICA = ITEMS.register("boots_armadura_tactica",
             () -> new ArmaduraModItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.BOOTS,
                     new Item.Properties(), "armadura_tactica", "armadura_tactica", 5.0D, 1.0F));
-    
+
     public static final RegistryObject<Item> HELMET_ARMADURA_CHATARRA_REFORZADA = ITEMS.register("helmet_armadura_chatarra_reforzada",
             () -> new ArmaduraModItem(ModArmorMaterials.CHATARRA_REFORZADA, ArmorItem.Type.HELMET,
                     new Item.Properties(), "armadura_tactica", "chatarra_reforzada", 10.0D, 2.0F));
@@ -273,6 +273,22 @@ public class ModItems {
     public static final RegistryObject<Item> BOOTS_ARMADURA_BLINDADA = ITEMS.register("boots_armadura_blindada",
             () -> new ArmaduraModItem(ModArmorMaterials.BLINDADA, ArmorItem.Type.BOOTS,
                     new Item.Properties(), "armadura_tactica", "blindada", 20.0D, 4.0F));
+
+    public static final RegistryObject<Item> HELMET_TRAJE_BIOSEGURIDAD = ITEMS.register("helmet_traje_bioseguridad",
+            () -> new ArmaduraModItem(ModArmorMaterials.TRAJE_BIOSEGURIDAD, ArmorItem.Type.HELMET,
+                    new Item.Properties(), "armadura_tactica", "traje_bioseguridad", 5.0D, 1.0F, true));
+
+    public static final RegistryObject<Item> CHESTPLATE_TRAJE_BIOSEGURIDAD = ITEMS.register("chestplate_traje_bioseguridad",
+            () -> new ArmaduraModItem(ModArmorMaterials.TRAJE_BIOSEGURIDAD, ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties(), "armadura_tactica", "traje_bioseguridad", 5.0D, 1.0F, true));
+
+    public static final RegistryObject<Item> LEGGINS_TRAJE_BIOSEGURIDAD = ITEMS.register("leggins_traje_bioseguridad",
+            () -> new ArmaduraModItem(ModArmorMaterials.TRAJE_BIOSEGURIDAD, ArmorItem.Type.LEGGINGS,
+                    new Item.Properties(), "armadura_tactica", "traje_bioseguridad", 5.0D, 1.0F, true));
+
+    public static final RegistryObject<Item> BOOTS_TRAJE_BIOSEGURIDAD = ITEMS.register("boots_traje_bioseguridad",
+            () -> new ArmaduraModItem(ModArmorMaterials.TRAJE_BIOSEGURIDAD, ArmorItem.Type.BOOTS,
+                    new Item.Properties(), "armadura_tactica", "traje_bioseguridad", 5.0D, 1.0F, true));
 
     public static void register (IEventBus eventBus) {
         ITEMS.register(eventBus);

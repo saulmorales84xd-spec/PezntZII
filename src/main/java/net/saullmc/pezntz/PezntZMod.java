@@ -31,6 +31,7 @@ import net.saullmc.pezntz.network.NetworkHandler;
 import net.saullmc.pezntz.sound.ModSounds;
 import org.slf4j.Logger;
 import software.bernie.geckolib.GeckoLib;
+import net.saullmc.pezntz.item.ModTooltips;
 
 @Mod(PezntZMod.MOD_ID)
 public class PezntZMod {
@@ -59,6 +60,7 @@ public class PezntZMod {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        ModTooltips.registrarTodos();
         event.enqueueWork(() -> {
 
             NetworkHandler.register();

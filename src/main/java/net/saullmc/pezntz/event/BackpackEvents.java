@@ -19,19 +19,6 @@ public class BackpackEvents {
     private static final String BACKPACK_TAG = "HasCraftedBackpack";
 
     @SubscribeEvent
-    public static void onBackpackCrafted(PlayerEvent.ItemCraftedEvent event) {
-        ItemStack craftedItem = event.getCrafting();
-
-        if (craftedItem.getItem() instanceof Backpack) {
-            if (event.getEntity().getPersistentData().getBoolean(BACKPACK_TAG)) {
-                craftedItem.setCount(0);
-            } else {
-                event.getEntity().getPersistentData().putBoolean(BACKPACK_TAG, true);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
 

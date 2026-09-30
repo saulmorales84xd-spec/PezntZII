@@ -12,6 +12,7 @@ import net.saullmc.pezntz.capability.BodyHealthProvider;
 import net.saullmc.pezntz.item.custom.ArmaduraModItem;
 import net.saullmc.pezntz.network.NetworkHandler;
 import net.saullmc.pezntz.network.SyncBodyHealthPacket;
+import net.saullmc.pezntz.effect.ModEffects;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID)
 public class ArmaduraBonus {
@@ -24,6 +25,8 @@ public class ArmaduraBonus {
 
         player.getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).ifPresent(cap -> {
             boolean cambio = aplicar(player, cap);
+
+            limpiarRadiacion(player);
 
             if (cambio && player instanceof ServerPlayer serverPlayer) {
                 NetworkHandler.sendToClients(new SyncBodyHealthPacket(serverPlayer.getId(), cap), serverPlayer);
@@ -43,5 +46,24 @@ public class ArmaduraBonus {
         return player.getItemBySlot(hueco).getItem() instanceof ArmaduraModItem armadura
                 ? armadura.getBonusParte()
                 : 0.0F;
+    }
+
+    private static void limpiarRadiacion(Player player) {
+        if (player.level().isClientSide()) return;
+        if (!player.hasEffect(ModEffects.RADIACION.get())) return;
+
+        boolean setCompleto = protege(player, EquipmentSlot.HEAD)
+                && protege(player, EquipmentSlot.CHEST)
+                && protege(player, EquipmentSlot.LEGS)
+                && protege(player, EquipmentSlot.FEET);
+
+        if (setCompleto) {
+            player.removeEffect(ModEffects.RADIACION.get());
+        }
+    }
+
+    private static boolean protege(Player player, EquipmentSlot hueco) {
+        return player.getItemBySlot(hueco).getItem() instanceof ArmaduraModItem armadura
+                && armadura.protegeDeRadiacion();
     }
 }

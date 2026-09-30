@@ -80,6 +80,10 @@
   "item.pezntz.chestplate_armadura_blindada": "Pechera Blindada",
   "item.pezntz.leggins_armadura_blindada": "Pantalones Blindados",
   "item.pezntz.boots_armadura_blindada": "Botas Blindadas",
+  "item.pezntz.helmet_traje_bioseguridad": "Casco de Bioseguridad",
+  "item.pezntz.chestplate_traje_bioseguridad": "Pechera de Bioseguridad",
+  "item.pezntz.leggins_traje_bioseguridad": "Pantalones de Bioseguridad",
+  "item.pezntz.boots_traje_bioseguridad": "Botas de Bioseguridad",
 
   "entity.pezntz.zombie_hinchado": "Hinchado",
   "entity.pezntz.zombie_tanque": "Tanque",

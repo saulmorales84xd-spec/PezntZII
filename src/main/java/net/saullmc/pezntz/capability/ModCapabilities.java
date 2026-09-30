@@ -11,5 +11,6 @@ public class ModCapabilities {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.register(BodyHealthData.class);
+        event.register(BackpackData.class);
     }
 }

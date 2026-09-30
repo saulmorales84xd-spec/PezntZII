@@ -37,13 +37,26 @@ public class ArmaduraModItem extends ArmorItem implements GeoItem {
     private final double vidaVanilla;
     private final float bonusParte;
 
+    private final boolean protegeDeRadiacion;
+
     public ArmaduraModItem(ArmorMaterial material, Type tipo, Properties properties,
                            String modelo, String textura, double vidaVanilla, float bonusParte) {
+        this(material, tipo, properties, modelo, textura, vidaVanilla, bonusParte, false);
+    }
+
+    public ArmaduraModItem(ArmorMaterial material, Type tipo, Properties properties,
+                           String modelo, String textura, double vidaVanilla, float bonusParte,
+                           boolean protegeDeRadiacion) {
         super(material, tipo, properties);
         this.modelo = modelo;
         this.textura = textura;
         this.vidaVanilla = vidaVanilla;
         this.bonusParte = bonusParte;
+        this.protegeDeRadiacion = protegeDeRadiacion;
+    }
+
+    public boolean protegeDeRadiacion() {
+        return this.protegeDeRadiacion;
     }
 
     public float getBonusParte() {

@@ -9,21 +9,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.saullmc.pezntz.init.ModMenuTypes;
-import net.saullmc.pezntz.inventory.BackpackInventoryHandler;
 import net.saullmc.pezntz.item.custom.Backpack;
+import net.saullmc.pezntz.capability.BackpackData;
+import net.saullmc.pezntz.capability.BackpackProvider;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class BackpackMenu extends AbstractContainerMenu {
-    private final ItemStack backpackStack;
-
     public BackpackMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
-        this(containerId, playerInventory, extraData.readItem());
+        this(containerId, playerInventory);
     }
 
-    public BackpackMenu(int containerId, Inventory playerInventory, ItemStack backpackStack) {
+    public BackpackMenu(int containerId, Inventory playerInventory) {
         super(ModMenuTypes.BACKPACK_MENU.get(), containerId);
-        this.backpackStack = backpackStack;
 
-        IItemHandler backpackInventory = new BackpackInventoryHandler(Backpack.INVENTORY_SIZE, backpackStack);
+        IItemHandler backpackInventory = playerInventory.player
+                .getCapability(BackpackProvider.PLAYER_BACKPACK)
+                .map(BackpackData::getInventario)
+                .orElseGet(() -> new ItemStackHandler(Backpack.INVENTORY_SIZE));
 
         int xStart = 8;
         int yStart = 18;
@@ -47,7 +49,7 @@ public class BackpackMenu extends AbstractContainerMenu {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xStart + col * 18, playerInvY + row * 18) {
                     @Override
                     public boolean mayPickup(Player playerIn) {
-                        return !Backpack.isSameBackpack(getItem(), backpackStack);
+                        return !(getItem().getItem() instanceof Backpack);
                     }
                 });
             }
@@ -58,7 +60,7 @@ public class BackpackMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, col, xStart + col * 18, hotbarY) {
                 @Override
                 public boolean mayPickup(Player playerIn) {
-                    return !Backpack.isSameBackpack(getItem(), backpackStack);
+                    return !(getItem().getItem() instanceof Backpack);
                 }
             });
         }
@@ -66,8 +68,8 @@ public class BackpackMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return Backpack.isSameBackpack(player.getMainHandItem(), backpackStack)
-                || Backpack.isSameBackpack(player.getOffhandItem(), backpackStack);
+        return player.getMainHandItem().getItem() instanceof Backpack
+                || player.getOffhandItem().getItem() instanceof Backpack;
     }
 
     @Override

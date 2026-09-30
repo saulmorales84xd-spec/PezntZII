@@ -6,6 +6,7 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraft.world.entity.Entity;
 
 public class NetworkHandler {
     private static SimpleChannel INSTANCE;
@@ -21,6 +22,11 @@ public class NetworkHandler {
                 .simpleChannel();
 
         INSTANCE = net;
+
+        net.messageBuilder(DamageNumberPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(DamageNumberPacket::new)
+                .encoder(DamageNumberPacket::toBytes)
+                .consumerMainThread(DamageNumberPacket::handle).add();
 
         net.messageBuilder(SyncBodyHealthPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(SyncBodyHealthPacket::new)
@@ -47,6 +53,10 @@ public class NetworkHandler {
                 .decoder(HealSpecificPartPacket::new)
                 .encoder(HealSpecificPartPacket::toBytes)
                 .consumerMainThread(HealSpecificPartPacket::handle).add();
+    }
+
+    public static <MSG> void sendToTracking(MSG message, Entity entity) {
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), message);
     }
 
     public static <MSG> void sendToClients(MSG message, ServerPlayer player) {

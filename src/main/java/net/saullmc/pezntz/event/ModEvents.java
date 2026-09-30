@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.capability.BodyHealthProvider;
 import net.saullmc.pezntz.network.NetworkHandler;
 import net.saullmc.pezntz.network.SyncBodyHealthPacket;
+import net.saullmc.pezntz.capability.BackpackProvider;
 
 @Mod.EventBusSubscriber(modid = "pezntz")
 public class ModEvents {
@@ -22,11 +23,22 @@ public class ModEvents {
             if (!event.getObject().getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).isPresent()) {
                 event.addCapability(new ResourceLocation("pezntz", "body_properties"), new BodyHealthProvider());
             }
+
+            if (!event.getObject().getCapability(BackpackProvider.PLAYER_BACKPACK).isPresent()) {
+                event.addCapability(new ResourceLocation("pezntz", "backpack"), new BackpackProvider());
+            }
         }
     }
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
+
+        event.getOriginal().reviveCaps();
+        event.getOriginal().getCapability(BackpackProvider.PLAYER_BACKPACK).ifPresent(vieja ->
+                event.getEntity().getCapability(BackpackProvider.PLAYER_BACKPACK).ifPresent(nueva ->
+                        nueva.copyFrom(vieja)));
+        event.getOriginal().invalidateCaps();
+
         if (!event.isWasDeath()) {
             event.getOriginal().getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).ifPresent(oldStore -> {
                 event.getEntity().getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).ifPresent(newStore -> {
