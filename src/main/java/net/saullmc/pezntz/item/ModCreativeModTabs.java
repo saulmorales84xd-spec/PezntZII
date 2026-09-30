@@ -86,6 +86,19 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.CHESTPLATE_ARMADURA_TACTICA.get());
                         pOutput.accept(ModItems.LEGGINS_ARMADURA_TACTICA.get());
                         pOutput.accept(ModItems.BOOTS_ARMADURA_TACTICA.get());
+                        pOutput.accept(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA.get());
+                        pOutput.accept(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA.get());
+                        pOutput.accept(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA.get());
+                        pOutput.accept(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA.get());
+                        pOutput.accept(ModItems.BOOTS_ARMADURA_TACTICA.get());
+                        pOutput.accept(ModItems.HELMET_ARMADURA_CONTENCION.get());
+                        pOutput.accept(ModItems.CHESTPLATE_ARMADURA_CONTENCION.get());
+                        pOutput.accept(ModItems.LEGGINS_ARMADURA_CONTENCION.get());
+                        pOutput.accept(ModItems.BOOTS_ARMADURA_CONTENCION.get());
+                        pOutput.accept(ModItems.HELMET_ARMADURA_BLINDADA.get());
+                        pOutput.accept(ModItems.CHESTPLATE_ARMADURA_BLINDADA.get());
+                        pOutput.accept(ModItems.LEGGINS_ARMADURA_BLINDADA.get());
+                        pOutput.accept(ModItems.BOOTS_ARMADURA_BLINDADA.get());
 
 
 

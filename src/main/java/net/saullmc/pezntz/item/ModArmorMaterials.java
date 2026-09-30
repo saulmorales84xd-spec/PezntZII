@@ -12,7 +12,20 @@ import java.util.function.Supplier;
 public enum ModArmorMaterials implements ArmorMaterial {
 
     ARMADURA_TACTICA("armadura_tactica", 15, new int[]{ 2, 5, 6, 2 }, 9,
-            SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0f, () -> Ingredient.of(ModItems.AGUJA_HILO.get()));
+            SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0f,
+            () -> Ingredient.of(ModItems.AGUJA_HILO.get())),
+
+    CHATARRA_REFORZADA("chatarra_reforzada", 33, new int[]{ 3, 6, 8, 3 }, 10,
+            SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0f, 0f,
+            () -> Ingredient.of(ModItems.CHATARRA_REFORZADA.get())),
+
+    CONTENCION("contencion", 37, new int[]{ 3, 6, 8, 3 }, 15,
+            SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0f, 0.1f,
+            () -> Ingredient.of(ModItems.TITANIUM_INGOT.get())),
+
+    BLINDADA("blindada", 37, new int[]{ 3, 6, 8, 3 }, 15,
+            SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0f, 0.1f,
+            () -> Ingredient.of(ModItems.PEZNSINITA_INGOT.get()));
 
     private final String name;
     private final int durabilityMultiplier;
@@ -23,7 +36,7 @@ public enum ModArmorMaterials implements ArmorMaterial {
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredient;
 
-    private static final int[] BASE_DURABILITY = { 11, 16, 16, 13 };
+    private static final int[] BASE_DURABILITY = { 11, 16, 15, 13 };
 
     ModArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound,
                       float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {

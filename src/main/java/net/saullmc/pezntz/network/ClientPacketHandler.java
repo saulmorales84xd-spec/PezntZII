@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.saullmc.pezntz.capability.BodyHealthProvider;
-import net.saullmc.pezntz.event.ArmaduraTacticaBonus;
+import net.saullmc.pezntz.event.ArmaduraBonus;
 
 public class ClientPacketHandler {
 
@@ -16,7 +16,7 @@ public class ClientPacketHandler {
         Entity entity = mc.level.getEntity(entityId);
         if (entity instanceof Player player) {
             player.getCapability(BodyHealthProvider.PLAYER_BODY_HEALTH).ifPresent(cap -> {
-                ArmaduraTacticaBonus.aplicar(player, cap);
+                ArmaduraBonus.aplicar(player, cap);
 
                 cap.setHead(head);
                 cap.setBody(body);

@@ -9,14 +9,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.capability.BodyHealthData;
 import net.saullmc.pezntz.capability.BodyHealthProvider;
-import net.saullmc.pezntz.item.custom.ArmaduraTacticaItem;
+import net.saullmc.pezntz.item.custom.ArmaduraModItem;
 import net.saullmc.pezntz.network.NetworkHandler;
 import net.saullmc.pezntz.network.SyncBodyHealthPacket;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID)
-public class ArmaduraTacticaBonus {
-
-    public static final float BONUS_POR_PIEZA = 1.0F;
+public class ArmaduraBonus {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -35,13 +33,15 @@ public class ArmaduraTacticaBonus {
 
     public static boolean aplicar(Player player, BodyHealthData cap) {
         return cap.setBonuses(
-                lleva(player, EquipmentSlot.HEAD) ? BONUS_POR_PIEZA : 0.0F,
-                lleva(player, EquipmentSlot.CHEST) ? BONUS_POR_PIEZA : 0.0F,
-                lleva(player, EquipmentSlot.LEGS) ? BONUS_POR_PIEZA : 0.0F,
-                lleva(player, EquipmentSlot.FEET) ? BONUS_POR_PIEZA : 0.0F);
+                bonus(player, EquipmentSlot.HEAD),
+                bonus(player, EquipmentSlot.CHEST),
+                bonus(player, EquipmentSlot.LEGS),
+                bonus(player, EquipmentSlot.FEET));
     }
 
-    private static boolean lleva(Player player, EquipmentSlot hueco) {
-        return player.getItemBySlot(hueco).getItem() instanceof ArmaduraTacticaItem;
+    private static float bonus(Player player, EquipmentSlot hueco) {
+        return player.getItemBySlot(hueco).getItem() instanceof ArmaduraModItem armadura
+                ? armadura.getBonusParte()
+                : 0.0F;
     }
 }

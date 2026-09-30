@@ -147,8 +147,6 @@ public class BodyPartsOverlay {
     }
 
     private static String formatear(float valor) {
-        return valor == Math.floor(valor)
-                ? Integer.toString((int) valor)
-                : String.format("%.1f", valor);
+        return Integer.toString((int) Math.ceil(valor));
     }
 }

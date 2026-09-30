@@ -8,7 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.item.custom.*;
 import net.saullmc.pezntz.sound.ModSounds;
-import net.saullmc.pezntz.item.custom.ArmaduraTacticaItem;
+import net.saullmc.pezntz.item.custom.ArmaduraModItem;
 
 public class ModItems {
 
@@ -211,16 +211,68 @@ public class ModItems {
                     new Item.Properties()));
 
     public static final RegistryObject<Item> HELMET_ARMADURA_TACTICA = ITEMS.register("helmet_armadura_tactica",
-            () -> new ArmaduraTacticaItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ArmaduraModItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.HELMET,
+                    new Item.Properties(), "armadura_tactica", "armadura_tactica", 5.0D, 1.0F));
 
     public static final RegistryObject<Item> CHESTPLATE_ARMADURA_TACTICA = ITEMS.register("chestplate_armadura_tactica",
-            () -> new ArmaduraTacticaItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ArmaduraModItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties(), "armadura_tactica", "armadura_tactica", 5.0D, 1.0F));
 
     public static final RegistryObject<Item> LEGGINS_ARMADURA_TACTICA = ITEMS.register("leggins_armadura_tactica",
-            () -> new ArmaduraTacticaItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ArmaduraModItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.LEGGINGS,
+                    new Item.Properties(), "armadura_tactica", "armadura_tactica", 5.0D, 1.0F));
 
     public static final RegistryObject<Item> BOOTS_ARMADURA_TACTICA = ITEMS.register("boots_armadura_tactica",
-            () -> new ArmaduraTacticaItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new ArmaduraModItem(ModArmorMaterials.ARMADURA_TACTICA, ArmorItem.Type.BOOTS,
+                    new Item.Properties(), "armadura_tactica", "armadura_tactica", 5.0D, 1.0F));
+    
+    public static final RegistryObject<Item> HELMET_ARMADURA_CHATARRA_REFORZADA = ITEMS.register("helmet_armadura_chatarra_reforzada",
+            () -> new ArmaduraModItem(ModArmorMaterials.CHATARRA_REFORZADA, ArmorItem.Type.HELMET,
+                    new Item.Properties(), "armadura_tactica", "chatarra_reforzada", 10.0D, 2.0F));
+
+    public static final RegistryObject<Item> CHESTPLATE_ARMADURA_CHATARRA_REFORZADA = ITEMS.register("chestplate_armadura_chatarra_reforzada",
+            () -> new ArmaduraModItem(ModArmorMaterials.CHATARRA_REFORZADA, ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties(), "armadura_tactica", "chatarra_reforzada", 10.0D, 2.0F));
+
+    public static final RegistryObject<Item> LEGGINS_ARMADURA_CHATARRA_REFORZADA = ITEMS.register("leggins_armadura_chatarra_reforzada",
+            () -> new ArmaduraModItem(ModArmorMaterials.CHATARRA_REFORZADA, ArmorItem.Type.LEGGINGS,
+                    new Item.Properties(), "armadura_tactica", "chatarra_reforzada", 10.0D, 2.0F));
+
+    public static final RegistryObject<Item> BOOTS_ARMADURA_CHATARRA_REFORZADA = ITEMS.register("boots_armadura_chatarra_reforzada",
+            () -> new ArmaduraModItem(ModArmorMaterials.CHATARRA_REFORZADA, ArmorItem.Type.BOOTS,
+                    new Item.Properties(), "armadura_tactica", "chatarra_reforzada", 10.0D, 2.0F));
+
+    public static final RegistryObject<Item> HELMET_ARMADURA_CONTENCION = ITEMS.register("helmet_armadura_contencion",
+            () -> new ArmaduraModItem(ModArmorMaterials.CONTENCION, ArmorItem.Type.HELMET,
+                    new Item.Properties(), "armadura_tactica", "contencion", 15.0D, 3.0F));
+
+    public static final RegistryObject<Item> CHESTPLATE_ARMADURA_CONTENCION = ITEMS.register("chestplate_armadura_contencion",
+            () -> new ArmaduraModItem(ModArmorMaterials.CONTENCION, ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties(), "armadura_tactica", "contencion", 15.0D, 3.0F));
+
+    public static final RegistryObject<Item> LEGGINS_ARMADURA_CONTENCION = ITEMS.register("leggins_armadura_contencion",
+            () -> new ArmaduraModItem(ModArmorMaterials.CONTENCION, ArmorItem.Type.LEGGINGS,
+                    new Item.Properties(), "armadura_tactica", "contencion", 15.0D, 3.0F));
+
+    public static final RegistryObject<Item> BOOTS_ARMADURA_CONTENCION = ITEMS.register("boots_armadura_contencion",
+            () -> new ArmaduraModItem(ModArmorMaterials.CONTENCION, ArmorItem.Type.BOOTS,
+                    new Item.Properties(), "armadura_tactica", "contencion", 15.0D, 3.0F));
+
+    public static final RegistryObject<Item> HELMET_ARMADURA_BLINDADA = ITEMS.register("helmet_armadura_blindada",
+            () -> new ArmaduraModItem(ModArmorMaterials.BLINDADA, ArmorItem.Type.HELMET,
+                    new Item.Properties(), "armadura_tactica", "blindada", 20.0D, 4.0F));
+
+    public static final RegistryObject<Item> CHESTPLATE_ARMADURA_BLINDADA = ITEMS.register("chestplate_armadura_blindada",
+            () -> new ArmaduraModItem(ModArmorMaterials.BLINDADA, ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties(), "armadura_tactica", "blindada", 20.0D, 4.0F));
+
+    public static final RegistryObject<Item> LEGGINS_ARMADURA_BLINDADA = ITEMS.register("leggins_armadura_blindada",
+            () -> new ArmaduraModItem(ModArmorMaterials.BLINDADA, ArmorItem.Type.LEGGINGS,
+                    new Item.Properties(), "armadura_tactica", "blindada", 20.0D, 4.0F));
+
+    public static final RegistryObject<Item> BOOTS_ARMADURA_BLINDADA = ITEMS.register("boots_armadura_blindada",
+            () -> new ArmaduraModItem(ModArmorMaterials.BLINDADA, ArmorItem.Type.BOOTS,
+                    new Item.Properties(), "armadura_tactica", "blindada", 20.0D, 4.0F));
 
     public static void register (IEventBus eventBus) {
         ITEMS.register(eventBus);
