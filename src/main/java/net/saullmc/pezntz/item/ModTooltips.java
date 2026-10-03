@@ -1,12 +1,14 @@
 package net.saullmc.pezntz.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +21,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID)
+@Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID, value = Dist.CLIENT)
 public class ModTooltips {
 
     public static final String GRIS = "§7";
@@ -38,30 +40,28 @@ public class ModTooltips {
     public static final String MORADO_OSCURO = "§5";
     public static final String NEGRO = "§0";
 
-    public static final String NARANJA_OXIDO = hex(0xD2691E);
-    public static final String VERDE_LIMA = hex(0x9ACD32);
-    public static final String ROJO_SANGRE = hex(0x8B1A1A);
-    public static final String AZUL_MEDICO = hex(0x4FA3D1);
-    public static final String VERDE_TOXICO = hex(0x7ACB4A);
-    public static final String MORADO_INFECCION = hex(0x8A5FB0);
-    public static final String ARENA = hex(0xC2B280);
-    public static final String ACERO = hex(0x8C9AA6);
+    public static final String KEYS = hex(0xf38c1e);
+    public static final String BYI = hex(0xFB9F5E);
+    public static final String MOBS = hex(0x8be761);
+    public static final String UBICACIONES = hex(0xf5ec4b);
+    public static final String NUM = hex(0x5790ef);
+    public static final String ZOM = hex(0x962424);
+
+    public static final String BR = "{br}";
 
     public static final String RESET = "{/}";
 
-    public static final String CURSIVA = "{o}";
-    public static final String NEGRITA = "{l}";
-    public static final String SUBRAYADO = "{n}";
-
     public static final int COLOR_BASE = 0xAAAAAA;
 
-    public static final int MAX_CARACTERES = 45;
+    public static final int MAX_ANCHO = 350;
 
     public static String hex(int rgb) {
         return String.format("{#%06X}", rgb & 0xFFFFFF);
     }
 
-    private static final Map<Item, List<Component>> LINEAS = new HashMap<>();
+    private static final Map<Item, List<List<Segmento>>> ESCRITO = new HashMap<>();
+
+    private static final Map<Item, List<Component>> LISTO = new HashMap<>();
 
     private static final Map<Item, Integer> COLORES_NOMBRE = new HashMap<>();
 
@@ -70,39 +70,187 @@ public class ModTooltips {
     }
 
     public static void registrar(Item item, String... lineas) {
-        List<Component> componentes = new ArrayList<>();
+        List<List<Segmento>> escrito = new ArrayList<>();
+
         for (String linea : lineas) {
-            componentes.addAll(parsear(linea));
+            for (String trozo : linea.split("\\{br}|\\R")) {
+                escrito.add(segmentar(limpiar(trozo)));
+            }
         }
-        LINEAS.put(item, componentes);
+
+        ESCRITO.put(item, escrito);
+        LISTO.remove(item);
+    }
+
+    private static String limpiar(String texto) {
+        return texto.replaceAll("[ \\t]+", " ").trim();
     }
 
     public static void registrarTodos() {
 
         registrar(ModItems.TELA.get(),
-                "Combina este material con otros recursos para obtener nuevos objetos");
+                BR + "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
 
-        registrar(ModItems.LATA_ATUN.get(),
-                "Objeto consumible");
+        registrar(ModItems.BACKPACK.get(),
+                "Utiliza este objeto para guardar ", "tus recursos mas útiles.", "Presiona " + KEYS + "[B] " + GRIS +
+                        "para abrir la mochila ", "directamente.");
 
-        registrar(ModItems.LATA_POLLO.get(),
-                "Objeto consumible");
+        registrar(ModItems.CHATARRA.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
 
-        registrar(ModItems.LATA_CARNE.get(),
-                "Objeto consumible");
+        registrar(ModItems.CANDADO.get(),
+                "Presiona " + KEYS + "[Click Derecho] " + GRIS + "sobre un " + BR + BYI + "cofre "+ GRIS + "para protegerlo.",
+                "Una vez puesto el candado puedes ", "colocar un código de " + NUM + "4 dígitos", "para poder abrirlo.");
+
+        registrar(ModItems.LLAVE_CANDADO.get(),
+                "Presiona " + KEYS + "[Click Derecho] " + GRIS + "sobre un " + BR + BYI + "cofre protegido " + GRIS +
+                        "para quitarle la", "protección.", "Solo puedes quitarle la proteccion", "a un " + BYI + "cofre protegido "
+                        + GRIS + "que sea tuyo.");
+
+        registrar(ModItems.LLAVE_VEHICULO.get(),
+                "Presiona " + KEYS + "[Click Derecho] " + GRIS + "sobre un" + BR + MOBS + "vehículo " + GRIS + "para encerderlo. ",
+                        "Esta llave se vinculará al vehiculo", "por lo tanto no podrás encender ", "otro " + MOBS + "vehículo " + GRIS + "con la misma llave.");
+
+        registrar(ModItems.PEZNSINITA_BRUTE.get(),
+                "Cocina este material cósmico para", "conseguir nuevos objetos que", "te serviran mas adelante.");
+
+        registrar(ModItems.PEZNSINITA_INGOT.get(),
+                "Material muy resistente que", "puedes conseguirlo cocinando " + BR + BYI + "Meteorito de Peznsinita." + BR + GRIS +
+                        "Ideal para fabricar curas,", "herramientas y armaduras.");
+
+        registrar(ModItems.TITANIUM_BRUTE.get(),
+                "Cocina este material para conseguir", "nuevos objetos que te serviran ", "mas adelante.");
+
+        registrar(ModItems.TITANIUM_INGOT.get(),
+                "Material radiactivo dificil de", "manipular, puedes consegirlo", "cocinando un " + BYI + "Bloque de" + BR + BYI +
+                "Titanio.", "Ideal para fabricar curas,", "suministros y armaduras.");
+
+        registrar(ModItems.CLAVOS.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.PLACA_ACERO.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes conseguirlo cocinando " + BR + BYI + "lingotes de hierro " + GRIS + "en un " + BR + BYI +
+                "alto horno.");
+
+        registrar(ModItems.AGUJA_HILO.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Colócalo en un " + BYI + "Yunque " + GRIS + "con una ", "pieza de armadura para reparla", "por completo.");
+
+        registrar(ModItems.AZUFRE.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                        "Puedes conseguirlo en las " + UBICACIONES + "minas " + BR + UBICACIONES + "de azufre.");
+
+        registrar(ModItems.CARBON_NITRIDO.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                        "Puedes conseguirlo cocinando" + BR + BYI + "carbón vegetal " + GRIS + "en un ahumador.");
+
+        registrar(ModItems.LATA_VACIA.get(),
+                "Cocina este objeto para conseguir", "nuevos recursos.");
+
+        registrar(ModItems.BOTELLA_ALCOHOL.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.RESORTE.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.TUERCA.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.CHATARRA_REFORZADA.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                        "Se obtiene al procesar " + NUM + "9 " + "partes", "de chatarra en un " + BYI + "Depósito de" + BR + BYI +
+                "Chatarra.");
+
+        registrar(ModItems.CHATARRA_ELECTRONICA.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                        "Este objeto solo podras conseguirlo ", "en los " + BYI + "Drops.");
+
+        registrar(ModItems.CABLES.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.CINTA.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.BATERIAS.get(),
+                "Coloca este objeto junto a una " + BR + BYI + "linterna" + GRIS + "para recargarla. ", "Esta la recargara un " + NUM + "20 %.");
+
+        registrar(ModItems.GLANDULA_APESTOSA.get(),
+                "Combina este material con otros ", "recueros para obtener nuevos ", "objetos.",
+                         "Pudes conseguir este material ", "al matar a un " + ZOM + "Infectado " + GRIS + "o a un" + BR + ZOM + "Fundidor.",
+                        "Ideal para fabricar curas, ", "herramientas y armaduras.");
+
+        registrar(ModItems.ESPORAS.get(),
+                "Combina este material con otros ", "recueros para obtener nuevos ", "objetos.",
+                "Pudes conseguir este material ", "al matar a un " + ZOM + "Hinchado " + GRIS + "o a un" + BR + ZOM + "Parasitador.",
+                "Ideal para fabricar curas, ", "herramientas y armaduras.");
+
+        registrar(ModItems.FISHY.get(),
+                "¿Será esto lo que necesitamos?. Fishy es ", "el pescado del que hablaban en las noticias,", "el causante de todo este desastre.",
+                        "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
+
+        registrar(ModItems.MUESTRA_VIRUS.get(),
+                "Despues de todo esto, los mejores médicos", "intentaron fabricar una cura pero fallaron,", "al final solo quedo una unica muestra",
+                        "del virus.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
+
+        registrar(ModItems.DOCUMENTOS_PEZNT.get(),
+                "Dentro de un laboratorio reforzado por las", "mejores fuerzas del país, quedo resguardado", "el unico documento con la formula capaz",
+                        "de resolver todo esto.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura." );
+
+        registrar(ModItems.JERINGA_VACIA.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                        "Ideal para fabricar jeringas de", "gran apoyo.");
+
+        registrar(ModItems.BIDON_GASOLINA.get(),
+                "Este contenedor te servira para ", "almacenar combustible.", "Presiona " + KEYS + "[Click Derecho] " + "sobre",
+                        "una " + BYI + "bomba de gasolina " + GRIS + "para llenar ", "el contener y rellenar los " + MOBS + "vehÍculos" + BR + GRIS + "de gasolina.");
+
+        registrar(ModItems.LATA_ATUN_CERRADA.get(),
+                "Coloca este objeto junto a un " + BR + BYI + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto");
+
+        registrar(ModItems.LATA_POLLO_CERRADA.get(),
+                "Coloca este objeto junto a un " + BR + BYI + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto");
+
+        registrar(ModItems.LATA_CARNE_CERRADA.get(),
+                "Coloca este objeto junto a un " + BR + BYI + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto");
+
+        for (Item consumible : List.of(
+                ModItems.LATA_ATUN.get(), ModItems.LATA_POLLO.get(), ModItems.LATA_CARNE.get(),
+                ModItems.PAQUETE_MRE.get(), ModItems.NACHOS.get(), ModItems.CEREALES.get(),
+                ModItems.BARRA_CHOCOLATE.get(), ModItems.BARRA_GRANOLA.get(),
+                ModItems.FRUTO_ESTIMULANTE.get())) {
+            registrar(consumible, GRIS + "Objeto consumible");
+        }
+
+        registrar(ModItems.MUESTRA_VIRUS.get(),
+                "Despues de todo esto, los mejores médicos", "intentaron fabricar una cura pero fallaron,", "al final solo quedo una unica muestra",
+                "del virus.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
 
         registrar(ModItems.VENDAS.get(),
-                "Cura " + ROJO + "6 de Vida Principal" + GRIS + " y " + CIAN + "1 Punto " + GRIS + "aleatorio en una zona del cuerpo si se aplica con "
-                        + NARANJA_OXIDO + "Click Derecho                                                " +
-                        GRIS + "Si ingresas en el menú de de curacion con la tecla " + NARANJA_OXIDO + "H " + GRIS + "podras escoger una parte del cuerpo para curarla," +
-                        "recibiendo " + CIAN + "3 Puntos " + GRIS + "en la zona seleccionada");
+                "Cura " + ROJO + "6 de vida principal " + GRIS + "y" + NUM +
+                        "1 Punto aleatorio en una zona del cuerpo si",
+                        "se aplica con [Click Derecho]",
+                        "Si ingresas en el menú de Salud con la tecla",
+                        "[H] podras elegir una parte del cuerpo que",
+                        "quieras curar, recibiendo 3 puntos ");
 
-        colorNombre(ModItems.VENDAS.get(), 0xD2691E);
+        colorNombre(ModItems.VENDAS.get(), 0xAA0000);
+        colorNombre(ModItems.BOTIQUIN.get(), 0xAA0000);
+        colorNombre(ModItems.BOTIQUIN.get(), 0xAA0000);
+        colorNombre(ModItems.BOTIQUIN.get(), 0xAA0000);
+
     }
 
     private static final Pattern MARCAS =
             Pattern.compile("§([0-9a-fk-or])|\\{#([0-9a-fA-F]{6})}|\\{([/oln])}");
-
 
     private record Segmento(String texto, Style estilo) { }
 
@@ -148,51 +296,56 @@ public class ModTooltips {
         return segmentos;
     }
 
-    private static List<Component> parsear(String texto) {
+    private static final Pattern PALABRAS = Pattern.compile("(?<= )");
+
+    private static List<Component> repartir(List<Segmento> segmentos, Font font) {
         List<Component> renglones = new ArrayList<>();
 
         MutableComponent renglon = Component.empty();
-        int usados = 0;
+        int ancho = 0;
 
-        for (Segmento segmento : segmentar(texto)) {
-            String resto = segmento.texto();
+        for (Segmento segmento : segmentos) {
+            for (String palabra : PALABRAS.split(segmento.texto())) {
+                int anchoPalabra = font.width(palabra);
 
-            while (!resto.isEmpty()) {
-                int hueco = MAX_CARACTERES - usados;
+                if (ancho > 0 && ancho + anchoPalabra > MAX_ANCHO) {
+                    renglones.add(renglon);
+                    renglon = Component.empty();
+                    ancho = 0;
 
-                if (resto.length() <= hueco) {
-                    renglon.append(Component.literal(resto).withStyle(segmento.estilo()));
-                    usados += resto.length();
-                    break;
+                    palabra = palabra.stripLeading();
+                    if (palabra.isEmpty()) continue;
+                    anchoPalabra = font.width(palabra);
                 }
 
-                int corte = hueco > 0 ? resto.lastIndexOf(' ', hueco) : -1;
-
-                if (corte <= 0) {
-
-                    if (usados > 0) {
-                        renglones.add(renglon);
-                        renglon = Component.empty();
-                        usados = 0;
-                        continue;
-                    }
-                    corte = Math.max(1, hueco);
-                }
-
-                renglon.append(Component.literal(resto.substring(0, corte)).withStyle(segmento.estilo()));
-                renglones.add(renglon);
-
-                renglon = Component.empty();
-                usados = 0;
-                resto = resto.substring(corte).stripLeading();
+                renglon.append(Component.literal(palabra).withStyle(segmento.estilo()));
+                ancho += anchoPalabra;
             }
         }
 
-        if (usados > 0) {
+        if (ancho > 0) {
             renglones.add(renglon);
         }
 
         return renglones;
+    }
+
+    private static List<Component> obtener(Item item) {
+        List<Component> cacheado = LISTO.get(item);
+        if (cacheado != null) return cacheado;
+
+        List<List<Segmento>> escrito = ESCRITO.get(item);
+        if (escrito == null) return null;
+
+        Font font = Minecraft.getInstance().font;
+
+        List<Component> salida = new ArrayList<>();
+        for (List<Segmento> linea : escrito) {
+            salida.addAll(repartir(linea, font));
+        }
+
+        LISTO.put(item, salida);
+        return salida;
     }
 
     @SubscribeEvent
@@ -206,7 +359,7 @@ public class ModTooltips {
                     .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(color))));
         }
 
-        List<Component> lineas = LINEAS.get(item);
+        List<Component> lineas = obtener(item);
         if (lineas == null) return;
 
         tooltip.addAll(Math.min(1, tooltip.size()), lineas);

@@ -45,6 +45,11 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.BATERIAS.get());
                         pOutput.accept(ModItems.GLANDULA_APESTOSA.get());
                         pOutput.accept(ModItems.ESPORAS.get());
+                        pOutput.accept(ModItems.FISHY.get());
+                        pOutput.accept(ModItems.MUESTRA_VIRUS.get());
+                        pOutput.accept(ModItems.DOCUMENTOS_PEZNT.get());
+                        pOutput.accept(ModItems.JERINGA_VACIA.get());
+                        pOutput.accept(ModItems.BIDON_GASOLINA.get());
                         pOutput.accept(ModItems.LATA_ATUN_CERRADA.get());
                         pOutput.accept(ModItems.LATA_POLLO_CERRADA.get());
                         pOutput.accept(ModItems.LATA_CARNE_CERRADA.get());

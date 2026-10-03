@@ -85,13 +85,28 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> BATERIAS = ITEMS.register("baterias",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().stacksTo(16)));
 
     public static final RegistryObject<Item> GLANDULA_APESTOSA = ITEMS.register("glandula_apestosa",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> ESPORAS = ITEMS.register("esporas",
             () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> FISHY = ITEMS.register("fishy",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> MUESTRA_VIRUS = ITEMS.register("muestra_virus",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> DOCUMENTOS_PEZNT = ITEMS.register("documentos_peznt",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> JERINGA_VACIA = ITEMS.register("jeringa_vacia",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> BIDON_GASOLINA = ITEMS.register("bidon_gasolina",
+            () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> SOLICITUD_EMPLEO = ITEMS.register("solitud_empleo",
             () -> new Item(new Item.Properties()));
