@@ -68,8 +68,15 @@ public class BackpackMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return player.getMainHandItem().getItem() instanceof Backpack
-                || player.getOffhandItem().getItem() instanceof Backpack;
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.getItem() instanceof Backpack) return true;
+        }
+
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (stack.getItem() instanceof Backpack) return true;
+        }
+
+        return false;
     }
 
     @Override

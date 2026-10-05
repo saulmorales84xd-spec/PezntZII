@@ -8,6 +8,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,12 +41,16 @@ public class ModTooltips {
     public static final String MORADO_OSCURO = "§5";
     public static final String NEGRO = "§0";
 
-    public static final String KEYS = hex(0xf38c1e);
+    public static final String KEYS = hex(0xae68dc);
     public static final String BYI = hex(0xFB9F5E);
     public static final String MOBS = hex(0x8be761);
     public static final String UBICACIONES = hex(0xf5ec4b);
     public static final String NUM = hex(0x5790ef);
     public static final String ZOM = hex(0x962424);
+    public static final String EFE = hex(0x568553);
+    public static final String PEZ = hex(0xff650a);
+    public static final String RAD = hex(0xedb71d);
+    public static final String ITEMS = hex(0x7372ae);
 
     public static final String BR = "{br}";
 
@@ -73,7 +78,7 @@ public class ModTooltips {
         List<List<Segmento>> escrito = new ArrayList<>();
 
         for (String linea : lineas) {
-            for (String trozo : linea.split("\\{br}|\\R")) {
+            for (String trozo : linea.split("\\{br}|\\R", -1)) {
                 escrito.add(segmentar(limpiar(trozo)));
             }
         }
@@ -89,7 +94,7 @@ public class ModTooltips {
     public static void registrarTodos() {
 
         registrar(ModItems.TELA.get(),
-                BR + "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
                 "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
 
         registrar(ModItems.BACKPACK.get(),
@@ -106,12 +111,12 @@ public class ModTooltips {
 
         registrar(ModItems.LLAVE_CANDADO.get(),
                 "Presiona " + KEYS + "[Click Derecho] " + GRIS + "sobre un " + BR + BYI + "cofre protegido " + GRIS +
-                        "para quitarle la", "protección.", "Solo puedes quitarle la proteccion", "a un " + BYI + "cofre protegido "
+                        "para quitarle la", "protección.", "Solo puedes quitarle la protección", "a un " + BYI + "cofre protegido "
                         + GRIS + "que sea tuyo.");
 
         registrar(ModItems.LLAVE_VEHICULO.get(),
                 "Presiona " + KEYS + "[Click Derecho] " + GRIS + "sobre un" + BR + MOBS + "vehículo " + GRIS + "para encerderlo. ",
-                        "Esta llave se vinculará al vehiculo", "por lo tanto no podrás encender ", "otro " + MOBS + "vehículo " + GRIS + "con la misma llave.");
+                "Esta llave se vinculará al vehiculo", "por lo tanto no podrás encender ", "otro " + MOBS + "vehículo " + GRIS + "con la misma llave.");
 
         registrar(ModItems.PEZNSINITA_BRUTE.get(),
                 "Cocina este material cósmico para", "conseguir nuevos objetos que", "te serviran mas adelante.");
@@ -125,7 +130,7 @@ public class ModTooltips {
 
         registrar(ModItems.TITANIUM_INGOT.get(),
                 "Material radiactivo dificil de", "manipular, puedes consegirlo", "cocinando un " + BYI + "Bloque de" + BR + BYI +
-                "Titanio.", "Ideal para fabricar curas,", "suministros y armaduras.");
+                        "Titanio.", "Ideal para fabricar curas,", "suministros y armaduras.");
 
         registrar(ModItems.CLAVOS.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
@@ -133,8 +138,7 @@ public class ModTooltips {
 
         registrar(ModItems.PLACA_ACERO.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
-                "Puedes conseguirlo cocinando " + BR + BYI + "lingotes de hierro " + GRIS + "en un " + BR + BYI +
-                "alto horno.");
+                "Puedes conseguirlo cocinando " + BR + ITEMS + "lingotes de hierro " + GRIS + "en un " + BR + BYI + "alto horno.");
 
         registrar(ModItems.AGUJA_HILO.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
@@ -142,11 +146,11 @@ public class ModTooltips {
 
         registrar(ModItems.AZUFRE.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
-                        "Puedes conseguirlo en las " + UBICACIONES + "minas " + BR + UBICACIONES + "de azufre.");
+                "Puedes conseguirlo en las " + UBICACIONES + "minas " + BR + UBICACIONES + "de azufre.");
 
         registrar(ModItems.CARBON_NITRIDO.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
-                        "Puedes conseguirlo cocinando" + BR + BYI + "carbón vegetal " + GRIS + "en un ahumador.");
+                "Puedes conseguirlo cocinando" + BR + ITEMS + "carbón vegetal " + GRIS + "en un ahumador.");
 
         registrar(ModItems.LATA_VACIA.get(),
                 "Cocina este objeto para conseguir", "nuevos recursos.");
@@ -165,12 +169,11 @@ public class ModTooltips {
 
         registrar(ModItems.CHATARRA_REFORZADA.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
-                        "Se obtiene al procesar " + NUM + "9 " + "partes", "de chatarra en un " + BYI + "Depósito de" + BR + BYI +
-                "Chatarra.");
+                "Se obtiene al procesar " + NUM + "9 " + "partes", "de chatarra en un " + BYI + "Depósito de" + BR + BYI + "Chatarra.");
 
         registrar(ModItems.CHATARRA_ELECTRONICA.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
-                        "Este objeto solo podras conseguirlo ", "en los " + BYI + "Drops.");
+                "Este objeto solo podras conseguirlo ", "en los " + BYI + "Drops.");
 
         registrar(ModItems.CABLES.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
@@ -181,12 +184,12 @@ public class ModTooltips {
                 "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
 
         registrar(ModItems.BATERIAS.get(),
-                "Coloca este objeto junto a una " + BR + BYI + "linterna" + GRIS + "para recargarla. ", "Esta la recargara un " + NUM + "20 %.");
+                "Coloca este objeto junto a una " + BR + ITEMS + "linterna " + GRIS + "para recargarla. ", "Esta la recargara un " + NUM + "20 %.");
 
         registrar(ModItems.GLANDULA_APESTOSA.get(),
                 "Combina este material con otros ", "recueros para obtener nuevos ", "objetos.",
-                         "Pudes conseguir este material ", "al matar a un " + ZOM + "Infectado " + GRIS + "o a un" + BR + ZOM + "Fundidor.",
-                        "Ideal para fabricar curas, ", "herramientas y armaduras.");
+                "Pudes conseguir este material ", "al matar a un " + ZOM + "Infectado " + GRIS + "o a un" + BR + ZOM + "Fundidor.",
+                "Ideal para fabricar curas, ", "herramientas y armaduras.");
 
         registrar(ModItems.ESPORAS.get(),
                 "Combina este material con otros ", "recueros para obtener nuevos ", "objetos.",
@@ -195,57 +198,301 @@ public class ModTooltips {
 
         registrar(ModItems.FISHY.get(),
                 "¿Será esto lo que necesitamos?. Fishy es ", "el pescado del que hablaban en las noticias,", "el causante de todo este desastre.",
-                        "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
+                "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
 
         registrar(ModItems.MUESTRA_VIRUS.get(),
                 "Despues de todo esto, los mejores médicos", "intentaron fabricar una cura pero fallaron,", "al final solo quedo una unica muestra",
-                        "del virus.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
+                "del virus.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
 
         registrar(ModItems.DOCUMENTOS_PEZNT.get(),
                 "Dentro de un laboratorio reforzado por las", "mejores fuerzas del país, quedo resguardado", "el unico documento con la formula capaz",
-                        "de resolver todo esto.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura." );
+                "de resolver todo esto.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura." );
 
         registrar(ModItems.JERINGA_VACIA.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
-                        "Ideal para fabricar jeringas de", "gran apoyo.");
+                "Ideal para fabricar jeringas de", "gran apoyo.");
 
         registrar(ModItems.BIDON_GASOLINA.get(),
-                "Este contenedor te servira para ", "almacenar combustible.", "Presiona " + KEYS + "[Click Derecho] " + "sobre",
-                        "una " + BYI + "bomba de gasolina " + GRIS + "para llenar ", "el contener y rellenar los " + MOBS + "vehÍculos" + BR + GRIS + "de gasolina.");
+                "Este contenedor te servira para ", "almacenar combustible.", "Presiona " + KEYS + "[Click Derecho] " + GRIS +"sobre",
+                "una " + BYI + "bomba de gasolina " + GRIS + "para llenar ", "el contener y rellenar los " + MOBS + "vehÍculos" + BR + GRIS + "de gasolina.");
 
         registrar(ModItems.LATA_ATUN_CERRADA.get(),
-                "Coloca este objeto junto a un " + BR + BYI + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto");
+                "Coloca este objeto junto a un " + BR + ITEMS + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto.");
 
         registrar(ModItems.LATA_POLLO_CERRADA.get(),
-                "Coloca este objeto junto a un " + BR + BYI + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto");
+                "Coloca este objeto junto a un " + BR + ITEMS + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto.");
 
         registrar(ModItems.LATA_CARNE_CERRADA.get(),
-                "Coloca este objeto junto a un " + BR + BYI + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto");
+                "Coloca este objeto junto a un " + BR + ITEMS + "abrelatas " + GRIS + "para abrir esta lata. ", "Al abrirla podras consumir este", "objeto.");
 
         for (Item consumible : List.of(
                 ModItems.LATA_ATUN.get(), ModItems.LATA_POLLO.get(), ModItems.LATA_CARNE.get(),
                 ModItems.PAQUETE_MRE.get(), ModItems.NACHOS.get(), ModItems.CEREALES.get(),
                 ModItems.BARRA_CHOCOLATE.get(), ModItems.BARRA_GRANOLA.get(),
                 ModItems.FRUTO_ESTIMULANTE.get())) {
-            registrar(consumible, GRIS + "Objeto consumible");
+            registrar(consumible, GRIS + "Objeto consumible.");
         }
 
-        registrar(ModItems.MUESTRA_VIRUS.get(),
-                "Despues de todo esto, los mejores médicos", "intentaron fabricar una cura pero fallaron,", "al final solo quedo una unica muestra",
-                "del virus.", "Lleva este objeto con bien al " + UBICACIONES + "muelle " + GRIS + "para", "poder fabricar una cura.");
-
         registrar(ModItems.VENDAS.get(),
-                "Cura " + ROJO + "6 de vida principal " + GRIS + "y" + NUM +
-                        "1 Punto aleatorio en una zona del cuerpo si",
-                        "se aplica con [Click Derecho]",
-                        "Si ingresas en el menú de Salud con la tecla",
-                        "[H] podras elegir una parte del cuerpo que",
-                        "quieras curar, recibiendo 3 puntos ");
+                "Cura " + ROJO + "6 de Vida Principal " + GRIS + "y " + NUM + "2 Puntos " + GRIS + "aleatorios", "en una zona del cuerpo si se aplica",
+                "con " + KEYS + "[Click Derecho].",
+                "Si ingresas en el menú de Salud con la tecla" + BR + KEYS + "[H] " + GRIS + "podras elegir una parte del cuerpo que",
+                "quieras curar, recibiendo " + NUM + "4 Puntos " + GRIS + "en la zona ", "seleccionada.");
 
+        registrar(ModItems.BOTIQUIN.get(),
+                "Cura " + ROJO + "toda la Vida Principal " + GRIS + "mas aparte ", " todas las partes del cuerpo si se", "aplica con "
+                        + KEYS + "[Click Derecho].");
+
+        registrar(ModItems.ADRENALINA.get(),
+                "Esta jeringa otorga " + AZUL + "Fuerza I " + GRIS + "y " + BR + AZUL + "Velocidad I." + BR + BR + ROJO_OSCURO + "Importante: " + GRIS +
+                "Puedes aplicarsela a " + GRIS + "otro " + BR + MOBS + "jugador.");
+
+        registrar(ModItems.MORFINA.get(),
+                "Al aplicarte esta jeringa te curaras", "un " + ROJO + "20% de Vida Principal " + GRIS + "y recuperaras " + BR + NUM +
+                "2 Puntos " + GRIS + "en todas las partes del cuerpo. " + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
+
+        registrar(ModItems.COAGULANTE.get(),
+                "Al aplicarte esta jeringa te quitaras ", "todo los " + EFE + "efectos negativos " + GRIS + "que tengas,",
+                "menos la " + UBICACIONES + "Radiación." + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
+
+        registrar(ModItems.QUELANTE.get(),
+                "Al aplicarte esta jeringa te quitaras ", "la " + RAD + "radiación " + GRIS + "por completo."
+                        + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
+
+        registrar(ModItems.CURA.get(),
+                "Al aplicarte esta jeringa te curara ", "del " + ZOM + "Virus Peznt." + BR + GRIS + "Sal del pueblo sano y salgo para poder ",
+                        "recrear la cura. " + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
+
+        registrar(ModItems.LANTERN.get(),
+                "Este objeto te permite iluminar zonas ", "oscuras presionando " + KEYS + "[Click Derecho]." + BR + BR + GRIS +
+                        "Utiliza " + ITEMS + "baterías " + GRIS + "para recargar la pila ", "de este objeto." + BR);
+
+        registrar(ModItems.ABRELATAS.get(),
+                "Este objeto te permite abrir alimentos ", "enlatados combinalo con " + ITEMS + "latas de comida " + BR + GRIS + "para abrirlas.");
+
+        registrar(ModItems.CUCHILLO.get(),
+                "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
+
+        registrar(ModItems.BATE.get(),
+                "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
+
+        registrar(ModItems.LUCILLE.get(),
+                "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
+
+        registrar(ModItems.PALANCA.get(),
+                "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.",
+                        "Permite romper " + BYI + "barriles y chatarra " + BR + GRIS + "para obtener su contenido.");
+
+        registrar(ModItems.GUITARRA.get(),
+                "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
+
+        registrar(ModItems.KATANA.get(),
+                "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
+
+        registrar(ModItems.MOTOSIERRA.get(),
+                "Arma letal a distancia contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
+
+        registrar(ModItems.LANZALLAMAS.get(),
+                "Arma letal a distancia contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
+
+        registrar(ModItems.PEZNSINITA_PICKAXE.get(),
+                "Herramienta reforzada de " + PEZ + "peznsinita " + BR + GRIS + "con mayor eficiencia y durabilidad.", "Ideal para recoletar recursos y ",
+                        "suministros básicos.");
+
+        registrar(ModItems.PEZNSINITA_AXE.get(),
+                "Herramienta reforzada de " + PEZ + "peznsinita " + BR + GRIS + "con mayor eficiencia y durabilidad.", "Ideal para recoletar recursos y ",
+                "suministros básicos.");
+
+        registrar(ModItems.PEZNSINITA_SHOVEL.get(),
+                "Herramienta reforzada de " + PEZ + "peznsinita " + BR + GRIS + "con mayor eficiencia y durabilidad.", "Ideal para recoletar recursos y ",
+                "suministros básicos.");
+
+        registrar(ModItems.PEZNSINITA_HOE.get(),
+                "Herramienta reforzada de " + PEZ + "peznsinita " + BR + GRIS + "con mayor eficiencia y durabilidad.", "Ideal para recoletar recursos y ",
+                "suministros básicos.");
+
+        registrar(ModItems.PEZNSINITA_HOE.get(),
+                "Herramienta reforzada de " + PEZ + "peznsinita " + BR + GRIS + "con mayor eficiencia y durabilidad.", "Ideal para recoletar recursos y ",
+                "suministros básicos.");
+
+        registrar(ModItems.HELMET_ARMADURA_TACTICA.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.CHESTPLATE_ARMADURA_TACTICA.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.LEGGINS_ARMADURA_TACTICA.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.BOOTS_ARMADURA_TACTICA.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA.get(),
+                "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA.get(),
+                "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA.get(),
+                "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA.get(),
+                "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.HELMET_ARMADURA_CONTENCION.get(),
+                "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.CHESTPLATE_ARMADURA_CONTENCION.get(),
+                "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.LEGGINS_ARMADURA_CONTENCION.get(),
+                "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.BOOTS_ARMADURA_CONTENCION.get(),
+                "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.HELMET_ARMADURA_BLINDADA.get(),
+                "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.CHESTPLATE_ARMADURA_BLINDADA.get(),
+                "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.LEGGINS_ARMADURA_BLINDADA.get(),
+                "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.BOOTS_ARMADURA_BLINDADA.get(),
+                "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.HELMET_TRAJE_BIOSEGURIDAD.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
+                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
+                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
+                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get(),
+                "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
+                        "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
+                "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+
+        registrar(Items.STRING,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
+
+        registrar(Items.LEATHER,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
+
+        registrar(Items.GUNPOWDER,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
+
+        registrar(Items.PAPER,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
+
+        registrar(Items.CHARCOAL,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.");
+
+        registrar(Items.IRON_NUGGET,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(Items.GOLD_NUGGET,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(Items.IRON_INGOT,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(Items.GOLD_INGOT,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(Items.COPPER_INGOT,
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        colorNombre(ModItems.BACKPACK.get(), 0xffff55);
+        colorNombre(ModItems.PEZNSINITA_BRUTE.get(), 0xff7625);
+        colorNombre(ModItems.PEZNSINITA_INGOT.get(), 0xff7625);
+        colorNombre(ModItems.TITANIUM_BRUTE.get(), 0x7372ae);
+        colorNombre(ModItems.TITANIUM_INGOT.get(), 0x7372ae);
+        colorNombre(ModItems.AGUJA_HILO.get(), 0xffff55);
+        colorNombre(ModItems.AZUFRE.get(), 0xefd63f);
+        colorNombre(ModItems.GLANDULA_APESTOSA.get(), 0x568553);
+        colorNombre(ModItems.ESPORAS.get(), 0x568553);
+        colorNombre(ModItems.FISHY.get(), 0xee57c33);
+        colorNombre(ModItems.MUESTRA_VIRUS.get(), 0x962424);
+        colorNombre(ModItems.DOCUMENTOS_PEZNT.get(), 0xe57c33);
         colorNombre(ModItems.VENDAS.get(), 0xAA0000);
         colorNombre(ModItems.BOTIQUIN.get(), 0xAA0000);
-        colorNombre(ModItems.BOTIQUIN.get(), 0xAA0000);
-        colorNombre(ModItems.BOTIQUIN.get(), 0xAA0000);
+        colorNombre(ModItems.ADRENALINA.get(), 0x8a203d);
+        colorNombre(ModItems.MORFINA.get(), 0x26528d);
+        colorNombre(ModItems.COAGULANTE .get(), 0x59a353);
+        colorNombre(ModItems.QUELANTE .get(), 0xc4c864);
+        colorNombre(ModItems.CURA .get(), 0xeda173);
+        colorNombre(ModItems.PEZNSINITA_PICKAXE.get(), 0xff7625);
+        colorNombre(ModItems.PEZNSINITA_AXE.get(), 0xff7625);
+        colorNombre(ModItems.PEZNSINITA_SHOVEL.get(), 0xff7625);
+        colorNombre(ModItems.PEZNSINITA_HOE.get(), 0xff7625);
+        colorNombre(ModItems.HELMET_ARMADURA_TACTICA .get(), 0xac9d91);
+        colorNombre(ModItems.CHESTPLATE_ARMADURA_TACTICA .get(), 0xac9d91);
+        colorNombre(ModItems.LEGGINS_ARMADURA_TACTICA .get(), 0xac9d91);
+        colorNombre(ModItems.BOOTS_ARMADURA_TACTICA .get(), 0xac9d91);
+        colorNombre(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA .get(), 0x747c7f);
+        colorNombre(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA .get(), 0x747c7f);
+        colorNombre(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA .get(), 0x747c7f);
+        colorNombre(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA .get(), 0x747c7f);
+        colorNombre(ModItems.HELMET_ARMADURA_CONTENCION .get(), 0x59709a);
+        colorNombre(ModItems.CHESTPLATE_ARMADURA_CONTENCION .get(), 0x59709a);
+        colorNombre(ModItems.LEGGINS_ARMADURA_CONTENCION .get(), 0x59709a);
+        colorNombre(ModItems.BOOTS_ARMADURA_CONTENCION .get(), 0x59709a);
+        colorNombre(ModItems.HELMET_ARMADURA_BLINDADA .get(), 0xff7625);
+        colorNombre(ModItems.CHESTPLATE_ARMADURA_BLINDADA .get(), 0xff7625);
+        colorNombre(ModItems.LEGGINS_ARMADURA_BLINDADA .get(), 0xff7625);
+        colorNombre(ModItems.BOOTS_ARMADURA_BLINDADA .get(), 0xff7625);
+        colorNombre(ModItems.HELMET_TRAJE_BIOSEGURIDAD .get(), 0xcaa226);
+        colorNombre(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD .get(), 0xcaa226);
+        colorNombre(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD .get(), 0xcaa226);
+        colorNombre(ModItems.BOOTS_TRAJE_BIOSEGURIDAD .get(), 0xcaa226);
 
     }
 
@@ -341,6 +588,12 @@ public class ModTooltips {
 
         List<Component> salida = new ArrayList<>();
         for (List<Segmento> linea : escrito) {
+            if (linea.isEmpty()) {
+
+                salida.add(Component.empty());
+                continue;
+            }
+
             salida.addAll(repartir(linea, font));
         }
 

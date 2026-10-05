@@ -24,6 +24,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.saullmc.pezntz.item.ModItems;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import java.util.UUID;
+import net.saullmc.pezntz.item.custom.LlaveVehiculo;
 
 public class Quad extends PathfinderMob {
 
@@ -45,18 +49,23 @@ public class Quad extends PathfinderMob {
      */
     private static final float GASTO_POR_BLOQUE = 2.5F;
 
+    /** Tope de caida, el mismo que usa vanilla. Evita que acelere sin fin al caer. */
+    private static final double VELOCIDAD_CAIDA_MAXIMA = -3.92D;
+
     /** Lo que repone un item de combustible. */
     public static final float RECARGA_POR_ITEM = 250.0F;
 
+    private static final EntityDataAccessor<Boolean> ENCENDIDO =
+            SynchedEntityData.defineId(Quad.class, EntityDataSerializers.BOOLEAN);
+
     private float currentSpeed;
 
-    /** Posicion del tick anterior, para medir cuanto avanzo. */
     private double ultimaX;
     private double ultimaZ;
 
     public Quad(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.setMaxUpStep(1.0F);
+        this.setMaxUpStep(1.1F);
     }
 
     @Override
@@ -66,6 +75,7 @@ public class Quad extends PathfinderMob {
         this.entityData.define(PASSENGER_ID, -1);
         this.entityData.define(WHEEL_ROTATION, 0.0F);
         this.entityData.define(FUEL, MAX_FUEL);
+        this.entityData.define(ENCENDIDO, false);
     }
 
     public float getFuel() {
@@ -76,6 +86,14 @@ public class Quad extends PathfinderMob {
         this.entityData.set(FUEL, Mth.clamp(cantidad, 0.0F, MAX_FUEL));
     }
 
+    public boolean estaEncendido() {
+        return this.entityData.get(ENCENDIDO);
+    }
+
+    public void setEncendido(boolean encendido) {
+        this.entityData.set(ENCENDIDO, encendido);
+    }
+
     public boolean tieneGasolina() {
         return this.getFuel() > 0.0F;
     }
@@ -84,12 +102,14 @@ public class Quad extends PathfinderMob {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putFloat("Fuel", this.getFuel());
+        tag.putBoolean("Encendido", this.estaEncendido());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setFuel(tag.contains("Fuel") ? tag.getFloat("Fuel") : MAX_FUEL);
+        this.setEncendido(tag.getBoolean("Encendido"));
     }
 
     @Override
@@ -103,7 +123,6 @@ public class Quad extends PathfinderMob {
             double dz = this.getZ() - this.ultimaZ;
             double avance = Math.sqrt(dx * dx + dz * dz);
 
-            // El umbral filtra el temblor de la sincronizacion cuando esta parado.
             if (avance > 0.02D) {
                 this.setFuel(this.getFuel() - (float) (avance * GASTO_POR_BLOQUE));
             }
@@ -111,6 +130,40 @@ public class Quad extends PathfinderMob {
 
         this.ultimaX = this.getX();
         this.ultimaZ = this.getZ();
+    }
+
+    private void usarLlave(Player jugador, ItemStack llave) {
+        UUID mio = this.getUUID();
+
+        if (!LlaveVehiculo.estaEmparejada(llave)) {
+            LlaveVehiculo.emparejar(llave, mio);
+            this.setEncendido(true);
+
+            jugador.displayClientMessage(
+                    Component.literal("Llave emparejada con este vehiculo").withStyle(ChatFormatting.GOLD), true);
+            this.level().playSound(null, this.blockPosition(),
+                    SoundEvents.IRON_DOOR_OPEN, SoundSource.NEUTRAL, 0.7F, 1.4F);
+            return;
+        }
+
+        if (!LlaveVehiculo.sirvePara(llave, mio)) {
+            jugador.displayClientMessage(
+                    Component.literal("Esta llave no es de este vehiculo").withStyle(ChatFormatting.RED), true);
+            this.level().playSound(null, this.blockPosition(),
+                    SoundEvents.IRON_DOOR_CLOSE, SoundSource.NEUTRAL, 0.5F, 0.8F);
+            return;
+        }
+
+        boolean encender = !this.estaEncendido();
+        this.setEncendido(encender);
+
+        jugador.displayClientMessage(
+                Component.literal(encender ? "Motor encendido" : "Motor apagado")
+                        .withStyle(encender ? ChatFormatting.GREEN : ChatFormatting.GRAY), true);
+
+        this.level().playSound(null, this.blockPosition(),
+                encender ? SoundEvents.DISPENSER_LAUNCH : SoundEvents.DISPENSER_FAIL,
+                SoundSource.NEUTRAL, 0.8F, encender ? 1.2F : 0.9F);
     }
 
     @Override
@@ -147,18 +200,19 @@ public class Quad extends PathfinderMob {
         return false;
     }
 
-    /**
-     * Click derecho sobre el quad.
-     *
-     * Primero se mira si traes combustible: asi puedes repostar sin subirte encima. Solo
-     * si no, se pasa a montar.
-     */
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
 
         ItemStack enMano = pPlayer.getItemInHand(pHand);
 
-        if (enMano.is(ModItems.BOTELLA_ALCOHOL.get()) && this.getFuel() < MAX_FUEL) {
+        if (enMano.getItem() instanceof LlaveVehiculo) {
+            if (!this.level().isClientSide()) {
+                usarLlave(pPlayer, enMano);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide());
+        }
+
+        if (enMano.is(ModItems.BIDON_GASOLINA.get()) && this.getFuel() < MAX_FUEL) {
             if (!this.level().isClientSide()) {
                 this.setFuel(this.getFuel() + RECARGA_POR_ITEM);
 
@@ -287,8 +341,11 @@ public class Quad extends PathfinderMob {
             float steer = driver.xxa;
             float throttle = driver.zza;
 
-            // Sin gasolina el motor no responde. Se deja frenar hasta pararse en vez de
-            // clavarlo en seco, que se siente como chocar contra una pared invisible.
+            if (!this.estaEncendido()) {
+                throttle = 0.0F;
+                this.currentSpeed *= 0.90F;
+            }
+
             if (!this.tieneGasolina()) {
                 throttle = 0.0F;
                 this.currentSpeed *= 0.90F;
@@ -312,7 +369,7 @@ public class Quad extends PathfinderMob {
 
             this.entityData.set(WHEEL_ROTATION, this.entityData.get(WHEEL_ROTATION) + this.currentSpeed);
 
-            double motionY = this.onGround() ? 0.0D : this.getDeltaMovement().y - 0.08D;
+            double motionY = Math.max(this.getDeltaMovement().y - 0.08D, VELOCIDAD_CAIDA_MAXIMA);
 
             this.setDeltaMovement(forward.x, motionY, forward.z);
 

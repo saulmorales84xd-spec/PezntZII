@@ -9,6 +9,7 @@ import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.item.custom.*;
 import net.saullmc.pezntz.sound.ModSounds;
 import net.saullmc.pezntz.item.custom.ArmaduraModItem;
+import net.saullmc.pezntz.item.custom.LlaveVehiculo;
 
 public class ModItems {
 
@@ -31,7 +32,7 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> LLAVE_VEHICULO = ITEMS.register("llave_vehiculo",
-            () -> new Item(new Item.Properties()));
+            () -> new LlaveVehiculo(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> PEZNSINITA_BRUTE = ITEMS.register("peznsinita_brute",
             () -> new Item(new Item.Properties()));

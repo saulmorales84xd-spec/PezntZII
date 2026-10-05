@@ -23,6 +23,11 @@ public class NetworkHandler {
 
         INSTANCE = net;
 
+        net.messageBuilder(OpenBackpackPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(OpenBackpackPacket::new)
+                .encoder(OpenBackpackPacket::toBytes)
+                .consumerMainThread(OpenBackpackPacket::handle).add();
+
         net.messageBuilder(DamageNumberPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(DamageNumberPacket::new)
                 .encoder(DamageNumberPacket::toBytes)

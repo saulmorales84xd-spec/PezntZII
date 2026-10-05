@@ -11,6 +11,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.client.screen.HealingScreen;
 import org.lwjgl.glfw.GLFW;
+import net.saullmc.pezntz.network.NetworkHandler;
+import net.saullmc.pezntz.network.OpenBackpackPacket;
 
 @Mod.EventBusSubscriber(modid = "pezntz", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class KeyBindingHandler {
@@ -23,19 +25,36 @@ public class KeyBindingHandler {
             "category.pezntz.keys"
     );
 
+    public static final KeyMapping BACKPACK_KEY = new KeyMapping(
+            "key.pezntz.backpack",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_B,
+            "category.pezntz.keys"
+    );
+
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(MEDICAL_GUI_KEY);
+        event.register(BACKPACK_KEY);
     }
 
     @Mod.EventBusSubscriber(modid = "pezntz", bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
     public static class KeyEventListener {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.Key event) {
+            Minecraft mc = Minecraft.getInstance();
+
             if (MEDICAL_GUI_KEY.consumeClick()) {
-                Minecraft mc = Minecraft.getInstance();
                 if (mc.player != null && mc.screen == null) {
                     mc.setScreen(new HealingScreen());
+                }
+            }
+
+            if (BACKPACK_KEY.consumeClick()) {
+                if (mc.player != null && mc.screen == null
+                        && OpenBackpackPacket.llevaMochila(mc.player)) {
+                    NetworkHandler.sendToServer(new OpenBackpackPacket());
                 }
             }
         }

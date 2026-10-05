@@ -40,15 +40,20 @@ public class DamageNumbers {
     private static final List<Numero> NUMEROS = new ArrayList<>();
 
     private static class Numero {
-        final int entityId;
+        
+        final double x;
+        final double y;
+        final double z;
         final String texto;
         final int color;
         final float lado;
 
         final long nacimiento;
 
-        Numero(int entityId, String texto, int color, float lado, long nacimiento) {
-            this.entityId = entityId;
+        Numero(double x, double y, double z, String texto, int color, float lado, long nacimiento) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
             this.texto = texto;
             this.color = color;
             this.lado = lado;
@@ -57,14 +62,22 @@ public class DamageNumbers {
     }
 
     public static void agregar(int entityId, float cantidad, boolean curacion) {
-        if (Minecraft.getInstance().level == null) return;
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return;
+
+        Entity entidad = mc.level.getEntity(entityId);
+        if (entidad == null) return;
 
         String texto = (curacion ? "+" : "-") + formatear(cantidad);
 
         float lado = (NUMEROS.size() % 2 == 0 ? 1.0F : -1.0F) * DESPLAZAMIENTO_LATERAL;
 
-        NUMEROS.add(new Numero(entityId, texto, curacion ? COLOR_CURACION : COLOR_DANIO, lado,
-                Minecraft.getInstance().level.getGameTime()));
+        NUMEROS.add(new Numero(
+                entidad.getX(),
+                entidad.getY() + entidad.getBbHeight() + ALTURA_EXTRA,
+                entidad.getZ(),
+                texto, curacion ? COLOR_CURACION : COLOR_DANIO, lado,
+                mc.level.getGameTime()));
 
         while (NUMEROS.size() > MAXIMO) {
             NUMEROS.remove(0);
@@ -102,20 +115,19 @@ public class DamageNumbers {
         NUMEROS.removeIf(n -> ahora - n.nacimiento > DURACION);
 
         for (Numero numero : NUMEROS) {
-            Entity entidad = mc.level.getEntity(numero.entityId);
-            if (entidad == null) continue;
-
-            double distancia = entidad.position().distanceTo(origen);
-            if (distancia > DISTANCIA_MAXIMA) continue;
+            double dx = numero.x - origen.x;
+            double dy = numero.y - origen.y;
+            double dz = numero.z - origen.z;
+            if (Math.sqrt(dx * dx + dy * dy + dz * dz) > DISTANCIA_MAXIMA) continue;
 
             float avance = ((ahora - numero.nacimiento) + parcial) / (float) DURACION;
 
             float alpha = avance < 0.66F ? 1.0F : 1.0F - (avance - 0.66F) / 0.34F;
             if (alpha <= 0.02F) continue;
 
-            double x = entidad.getX() - origen.x;
-            double y = entidad.getY() + entidad.getBbHeight() + ALTURA_EXTRA + SUBIDA * avance - origen.y;
-            double z = entidad.getZ() - origen.z;
+            double x = numero.x - origen.x;
+            double y = numero.y + SUBIDA * avance - origen.y;
+            double z = numero.z - origen.z;
 
             poseStack.pushPose();
             poseStack.translate(x, y, z);
@@ -132,7 +144,7 @@ public class DamageNumbers {
 
             Matrix4f matriz = poseStack.last().pose();
 
-            font.drawInBatch(numero.texto, -ancho / 2.0F, 0.0F, color, true,
+            font.drawInBatch(numero.texto, -ancho / 2.0F, 0.0F, color, false,
                     matriz, buffers, Font.DisplayMode.NORMAL, 0, 15728880);
 
             poseStack.popPose();
