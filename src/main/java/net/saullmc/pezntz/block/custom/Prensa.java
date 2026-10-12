@@ -21,6 +21,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.saullmc.pezntz.block.entity.ModBlockEntities;
+import net.saullmc.pezntz.block.entity.PrensaEntity;
 
 import javax.annotation.Nullable;
 
@@ -85,13 +87,13 @@ public class Prensa extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ProcesadorChatarraBlockEntity(pos, state);
+        return new PrensaEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.PROCESADOR_CHATARRA.get(),
+        return createTickerHelper(type, ModBlockEntities.PRENSA.get(),
                 (nivel, posicion, estado, be) -> be.tick());
     }
 
@@ -101,7 +103,7 @@ public class Prensa extends BaseEntityBlock {
         if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
 
         BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof ProcesadorChatarraBlockEntity proc)) return InteractionResult.PASS;
+        if (!(be instanceof PrensaEntity proc)) return InteractionResult.PASS;
 
         if (level.isClientSide) {
             if (proc.estaLleno() && !proc.isProcesando()) {
@@ -118,7 +120,7 @@ public class Prensa extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock())) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof ProcesadorChatarraBlockEntity proc) {
+            if (be instanceof PrensaEntity proc) {
                 proc.soltarContenido();
             }
         }

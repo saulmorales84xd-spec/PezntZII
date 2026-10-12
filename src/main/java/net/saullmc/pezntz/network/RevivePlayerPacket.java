@@ -35,6 +35,11 @@ public class RevivePlayerPacket {
                                     cap.setHead(2.0f); cap.setBody(2.0f); cap.setArms(2.0f); cap.setLegs(2.0f);
                                     target.setHealth(6.0f);
                                     target.setPose(Pose.STANDING);
+
+                                    if (target.getPersistentData().getBoolean("pezntzGlowAbatido")) {
+                                        target.setGlowingTag(false);
+                                        target.getPersistentData().putBoolean("pezntzGlowAbatido", false);
+                                    }
                                 }
                                 NetworkHandler.sendToClients(new SyncBodyHealthPacket(target.getId(), cap), target);
                             }

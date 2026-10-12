@@ -16,6 +16,20 @@ public class BodyPartsOverlay {
 
     private static final ResourceLocation CUSTOM_ICON = new ResourceLocation("pezntz", "textures/gui/cuerpo.png");
 
+
+    public static final String TEXTO_ABATIDO = "te han abatido, necesitas atencion medica de un jugador";
+
+    public static final int ABATIDO_OFFSET_X = 0;
+    public static final int ABATIDO_OFFSET_Y = 30;
+
+    public static final float ABATIDO_ESCALA = 1.2f;
+
+    public static final int ABATIDO_COLOR = 0xFFFF4444;
+
+    public static final boolean ABATIDO_SOMBRA = true;
+
+    public static final float ABATIDO_LATIDO = 0.06f;
+
     public static final IGuiOverlay HUD_BODY_PARTS = (ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) -> {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.options.hideGui || mc.player.isSpectator()) return;
@@ -27,6 +41,8 @@ public class BodyPartsOverlay {
             if (myCap.isDowned()) {
                 if (myCap.getReviveProgress() > 0) {
                     drawReviveBar(guiGraphics, screenWidth, screenHeight, myCap.getReviveProgress());
+                } else {
+                    drawMensajeAbatido(guiGraphics, font, screenWidth, screenHeight);
                 }
 
                 int seconds = myCap.getDownedTimer() / 20;
@@ -101,6 +117,25 @@ public class BodyPartsOverlay {
             }
         });
     };
+
+    private static void drawMensajeAbatido(GuiGraphics g, Font font, int screenWidth, int screenHeight) {
+        float escala = ABATIDO_ESCALA;
+        if (ABATIDO_LATIDO > 0.0f) {
+            escala += (float) Math.sin(System.currentTimeMillis() / 220.0D) * ABATIDO_LATIDO;
+        }
+
+        int ancho = font.width(TEXTO_ABATIDO);
+
+        g.pose().pushPose();
+        g.pose().scale(escala, escala, 1.0f);
+
+        int x = (int) (((screenWidth / 2.0f) + ABATIDO_OFFSET_X) / escala - ancho / 2.0f);
+        int y = (int) (((screenHeight / 2.0f) + ABATIDO_OFFSET_Y) / escala);
+
+        g.drawString(font, TEXTO_ABATIDO, x, y, ABATIDO_COLOR, ABATIDO_SOMBRA);
+
+        g.pose().popPose();
+    }
 
     private static void drawReviveBar(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int progressTicks) {
         int barY = screenHeight - 90;

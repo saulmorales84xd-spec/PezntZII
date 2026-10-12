@@ -11,6 +11,54 @@ uniform mat4  uMVP;
 
 uniform int   uShadowSteps;
 uniform float uShadowBias;
+
+// ===================== OPTIMIZACION: PASOS SEGUN LA DISTANCIA =====================
+//
+// POR QUE SE CAIAN LOS FPS
+//
+// Los dos bucles del shader daban SIEMPRE el mismo numero de pasos, da igual que el rayo
+// midiera 1 bloque o 22. Y como trazarSombra() se llamaba DENTRO del recorrido de niebla,
+// la cuenta por pixel y por linterna era:
+//
+//      1 sombra de superficie (20 muestras)
+//    + 24 pasos de niebla x 20 muestras de sombra  = 480 muestras
+//    = ~500 lecturas de la textura de profundidad POR PIXEL Y POR LINTERNA
+//
+// Con 4 linternas eso son 2000 lecturas por pixel. En 1080p, 4 mil millones por frame.
+//
+// Y lo peor: apuntar a un jugador pegado a la cara costaba EXACTAMENTE lo mismo que
+// apuntar al horizonte, solo que llenando toda la pantalla de pixeles caros. De ahi que
+// bajaran los FPS justo al apuntar a alguien.
+//
+// QUE SE HACE AHORA
+//
+// El numero de pasos sale de la LONGITUD REAL del rayo, manteniendo la separacion entre
+// muestras constante. Un rayo corto usa pocos pasos y uno largo muchos, pero la densidad
+// de muestreo es la misma, asi que la imagen no cambia: solo se dejan de gastar muestras
+// donde no hacian falta.
+// =================================================================================
+
+/** Muestras de sombra por bloque de distancia. Mas alto = sombras mas finas y mas caras. */
+uniform float uShadowStepsPerBlock;
+
+/**
+ * Tope de muestras para las sombras de DENTRO de la niebla.
+ *
+ * La niebla es de frecuencia muy baja y encima lleva ruido y jitter encima, asi que no
+ * necesita ni de lejos la precision de la sombra de una superficie. Este es el recorte
+ * gordo: pasar de 20 a 6 aqui deja el recorrido de niebla en la tercera parte.
+ */
+uniform int   uShadowStepsVolumetric;
+
+/** Pasos de niebla por bloque de recorrido. */
+uniform float uVolumetricStepsPerBlock;
+
+/**
+ * Octavas de ruido de la niebla. 2 es lo de siempre, 1 cuesta la mitad.
+ * Es el unico ajuste de aqui que cambia algo a la vista, y muy poquito: el grano queda
+ * un pelin mas liso.
+ */
+uniform int   uNoiseOctaves;
 uniform vec2  uScreenSize;
 
 uniform int   uLightCount;
@@ -138,12 +186,16 @@ vec3 reconstructWorldPos(vec2 uv, float rawDepth) {
  * no proyecta sombra. En una linterna en primera persona casi todo lo que iluminas lo estas
  * mirando, asi que se nota poco.
  */
-float trazarSombra(vec3 worldPos, vec3 lightOrigin) {
-    int pasos = max(uShadowSteps, 1);
-
+float trazarSombra(vec3 worldPos, vec3 lightOrigin, int pasosMax) {
     vec3  haciaLuz = lightOrigin - worldPos;
     float largo    = length(haciaLuz);
     if (largo < 0.05) return 1.0;
+
+    // Los pasos salen de la distancia, con la separacion entre muestras constante. Antes
+    // un rayo de 1 bloque gastaba las mismas 20 muestras que uno de 22: estaba
+    // sobremuestreado 20 veces para nada.
+    int pasos = int(largo * uShadowStepsPerBlock + 1.0);
+    pasos = clamp(pasos, 2, max(pasosMax, 2));
 
     vec3 dir = haciaLuz / largo;
 
@@ -202,7 +254,7 @@ void evaluateSurfaceLight(int i, vec3 worldPos, out float lit) {
 
     // Y lo ultimo: comprobar que de verdad haya linea de vision hasta el foco.
     if (lit > 0.0) {
-        lit *= trazarSombra(worldPos, getLightOrigin(i));
+        lit *= trazarSombra(worldPos, getLightOrigin(i), uShadowSteps);
     }
 }
 
@@ -274,7 +326,11 @@ vec3 sampleVolumetric(vec3 rayOrigin, vec3 worldPos, int i) {
     float segLen = t1 - t0;
     if (segLen <= 1e-4) return vec3(0.0);
 
-    int   steps   = max(uVolumetricSteps, 1);
+    // Igual que las sombras: los pasos los pone el tramo que hay que recorrer de verdad.
+    // El tramo ya viene recortado por volumetricInterval() al trozo del cono que cruza
+    // este pixel, que en la mayoria de pixeles es corto.
+    int   steps   = int(segLen * uVolumetricStepsPerBlock + 1.0);
+    steps = clamp(steps, 4, max(uVolumetricSteps, 4));
     float stepLen = segLen / float(steps);
     float jitter  = interleavedGradientNoise(gl_FragCoord.xy);
 
@@ -301,15 +357,23 @@ vec3 sampleVolumetric(vec3 rayOrigin, vec3 worldPos, int i) {
 
         float nearFade = smoothstep(0.0, max(uNearFade, 0.001), dist);
 
+        // La niebla tambien se corta: si no, el haz se veia flotando dentro de la pared.
+        //
+        // Esto va AHORA ANTES DEL RUIDO. Antes se calculaba el ruido (16 hashes) y despues
+        // se descubria que la muestra estaba en sombra y se multiplicaba por cero: trabajo
+        // tirado a la basura en todas las muestras tapadas. El resultado es identico.
+        float visible = trazarSombra(samplePos, lightOrigin, uShadowStepsVolumetric);
+        if (visible <= 0.0) continue;
+
         float density = 1.0;
         if (uVolumetricNoise > 0.0) {
             vec3  noiseCoord = samplePos * 1.2 + vec3(0.0, 0.0, uGameTime * 0.05);
-            float n = valueNoise3(noiseCoord) * 0.6 + valueNoise3(noiseCoord * 2.3 + 11.0) * 0.4;
+            float n = valueNoise3(noiseCoord);
+            if (uNoiseOctaves > 1) {
+                n = n * 0.6 + valueNoise3(noiseCoord * 2.3 + 11.0) * 0.4;
+            }
             density = clamp(mix(1.0, n * 1.3, clamp(uVolumetricNoise, 0.0, 1.0)), 0.2, 1.3);
         }
-
-        // La niebla tambien se corta: si no, el haz se veia flotando dentro de la pared.
-        float visible = trazarSombra(samplePos, lightOrigin);
 
         accum += edgeSoft * rangeAtten * density * nearFade * visible;
     }

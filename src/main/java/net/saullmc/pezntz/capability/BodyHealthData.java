@@ -8,6 +8,26 @@ public class BodyHealthData {
 
     public static final int DOWNED_DURATION_TICKS = 2400;
 
+    public static final float VIDA_REFERENCIA = 20.0f;
+
+    public static final float ESCALA_CON_VIDA = 0.0f;
+
+    public static final int TICKS_PERDIDOS_POR_VIDA_COMPLETA = 800;
+
+    public static final int TICKS_PERDIDOS_POR_GOLPE = 100;
+
+    public static int duracionAbatido(float vidaMaxima) {
+        if (vidaMaxima <= 0.0f) return DOWNED_DURATION_TICKS;
+        float factor = 1.0f + (vidaMaxima / VIDA_REFERENCIA - 1.0f) * ESCALA_CON_VIDA;
+        return Math.max(20, Math.round(DOWNED_DURATION_TICKS * factor));
+    }
+
+    public static int ticksPerdidosPorDanio(float danio, float vidaMaxima) {
+        if (vidaMaxima <= 0.0f) vidaMaxima = VIDA_REFERENCIA;
+        float fraccion = Math.max(0.0f, danio) / vidaMaxima;
+        return TICKS_PERDIDOS_POR_GOLPE + Math.round(fraccion * TICKS_PERDIDOS_POR_VIDA_COMPLETA);
+    }
+
     public static final float HEAL_QUICK = 2.0f;
 
     public static final float HEAL_GUI = 4.0f;

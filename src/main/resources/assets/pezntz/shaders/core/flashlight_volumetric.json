@@ -354,6 +354,38 @@
       "values": [
         1
       ]
+    },
+    {
+      "name": "uShadowStepsPerBlock",
+      "type": "float",
+      "count": 1,
+      "values": [
+        2.0
+      ]
+    },
+    {
+      "name": "uShadowStepsVolumetric",
+      "type": "int",
+      "count": 1,
+      "values": [
+        6
+      ]
+    },
+    {
+      "name": "uVolumetricStepsPerBlock",
+      "type": "float",
+      "count": 1,
+      "values": [
+        1.2
+      ]
+    },
+    {
+      "name": "uNoiseOctaves",
+      "type": "int",
+      "count": 1,
+      "values": [
+        2
+      ]
     }
   ]
 }

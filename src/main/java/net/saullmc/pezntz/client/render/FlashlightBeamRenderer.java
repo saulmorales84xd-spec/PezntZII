@@ -46,9 +46,25 @@ public class FlashlightBeamRenderer {
     private static final float SHADOW_BIAS = 0.0015f;
     private static final float OFFSET_ADELANTE = 0.45f;
 
-    private record ActiveLight(Vec3 origin, Vec3 dir) {}
+    private static final float SHADOW_STEPS_PER_BLOCK = 2.0f;
+
+    private static final int SHADOW_STEPS_VOLUMETRIC = 6;
+
+    private static final float VOLUMETRIC_STEPS_PER_BLOCK = 1.2f;
+
+    private static final int NOISE_OCTAVES = 2;
+
+    private static final double DISTANCIA_MAXIMA_LUZ = 48.0D;
+
+    private static final boolean REPARTIR_PASOS_ENTRE_LUCES = true;
+
+    private static final int VOLUMETRIC_STEPS_MINIMO = 10;
+
+    private record ActiveLight(Vec3 origin, Vec3 dir, double distSq) {}
 
     private static TextureTarget sceneTarget;
+
+    private static final List<ActiveLight> LUCES = new ArrayList<>();
 
     @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent event) {
@@ -62,13 +78,13 @@ public class FlashlightBeamRenderer {
 
         if (FlashlightShaders.volumetricShader == null || FlashlightShaders.copyShader == null) return;
 
-        List<? extends Player> players = level.players();
         float partialTick = event.getPartialTick();
-        List<ActiveLight> activeLights = new ArrayList<>();
+        Vec3 camPos = event.getCamera().getPosition();
+        double limiteSq = DISTANCIA_MAXIMA_LUZ * DISTANCIA_MAXIMA_LUZ;
 
-        for (Player player : players) {
-            if (activeLights.size() >= MAX_VOLUMETRIC_LIGHTS) break;
+        LUCES.clear();
 
+        for (Player player : level.players()) {
             ItemStack main = player.getMainHandItem();
             ItemStack off = player.getOffhandItem();
 
@@ -78,13 +94,22 @@ public class FlashlightBeamRenderer {
             if (!mainOn && !offOn) continue;
 
             Vec3 mira = player.getViewVector(partialTick).normalize();
+            Vec3 origen = player.getEyePosition(partialTick).add(mira.scale(OFFSET_ADELANTE));
 
-            activeLights.add(new ActiveLight(
-                    player.getEyePosition(partialTick).add(mira.scale(OFFSET_ADELANTE)),
-                    mira));
+            double distSq = origen.distanceToSqr(camPos);
+            if (distSq > limiteSq) continue;
+
+            LUCES.add(new ActiveLight(origen, mira, distSq));
         }
 
-        renderDarknessAndLighting(mc, level, activeLights, event.getProjectionMatrix(),
+        if (LUCES.isEmpty()) return;
+
+        if (LUCES.size() > MAX_VOLUMETRIC_LIGHTS) {
+            LUCES.sort((a, b) -> Double.compare(a.distSq(), b.distSq()));
+            LUCES.subList(MAX_VOLUMETRIC_LIGHTS, LUCES.size()).clear();
+        }
+
+        renderDarknessAndLighting(mc, level, LUCES, event.getProjectionMatrix(),
                 event.getPoseStack(), event.getCamera());
     }
 
@@ -144,11 +169,19 @@ public class FlashlightBeamRenderer {
         setFloat(lightingShader, "uNearFade", NEAR_FADE);
         setInt(lightingShader, "uShadowSteps", SHADOW_STEPS);
         setFloat(lightingShader, "uShadowBias", SHADOW_BIAS);
+        setFloat(lightingShader, "uShadowStepsPerBlock", SHADOW_STEPS_PER_BLOCK);
+        setInt(lightingShader, "uShadowStepsVolumetric", SHADOW_STEPS_VOLUMETRIC);
+        setFloat(lightingShader, "uVolumetricStepsPerBlock", VOLUMETRIC_STEPS_PER_BLOCK);
+        setInt(lightingShader, "uNoiseOctaves", NOISE_OCTAVES);
 
         setFloat(lightingShader, "uSelfLitLow", SELF_LIT_LOW);
         setFloat(lightingShader, "uSelfLitHigh", SELF_LIT_HIGH);
 
-        setInt(lightingShader, "uVolumetricSteps", VOLUMETRIC_STEPS);
+        int pasosNiebla = VOLUMETRIC_STEPS;
+        if (REPARTIR_PASOS_ENTRE_LUCES && lights.size() > 1) {
+            pasosNiebla = Math.max(VOLUMETRIC_STEPS_MINIMO, VOLUMETRIC_STEPS / lights.size());
+        }
+        setInt(lightingShader, "uVolumetricSteps", pasosNiebla);
         setFloat(lightingShader, "uVolumetricIntensity", VOLUMETRIC_INTENSITY);
         setFloat(lightingShader, "uVolumetricNoise", VOLUMETRIC_NOISE);
         setFloat(lightingShader, "uGameTime", (float) level.getGameTime());

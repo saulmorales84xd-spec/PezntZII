@@ -22,9 +22,24 @@ import net.saullmc.pezntz.network.SyncBodyHealthPacket;
 @Mod.EventBusSubscriber(modid = "pezntz")
 public class PlayerDamageEvents {
 
-    private static final int DOWNED_TICKS_LOST_PER_HIT = 100;
 
-    private static final int DOWNED_TICKS_LOST_PER_DAMAGE = 40;
+    private static final boolean GLOWING_AL_ABATIR = true;
+
+    private static final String TAG_GLOW = "pezntzGlowAbatido";
+
+    private static void setGlow(ServerPlayer player, boolean encendido) {
+        if (!GLOWING_AL_ABATIR) return;
+
+        if (encendido) {
+            if (!player.hasGlowingTag()) {
+                player.setGlowingTag(true);
+                player.getPersistentData().putBoolean(TAG_GLOW, true);
+            }
+        } else if (player.getPersistentData().getBoolean(TAG_GLOW)) {
+            player.setGlowingTag(false);
+            player.getPersistentData().putBoolean(TAG_GLOW, false);
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerTakeDamage(LivingDamageEvent event) {
@@ -38,8 +53,9 @@ public class PlayerDamageEvents {
 
                 if (healthData.isDowned()) {
 
-                    int tickReduction = DOWNED_TICKS_LOST_PER_HIT
-                            + (int) (event.getAmount() * DOWNED_TICKS_LOST_PER_DAMAGE);
+                    float vidaMaxima = player.getMaxHealth();
+
+                    int tickReduction = BodyHealthData.ticksPerdidosPorDanio(event.getAmount(), vidaMaxima);
                     healthData.setDownedTimer(healthData.getDownedTimer() - tickReduction);
 
                     float healthAfter = player.getHealth() - event.getAmount();
@@ -49,8 +65,8 @@ public class PlayerDamageEvents {
 
                     } else {
 
-                        int maxByHealth = (int) (BodyHealthData.DOWNED_DURATION_TICKS
-                                * (healthAfter / player.getMaxHealth()));
+                        int maxByHealth = Math.round(BodyHealthData.duracionAbatido(vidaMaxima)
+                                * (healthAfter / vidaMaxima));
 
                         if (healthData.getDownedTimer() > maxByHealth) {
                             healthData.setDownedTimer(maxByHealth);
@@ -110,6 +126,7 @@ public class PlayerDamageEvents {
                         cap.setDowned(false);
                         cap.setDownedTimer(0);
                         cap.setReviveProgress(0);
+                        setGlow(player, false);
                         NetworkHandler.sendToClients(new SyncBodyHealthPacket(player.getId(), cap), player);
                     }
                 });
@@ -121,8 +138,9 @@ public class PlayerDamageEvents {
                     event.setCanceled(true);
                     player.setHealth(player.getMaxHealth());
                     cap.setDowned(true);
-                    cap.setDownedTimer(BodyHealthData.DOWNED_DURATION_TICKS);
+                    cap.setDownedTimer(BodyHealthData.duracionAbatido(player.getMaxHealth()));
                     cap.setReviveProgress(0);
+                    setGlow(player, true);
                     cap.setHead(0); cap.setBody(0); cap.setArms(0); cap.setLegs(0);
                     NetworkHandler.sendToClients(new SyncBodyHealthPacket(player.getId(), cap), player);
 
@@ -150,8 +168,11 @@ public class PlayerDamageEvents {
 
                     player.setPose(Pose.SWIMMING);
 
+                    setGlow(player, true);
+
                     if (cap.getDownedTimer() <= 0) {
                         cap.setDowned(false);
+                        setGlow(player, false);
                         player.kill();
                     }
 
@@ -177,6 +198,9 @@ public class PlayerDamageEvents {
                     player.getPersistentData().putInt("reviveIdleTicks", idleTicks);
 
                     needsSync = true;
+                } else {
+
+                    setGlow(player, false);
                 }
 
                 if (player.tickCount % 20 == 0) {

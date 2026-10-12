@@ -1,6 +1,7 @@
 package net.saullmc.pezntz.client.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -10,12 +11,13 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.saullmc.pezntz.block.custom.Prensa;
 import net.saullmc.pezntz.block.entity.PrensaEntity;
 import org.joml.Matrix4f;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class PrensaRenderer extends GeoBlockRenderer<PrensaEntity> {
@@ -41,7 +43,7 @@ public class PrensaRenderer extends GeoBlockRenderer<PrensaEntity> {
     public static final float ITEM_APILAR_SEPARACION = 0.035F;
 
     public static final float CONTADOR_X = 0.5F;
-    public static final float CONTADOR_Y = 1.35F;   // 1.0 = justo en la cara de arriba
+    public static final float CONTADOR_Y = 1.35F;
     public static final float CONTADOR_Z = 0.5F;
 
     public static final float CONTADOR_ESCALA = 0.022F;
@@ -65,11 +67,13 @@ public class PrensaRenderer extends GeoBlockRenderer<PrensaEntity> {
     }
 
     @Override
-    public void render(PrensaEntity be, float partialTick, PoseStack poseStack,
-                       MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void renderFinal(PoseStack poseStack, PrensaEntity be, BakedGeoModel model,
+                            MultiBufferSource bufferSource, VertexConsumer buffer,
+                            float partialTick, int packedLight, int packedOverlay,
+                            float red, float green, float blue, float alpha) {
 
-
-        super.render(be, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
+        super.renderFinal(poseStack, be, model, bufferSource, buffer, partialTick,
+                packedLight, packedOverlay, red, green, blue, alpha);
 
         renderChatarraCentro(be, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
         renderContador(be, poseStack, bufferSource);
