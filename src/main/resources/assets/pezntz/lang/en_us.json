@@ -90,6 +90,15 @@
   "item.pezntz.leggins_traje_bioseguridad": "Pantalones de Bioseguridad",
   "item.pezntz.boots_traje_bioseguridad": "Botas de Bioseguridad",
 
+  "block.pezntz.prensa": "Prensa",
+  "block.pezntz.barril_1": "Barril_1",
+  "block.pezntz.barril_2": "Barril_2",
+  "block.pezntz.bricks_1": "Ladrillos",
+  "block.pezntz.bricks_2": "Ladrillos",
+  "block.pezntz.bricks_3": "Ladrillos",
+  "block.pezntz.planks_1": "Tablones",
+  "block.pezntz.wall_1": "Pared",
+
   "entity.pezntz.zombie_hinchado": "Hinchado",
   "entity.pezntz.zombie_tanque": "Tanque",
   "entity.pezntz.zombie_arrastrador": "Arrastrador",
@@ -103,6 +112,7 @@
   "effect.pezntz.radiacion": "Radiación",
   "effect.pezntz.infeccion": "Virus",
 
-  "creativetab.items": "Items"
+  "creativetab.items": "Items",
+  "creativetab.blocks": "Blocks"
 
 }

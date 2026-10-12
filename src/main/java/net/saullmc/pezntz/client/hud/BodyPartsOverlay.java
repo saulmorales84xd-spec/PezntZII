@@ -70,20 +70,20 @@ public class BodyPartsOverlay {
                             else {
 
                                 MutableComponent promptText = Component.literal("Pulsa ")
-                                        .withStyle(style -> style.withColor(0xFFFFFF))
+                                        .withStyle(style -> style.withColor(0xe0dad2))
 
                                         .append(Component.literal("Click derecho ")
-                                                .withStyle(style -> style.withColor(0xFFAA00)))
+                                                .withStyle(style -> style.withColor(0xff650a)))
 
                                         .append(Component.literal("para revivir a ")
-                                                .withStyle(style -> style.withColor(0xFFFFFF)))
+                                                .withStyle(style -> style.withColor(0xe0dad2)))
 
                                         .append(Component.literal(targetPlayer.getDisplayName().getString())
-                                                .withStyle(style -> style.withColor(0x00FF00)));
+                                                .withStyle(style -> style.withColor(0x8be761)));
 
                                 int promptWidth = font.width(promptText);
 
-                                float textScale = 1.2f;
+                                float textScale = 1f;
 
                                 guiGraphics.pose().pushPose();
                                 guiGraphics.pose().scale(textScale, textScale, 1.0f);

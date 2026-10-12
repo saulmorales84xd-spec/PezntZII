@@ -9,6 +9,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.saullmc.pezntz.PezntZMod;
+import net.saullmc.pezntz.block.ModBlocks;
 
 public class ModCreativeModTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
@@ -109,7 +110,22 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get());
                         pOutput.accept(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get());
 
+                    })
+                    .build());
 
+    public static final RegistryObject<CreativeModeTab> BLOCKS = CREATIVE_MODE_TABS.register("blocks",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.BRICKS_1.get()))
+                    .title(Component.translatable("creativetab.blocks"))
+                    .displayItems((pParameters, pOutput) -> {
+
+                        pOutput.accept(ModBlocks.PRENSA.get());
+                        pOutput.accept(ModBlocks.BARRIL_1.get());
+                        pOutput.accept(ModBlocks.BARRIL_2.get());
+                        pOutput.accept(ModBlocks.BRICKS_1.get());
+                        pOutput.accept(ModBlocks.BRICKS_2.get());
+                        pOutput.accept(ModBlocks.BRICKS_3.get());
+                        pOutput.accept(ModBlocks.PLANKS_1.get());
+                        pOutput.accept(ModBlocks.WALL_1.get());
 
                     })
                     .build());

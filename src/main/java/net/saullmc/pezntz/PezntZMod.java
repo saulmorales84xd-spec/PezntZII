@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.saullmc.pezntz.block.ModBlocks;
 import net.saullmc.pezntz.effect.ModEffects;
 import net.saullmc.pezntz.entity.ModEntities;
 import net.saullmc.pezntz.entity.client.arrastrador.ZombieArrastradorRender;
@@ -45,6 +46,7 @@ public class PezntZMod {
         modEventBus.addListener(this::commonSetup);
 
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
         ModCreativeModTabs.register(modEventBus);
         ModMenuTypes.register(modEventBus);

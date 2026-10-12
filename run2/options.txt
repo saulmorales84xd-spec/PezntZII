@@ -118,6 +118,8 @@ key_key.hotbar.6:key.keyboard.6
 key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
+key_key.pezntz.medical_gui:key.keyboard.h
+key_key.pezntz.backpack:key.keyboard.b
 key_key.tacz.inspect.desc:key.keyboard.h
 key_key.tacz.reload.desc:key.keyboard.r
 key_key.tacz.shoot.desc:key.mouse.left
