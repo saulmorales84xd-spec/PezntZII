@@ -5,6 +5,8 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.PezntZMod;
+import net.saullmc.pezntz.block.entity.ModBlockEntities;
+import net.saullmc.pezntz.client.block.PrensaRenderer;
 import net.saullmc.pezntz.entity.client.ModModelLayers;
 import net.saullmc.pezntz.entity.client.arrastrador.ZombieArrastradorModel;
 import net.saullmc.pezntz.entity.client.hinchado.ZombieHinchadoModel;
@@ -28,5 +30,10 @@ public class ModEventBusClientEvents {
         event.registerLayerDefinition(ModModelLayers.MOSQUITO_ZUMBADOR_LAYER, MosquitoZumbadorModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.QUAD_LAYER, QuadModel::createBodyLayer);
 
+    }
+
+    @SubscribeEvent
+    public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntities.PRENSA.get(), PrensaRenderer::new);
     }
 }

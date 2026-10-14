@@ -24,7 +24,7 @@ public class PrensaRenderer extends GeoBlockRenderer<PrensaEntity> {
 
     /** Posicion. 0.5 / 0.5 es el centro exacto del bloque. */
     public static final float ITEM_X = 0.5F;
-    public static final float ITEM_Y = 0.60F;   // altura. Subelo si tu modelo es mas alto.
+    public static final float ITEM_Y = 1.14F;   // altura. Subelo si tu modelo es mas alto.
     public static final float ITEM_Z = 0.5F;
 
     /** Tamanio. 1.0 es el tamanio de un item en un marco. */
@@ -43,15 +43,14 @@ public class PrensaRenderer extends GeoBlockRenderer<PrensaEntity> {
     public static final float ITEM_APILAR_SEPARACION = 0.035F;
 
     public static final float CONTADOR_X = 0.5F;
-    public static final float CONTADOR_Y = 1.35F;
+    public static final float CONTADOR_Y = 2.7F;
     public static final float CONTADOR_Z = 0.5F;
 
     public static final float CONTADOR_ESCALA = 0.022F;
 
     public static final int CONTADOR_COLOR = 0xFFFFFF;
-    public static final int CONTADOR_COLOR_LLENO = 0x55FF55;
 
-    public static final boolean CONTADOR_SOMBRA = true;
+    public static final boolean CONTADOR_SOMBRA = false;
 
     public static final boolean CONTADOR_ATRAVIESA_BLOQUES = false;
 
@@ -147,8 +146,7 @@ public class PrensaRenderer extends GeoBlockRenderer<PrensaEntity> {
 
         Font font = mc.font;
         int ancho = font.width(texto);
-        int rgb = be.estaLleno() ? CONTADOR_COLOR_LLENO : CONTADOR_COLOR;
-        int color = 0xFF000000 | rgb;
+        int color = 0xFF000000 | CONTADOR_COLOR;
 
         Matrix4f matriz = poseStack.last().pose();
 

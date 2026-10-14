@@ -5,6 +5,10 @@
     128,
     128
   ],
+  "textures": {
+    "0": "pezntz:block/prensa",
+    "particle": "pezntz:block/prensa",
+
   "display": {
     "thirdperson_righthand": {
       "translation": [
@@ -120,4 +124,5 @@
       ]
     }
   }
+}
 }

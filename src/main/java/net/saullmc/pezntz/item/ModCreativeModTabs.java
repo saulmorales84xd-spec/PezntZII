@@ -121,9 +121,15 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModBlocks.PRENSA.get());
                         pOutput.accept(ModBlocks.BARRIL_1.get());
                         pOutput.accept(ModBlocks.BARRIL_2.get());
+                        pOutput.accept(ModBlocks.CAJA_1.get());
+                        pOutput.accept(ModBlocks.CAJA_2.get());
+                        pOutput.accept(ModBlocks.CAJA_3.get());
+                        pOutput.accept(ModBlocks.CAJA_4.get());
+                        pOutput.accept(ModBlocks.CAJA_5.get());
                         pOutput.accept(ModBlocks.BRICKS_1.get());
                         pOutput.accept(ModBlocks.BRICKS_2.get());
                         pOutput.accept(ModBlocks.BRICKS_3.get());
+                        pOutput.accept(ModBlocks.BRICKS_4.get());
                         pOutput.accept(ModBlocks.PLANKS_1.get());
                         pOutput.accept(ModBlocks.WALL_1.get());
 

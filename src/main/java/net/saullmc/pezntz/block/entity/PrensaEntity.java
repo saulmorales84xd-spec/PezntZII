@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 
 public class PrensaEntity extends BlockEntity implements GeoBlockEntity {
 
-    public static final int TICKS_ANIMACION = 60;
+    public static final int TICKS_ANIMACION = 40;
 
     public static final int TICKS_MARGEN = 2;
 
@@ -41,7 +41,8 @@ public class PrensaEntity extends BlockEntity implements GeoBlockEntity {
     public static final String ID_CHATARRA_REFORZADA = "chatarra_reforzada";
 
     public static final String ANIM_IDLE = "idle";
-    public static final String ANIM_PROCESAR = "procesar";
+
+    public static final String ANIM_PROCESAR = "use";
 
     public static final int CANTIDAD_RESULTADO = 1;
 

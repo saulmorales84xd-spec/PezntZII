@@ -45,5 +45,7 @@ public class ModOverlays {
 
         event.registerBelow(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.CHAT_PANEL.id(),
                 "pickup_log_overlay", PickupLogOverlay.OVERLAY);
+
+        event.registerAboveAll("prensa_barra", ProcesadorBarOverlay.OVERLAY);
     }
 }

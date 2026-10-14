@@ -169,7 +169,7 @@ public class ModTooltips {
 
         registrar(ModItems.CHATARRA_REFORZADA.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
-                "Se obtiene al procesar " + NUM + "9 " + "partes", "de chatarra en un " + BYI + "Depósito de" + BR + BYI + "Chatarra.");
+                "Se obtiene al procesar " + NUM + "9 " + "partes", "de chatarra en una " + BYI + "Prensa");
 
         registrar(ModItems.CHATARRA_ELECTRONICA.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
