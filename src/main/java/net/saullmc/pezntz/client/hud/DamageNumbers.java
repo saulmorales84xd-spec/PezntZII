@@ -40,7 +40,7 @@ public class DamageNumbers {
     private static final List<Numero> NUMEROS = new ArrayList<>();
 
     private static class Numero {
-        
+
         final double x;
         final double y;
         final double z;
@@ -84,10 +84,9 @@ public class DamageNumbers {
         }
     }
 
+
     private static String formatear(float valor) {
-        return valor == Math.floor(valor)
-                ? Integer.toString((int) valor)
-                : String.format("%.1f", valor);
+        return Integer.toString(Math.max(1, Math.round(valor)));
     }
 
     public static void limpiar() {

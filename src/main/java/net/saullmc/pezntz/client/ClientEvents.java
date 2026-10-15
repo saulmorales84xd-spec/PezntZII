@@ -19,6 +19,7 @@ import net.saullmc.pezntz.client.hud.CompassOverlay;
 import net.saullmc.pezntz.client.hud.CoordinatesOverlay;
 import net.saullmc.pezntz.client.hud.JeringaOverlay;
 import net.saullmc.pezntz.client.screen.BackpackScreen;
+import net.saullmc.pezntz.client.screen.CadaverScreen;
 import net.saullmc.pezntz.effect.ModEffects;
 import net.saullmc.pezntz.entity.custom.Quad;
 import net.saullmc.pezntz.init.ModMenuTypes;
@@ -30,6 +31,7 @@ public class ClientEvents {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenuTypes.BACKPACK_MENU.get(), BackpackScreen::new);
+            MenuScreens.register(ModMenuTypes.CADAVER_MENU.get(), CadaverScreen::new);
         });
     }
     public static final IGuiOverlay COMPASS = (gui, guiGraphics, partialTick, width, height) -> {

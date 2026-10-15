@@ -20,6 +20,13 @@ public class ModBlockEntities {
                             ModBlocks.PRENSA.get()
                     ).build(null));
 
+    public static final RegistryObject<BlockEntityType<CadaverEntity>> CADAVER =
+            BLOCK_ENTITIES.register("cadaver",
+                    () -> BlockEntityType.Builder.of(
+                            CadaverEntity::new,
+                            ModBlocks.CADAVER.get()
+                    ).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

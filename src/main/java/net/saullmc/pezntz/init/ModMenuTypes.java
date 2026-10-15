@@ -7,6 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.saullmc.pezntz.menu.BackpackMenu;
+import net.saullmc.pezntz.menu.CadaverMenu;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -14,6 +15,9 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<BackpackMenu>> BACKPACK_MENU =
             MENUS.register("backpack_menu", () -> IForgeMenuType.create(BackpackMenu::new));
+
+    public static final RegistryObject<MenuType<CadaverMenu>> CADAVER_MENU =
+            MENUS.register("cadaver_menu", () -> IForgeMenuType.create(CadaverMenu::new));
 
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);

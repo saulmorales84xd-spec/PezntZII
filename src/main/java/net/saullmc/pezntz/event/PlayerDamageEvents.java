@@ -77,42 +77,37 @@ public class PlayerDamageEvents {
                     return;
                 }
 
-                float originalDamage = event.getAmount();
-                float remainingDamage = originalDamage;
-                boolean dataChanged = false;
+                float danioTotal = event.getAmount();
 
-                if (event.getSource().is(DamageTypes.FALL)) {
-                    remainingDamage = healthData.damagePart("legs", remainingDamage);
-                    dataChanged = true;
-                }
-                else {
-                    double chance = Math.random();
-                    if (chance < 0.40) {
-                        remainingDamage = healthData.damagePart("body", remainingDamage);
-                    } else if (chance < 0.60) {
-                        remainingDamage = healthData.damagePart("arms", remainingDamage);
-                    } else if (chance < 0.80) {
-                        remainingDamage = healthData.damagePart("legs", remainingDamage);
-                    } else {
-                        remainingDamage = remainingDamage * 1.5f;
-                        remainingDamage = healthData.damagePart("head", remainingDamage);
-                    }
-                    dataChanged = true;
+                String parte = event.getSource().is(DamageTypes.FALL)
+                        ? RepartoDanio.PIERNAS
+                        : RepartoDanio.elegirParte(Math.random());
+
+                float fraccion = RepartoDanio.fraccionAPartes(player, healthData);
+                float aPartes  = danioTotal * fraccion;
+                float aVanilla = danioTotal - aPartes;
+
+                if (RepartoDanio.CABEZA.equals(parte)) {
+                    aPartes *= RepartoDanio.MULTIPLICADOR_CABEZA;
                 }
 
-                if (dataChanged) {
-                    if (remainingDamage > 0) remainingDamage = healthData.damagePart("body", remainingDamage);
-                    if (remainingDamage > 0) remainingDamage = healthData.damagePart("arms", remainingDamage);
-                    if (remainingDamage > 0) remainingDamage = healthData.damagePart("legs", remainingDamage);
-                    if (remainingDamage > 0) remainingDamage = healthData.damagePart("head", remainingDamage);
+                aPartes *= (1.0F - RepartoDanio.proteccionDe(player, parte));
 
-                    if (remainingDamage <= 0) {
-                        event.setCanceled(true);
-                    } else {
-                        event.setAmount(remainingDamage);
-                    }
-                    NetworkHandler.sendToClients(new SyncBodyHealthPacket(player.getId(), healthData), player);
+                float sobra = healthData.damagePart(parte, aPartes);
+                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.CUERPO, sobra);
+                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.BRAZOS, sobra);
+                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.PIERNAS, sobra);
+                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.CABEZA, sobra);
+
+                float danioVanilla = aVanilla + sobra;
+
+                if (danioVanilla <= 0.0F) {
+                    event.setCanceled(true);
+                } else {
+                    event.setAmount(danioVanilla);
                 }
+
+                NetworkHandler.sendToClients(new SyncBodyHealthPacket(player.getId(), healthData), player);
             });
         }
     }
