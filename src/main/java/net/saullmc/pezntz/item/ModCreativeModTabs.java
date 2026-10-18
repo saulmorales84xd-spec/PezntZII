@@ -130,8 +130,16 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModBlocks.BRICKS_2.get());
                         pOutput.accept(ModBlocks.BRICKS_3.get());
                         pOutput.accept(ModBlocks.BRICKS_4.get());
+                        pOutput.accept(ModBlocks.BRICKS_5.get());
+                        pOutput.accept(ModBlocks.BRICKS_6.get());
                         pOutput.accept(ModBlocks.PLANKS_1.get());
                         pOutput.accept(ModBlocks.WALL_1.get());
+                        pOutput.accept(ModBlocks.WALL_2.get());
+                        pOutput.accept(ModBlocks.WALL_3.get());
+                        pOutput.accept(ModBlocks.WALL_4.get());
+                        pOutput.accept(ModBlocks.WALL_5.get());
+                        pOutput.accept(ModBlocks.WALL_6.get());
+                        pOutput.accept(ModBlocks.WALL_7.get());
 
                     })
                     .build());

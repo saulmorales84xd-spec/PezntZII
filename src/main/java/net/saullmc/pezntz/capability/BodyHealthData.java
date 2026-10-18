@@ -12,9 +12,9 @@ public class BodyHealthData {
 
     public static final float ESCALA_CON_VIDA = 0.0f;
 
-    public static final int TICKS_PERDIDOS_POR_VIDA_COMPLETA = 800;
+    public static final int TICKS_PERDIDOS_POR_VIDA_COMPLETA = DOWNED_DURATION_TICKS;
 
-    public static final int TICKS_PERDIDOS_POR_GOLPE = 100;
+    public static final int TICKS_PERDIDOS_POR_GOLPE = 0;
 
     public static int duracionAbatido(float vidaMaxima) {
         if (vidaMaxima <= 0.0f) return DOWNED_DURATION_TICKS;

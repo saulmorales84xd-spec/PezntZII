@@ -6,6 +6,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.entity.ModBlockEntities;
+import net.saullmc.pezntz.client.block.CadaverRenderer;
 import net.saullmc.pezntz.client.block.PrensaRenderer;
 import net.saullmc.pezntz.entity.client.ModModelLayers;
 import net.saullmc.pezntz.entity.client.arrastrador.ZombieArrastradorModel;
@@ -35,5 +36,6 @@ public class ModEventBusClientEvents {
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.PRENSA.get(), PrensaRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CADAVER.get(), CadaverRenderer::new);
     }
 }

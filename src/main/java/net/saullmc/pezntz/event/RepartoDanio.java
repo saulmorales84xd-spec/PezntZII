@@ -12,6 +12,8 @@ public class RepartoDanio {
 
     public static final float FRACCION_A_PARTES = 0.55F;
 
+    public static final float GASTO_VANILLA_FASE_1 = 0.60F;
+
     public static final double PROB_CUERPO  = 0.40D;
     public static final double PROB_BRAZOS  = 0.20D;
     public static final double PROB_PIERNAS = 0.20D;
@@ -57,10 +59,10 @@ public class RepartoDanio {
 
         float reservaPartes = cap.getMaxHead() + cap.getMaxBody() + cap.getMaxArms() + cap.getMaxLegs();
         float vidaMaxima = player.getMaxHealth();
-        float total = reservaPartes + vidaMaxima;
+        float denominador = reservaPartes + GASTO_VANILLA_FASE_1 * vidaMaxima;
 
-        if (total <= 0.0F) return 0.5F;
-        return Math.min(1.0F, Math.max(0.0F, reservaPartes / total));
+        if (denominador <= 0.0F) return 0.5F;
+        return Math.min(1.0F, Math.max(0.0F, reservaPartes / denominador));
     }
 
     public static float proteccionDe(Player player, String parte) {

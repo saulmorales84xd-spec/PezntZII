@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -25,6 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import net.saullmc.pezntz.block.entity.CadaverEntity;
+import net.saullmc.pezntz.menu.CadaverMenu;
 
 import javax.annotation.Nullable;
 
@@ -36,7 +38,7 @@ public class Cadaver extends BaseEntityBlock {
 
     public static final boolean DESAPARECE_AL_VACIARSE = true;
 
-    private static final VoxelShape FORMA = Block.box(1.0D, 0.0D, 2.0D, 15.0D, 5.0D, 14.0D);
+    private static final VoxelShape FORMA = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
 
     public Cadaver(Properties properties) {
         super(properties);
@@ -50,7 +52,7 @@ public class Cadaver extends BaseEntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override
@@ -65,7 +67,7 @@ public class Cadaver extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+        return RenderShape.INVISIBLE;
     }
 
     @Override
@@ -93,22 +95,34 @@ public class Cadaver extends BaseEntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof CadaverEntity cadaver)) return InteractionResult.PASS;
 
+        abrir((ServerPlayer) player, cadaver, pos, CadaverMenu.SECCION_CUERPO);
+        return InteractionResult.CONSUME;
+    }
+
+    public static void abrir(ServerPlayer player, CadaverEntity cadaver, BlockPos pos, int seccion) {
         if (SOLO_EL_DUENIO && !cadaver.esDuenio(player)) {
-            player.displayClientMessage(
-                    Component.literal("Este cadaver no es tuyo"), true);
-            return InteractionResult.CONSUME;
+            player.displayClientMessage(Component.literal("Este cadaver no es tuyo"), true);
+            return;
+        }
+
+        if (seccion == CadaverMenu.SECCION_MOCHILA && !cadaver.teniaMochila()) {
+            player.displayClientMessage(Component.literal("Este cadaver no llevaba mochila"), true);
+            return;
         }
 
         if (DESAPARECE_AL_VACIARSE && cadaver.estaVacio()) {
-            level.removeBlock(pos, false);
-            return InteractionResult.CONSUME;
+            player.level().removeBlock(pos, false);
+            return;
         }
 
-        if (player instanceof ServerPlayer serverPlayer) {
-
-            NetworkHooks.openScreen(serverPlayer, cadaver, pos);
-        }
-        return InteractionResult.CONSUME;
+        NetworkHooks.openScreen(player,
+                new SimpleMenuProvider(
+                        (id, inv, p) -> new CadaverMenu(id, inv, pos, seccion),
+                        cadaver.getDisplayName()),
+                buf -> {
+                    buf.writeBlockPos(pos);
+                    buf.writeInt(seccion);
+                });
     }
 
     @Override

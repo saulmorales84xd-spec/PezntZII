@@ -34,10 +34,34 @@ public class ModBlocks {
     public static final RegistryObject<Block> BRICKS_4 = registerBlock("bricks_4",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
+    public static final RegistryObject<Block> BRICKS_5 = registerBlock("bricks_5",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRICKS_6 = registerBlock("bricks_6",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
     public static final RegistryObject<Block> PLANKS_1 = registerBlock("planks_1",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)));
 
     public static final RegistryObject<Block> WALL_1 = registerBlock("wall_1",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> WALL_2 = registerBlock("wall_2",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> WALL_3 = registerBlock("wall_3",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> WALL_4 = registerBlock("wall_4",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> WALL_5 = registerBlock("wall_5",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> WALL_6 = registerBlock("wall_6",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> WALL_7 = registerBlock("wall_7",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
     public static final RegistryObject<Block> PRENSA = registerBlockConItemPropio("prensa",

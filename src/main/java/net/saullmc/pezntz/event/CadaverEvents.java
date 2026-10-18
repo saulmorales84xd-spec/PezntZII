@@ -3,11 +3,16 @@ package net.saullmc.pezntz.event;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,6 +20,8 @@ import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.ModBlocks;
 import net.saullmc.pezntz.block.custom.Cadaver;
 import net.saullmc.pezntz.block.entity.CadaverEntity;
+import net.saullmc.pezntz.item.custom.Backpack;
+import net.saullmc.pezntz.menu.CadaverMenu;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID)
 public class CadaverEvents {
@@ -23,7 +30,7 @@ public class CadaverEvents {
 
     public static final int RADIO_BUSQUEDA = 3;
 
-    public static final boolean AVISAR_COORDENADAS = true;
+    public static final boolean AVISAR_COORDENADAS = false;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onPlayerDeath(LivingDeathEvent event) {
@@ -35,12 +42,13 @@ public class CadaverEvents {
 
         if (level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) return;
 
-        if (inventarioVacio(player)) return;
+        boolean llevabaMochila = llevaMochila(player);
+        if (inventarioVacio(player) && !llevabaMochila) return;
 
         BlockPos sitio = buscarSitio(level, player.blockPosition());
 
         level.setBlockAndUpdate(sitio, ModBlocks.CADAVER.get().defaultBlockState()
-                .setValue(Cadaver.FACING, player.getDirection().getOpposite()));
+                .setValue(Cadaver.FACING, player.getDirection()));
 
         BlockEntity be = level.getBlockEntity(sitio);
         if (!(be instanceof CadaverEntity cadaver)) {
@@ -48,6 +56,7 @@ public class CadaverEvents {
         }
 
         cadaver.guardarInventarioDe(player);
+        cadaver.guardarMochilaDe(player, llevabaMochila);
 
         if (AVISAR_COORDENADAS) {
             player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
@@ -55,14 +64,44 @@ public class CadaverEvents {
         }
     }
 
+    private static boolean llevaMochila(ServerPlayer player) {
+        for (var lista : java.util.List.of(player.getInventory().items,
+                player.getInventory().armor, player.getInventory().offhand)) {
+            for (ItemStack stack : lista) {
+                if (stack.getItem() instanceof Backpack) return true;
+            }
+        }
+        return false;
+    }
+
     private static boolean inventarioVacio(ServerPlayer player) {
         for (var lista : java.util.List.of(player.getInventory().items,
                 player.getInventory().armor, player.getInventory().offhand)) {
-            for (var stack : lista) {
+            for (ItemStack stack : lista) {
                 if (!stack.isEmpty()) return false;
             }
         }
         return true;
+    }
+
+    @SubscribeEvent
+    public static void onShiftClickDerecho(PlayerInteractEvent.RightClickBlock event) {
+        Player player = event.getEntity();
+        if (!player.isShiftKeyDown()) return;
+        if (event.getHand() != InteractionHand.MAIN_HAND) return;
+
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+
+        if (!(level.getBlockEntity(pos) instanceof CadaverEntity cadaver)) return;
+
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.SUCCESS);
+
+        if (level.isClientSide) return;
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+
+        Cadaver.abrir(serverPlayer, cadaver, pos, CadaverMenu.SECCION_MOCHILA);
     }
 
     private static BlockPos buscarSitio(Level level, BlockPos origen) {
@@ -80,7 +119,7 @@ public class CadaverEvents {
         for (int r = 1; r <= RADIO_BUSQUEDA; r++) {
             for (int dx = -r; dx <= r; dx++) {
                 for (int dz = -r; dz <= r; dz++) {
-                    if (Math.abs(dx) != r && Math.abs(dz) != r) continue;  // solo el borde
+                    if (Math.abs(dx) != r && Math.abs(dz) != r) continue;
 
                     for (int dy = 0; dy <= ALTURA_BUSQUEDA; dy++) {
                         BlockPos p = base.offset(dx, dy, dz);

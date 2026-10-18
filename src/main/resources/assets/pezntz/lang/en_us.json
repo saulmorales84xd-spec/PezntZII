@@ -94,8 +94,17 @@
   "block.pezntz.bricks_2": "Ladrillos",
   "block.pezntz.bricks_3": "Ladrillos",
   "block.pezntz.bricks_4": "Ladrillos",
+  "block.pezntz.bricks_5": "Ladrillos",
+  "block.pezntz.bricks_6": "Ladrillos",
   "block.pezntz.planks_1": "Tablones",
   "block.pezntz.wall_1": "Pared",
+  "block.pezntz.wall_2": "Pared",
+  "block.pezntz.wall_3": "Pared",
+  "block.pezntz.wall_4": "Pared",
+  "block.pezntz.wall_5": "Pared",
+  "block.pezntz.wall_6": "Pared",
+  "block.pezntz.wall_7": "Pared",
+
 
   "block.pezntz.prensa": "Prensa",
   "block.pezntz.barril_1": "Barril 1",

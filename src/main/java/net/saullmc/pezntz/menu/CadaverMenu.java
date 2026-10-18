@@ -15,49 +15,75 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.saullmc.pezntz.block.entity.CadaverEntity;
 import net.saullmc.pezntz.init.ModMenuTypes;
 
-
 public class CadaverMenu extends AbstractContainerMenu {
 
-    public static final int ANCHO_GUI = 176;
-    public static final int ALTO_GUI = 222;
+    public static final int SECCION_CUERPO = 0;
+    public static final int SECCION_MOCHILA = 1;
 
-    private final IItemHandler inventario;
+    public static final int ANCHO_GUI = 176;
+
+    private final IItemHandler contenedor;
     private final BlockPos pos;
     private final Level level;
+    private final int seccion;
+    private final int filas;
+    private final int huecosContenedor;
 
     public CadaverMenu(int id, Inventory playerInventory, FriendlyByteBuf extraData) {
-        this(id, playerInventory, extraData.readBlockPos());
+        this(id, playerInventory, extraData.readBlockPos(), extraData.readInt());
     }
 
-    public CadaverMenu(int id, Inventory playerInventory, BlockPos pos) {
+    public CadaverMenu(int id, Inventory playerInventory, BlockPos pos, int seccion) {
         super(ModMenuTypes.CADAVER_MENU.get(), id);
 
         this.pos = pos;
+        this.seccion = seccion;
         this.level = playerInventory.player.level();
+        this.filas = (seccion == SECCION_MOCHILA) ? CadaverEntity.FILAS_MOCHILA : CadaverEntity.FILAS;
 
         BlockEntity be = this.level.getBlockEntity(pos);
-        this.inventario = (be instanceof CadaverEntity cadaver)
-                ? cadaver.getInventario()
-                : new ItemStackHandler(CadaverEntity.SLOTS);
+        if (be instanceof CadaverEntity cadaver) {
+            this.contenedor = (seccion == SECCION_MOCHILA) ? cadaver.getMochila() : cadaver.getInventario();
+        } else {
+            this.contenedor = new ItemStackHandler(this.filas * 9);
+        }
 
-        for (int fila = 0; fila < CadaverEntity.FILAS; fila++) {
+        this.huecosContenedor = Math.min(this.filas * 9, this.contenedor.getSlots());
+        for (int fila = 0; fila < this.filas; fila++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new SlotItemHandler(this.inventario, col + fila * 9,
+                int indice = col + fila * 9;
+                if (indice >= this.contenedor.getSlots()) break;
+
+                this.addSlot(new SlotItemHandler(this.contenedor, indice,
                         8 + col * 18, 18 + fila * 18));
             }
         }
 
-        int invY = 139;
+        int desplazamiento = (this.filas - 4) * 18;
+
         for (int fila = 0; fila < 3; fila++) {
             for (int col = 0; col < 9; col++) {
                 this.addSlot(new Slot(playerInventory, col + fila * 9 + 9,
-                        8 + col * 18, invY + fila * 18));
+                        8 + col * 18, 103 + fila * 18 + desplazamiento));
             }
         }
 
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 197));
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 161 + desplazamiento));
         }
+
+    }
+
+    public int getFilas() {
+        return this.filas;
+    }
+
+    public int getSeccion() {
+        return this.seccion;
+    }
+
+    public int getAltoGui() {
+        return 114 + this.filas * 18;
     }
 
     @Override
@@ -76,12 +102,12 @@ public class CadaverMenu extends AbstractContainerMenu {
             ItemStack enSlot = slot.getItem();
             resultado = enSlot.copy();
 
-            if (index < CadaverEntity.SLOTS) {
-                if (!this.moveItemStackTo(enSlot, CadaverEntity.SLOTS, this.slots.size(), true)) {
+            if (index < this.huecosContenedor) {
+                if (!this.moveItemStackTo(enSlot, this.huecosContenedor, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (!this.moveItemStackTo(enSlot, 0, CadaverEntity.SLOTS, false)) {
+                if (!this.moveItemStackTo(enSlot, 0, this.huecosContenedor, false)) {
                     return ItemStack.EMPTY;
                 }
             }

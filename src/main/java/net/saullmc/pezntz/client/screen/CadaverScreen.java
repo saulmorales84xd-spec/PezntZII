@@ -5,20 +5,21 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.saullmc.pezntz.block.entity.CadaverEntity;
 import net.saullmc.pezntz.menu.CadaverMenu;
 
 public class CadaverScreen extends AbstractContainerScreen<CadaverMenu> {
 
-    private static final int FILAS = CadaverEntity.FILAS;
-
     private static final ResourceLocation TEXTURA =
             new ResourceLocation("minecraft", "textures/gui/container/generic_54.png");
 
+    private final int filas;
+
     public CadaverScreen(CadaverMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+
+        this.filas = menu.getFilas();
         this.imageWidth = CadaverMenu.ANCHO_GUI;
-        this.imageHeight = CadaverMenu.ALTO_GUI;
+        this.imageHeight = menu.getAltoGui();
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
@@ -34,8 +35,7 @@ public class CadaverScreen extends AbstractContainerScreen<CadaverMenu> {
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
 
-        guiGraphics.blit(TEXTURA, x, y, 0, 0, this.imageWidth, FILAS * 18 + 17);
-        guiGraphics.blit(TEXTURA, x, y + FILAS * 18 + 17, 0, 126, this.imageWidth, 96);
+        guiGraphics.blit(TEXTURA, x, y, 0, 0, this.imageWidth, this.filas * 18 + 17);
+        guiGraphics.blit(TEXTURA, x, y + this.filas * 18 + 17, 0, 126, this.imageWidth, 96);
     }
-
 }

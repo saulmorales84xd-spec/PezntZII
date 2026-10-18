@@ -39,7 +39,7 @@ public class Quad extends PathfinderMob {
             SynchedEntityData.defineId(Quad.class, EntityDataSerializers.FLOAT);
 
     /** Deposito lleno. */
-    public static final float MAX_FUEL = 1000.0F;
+    public static final float MAX_FUEL = 2500.0F;
 
     /**
      * Gasolina por bloque recorrido.
@@ -172,7 +172,7 @@ public class Quad extends PathfinderMob {
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.MAX_HEALTH, 200.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }

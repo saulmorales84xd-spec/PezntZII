@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "pezntz:block/caja_4"
-    }
+    "facing=north": { "model": "pezntz:block/caja_4" },
+    "facing=east":  { "model": "pezntz:block/caja_4", "y": 90 },
+    "facing=south": { "model": "pezntz:block/caja_4", "y": 180 },
+    "facing=west":  { "model": "pezntz:block/caja_4", "y": 270 }
   }
 }
