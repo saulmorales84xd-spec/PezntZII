@@ -10,7 +10,7 @@ import net.saullmc.pezntz.item.ModItems;
 
 public class Motocicleta extends VehiculoBase {
 
-    public static final float MAX_COMBUSTIBLE = 2500.0F;
+    public static final float MAX_COMBUSTIBLE = 2000.0F;
 
     private static final float[][] ASIENTOS = {
             {-0.2F, 0.55F},
@@ -53,6 +53,11 @@ public class Motocicleta extends VehiculoBase {
     @Override
     public float getGastoPorBloque() {
         return 3.0F;
+    }
+
+    @Override
+    public float getEscalaHud() {
+        return 0.9F;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

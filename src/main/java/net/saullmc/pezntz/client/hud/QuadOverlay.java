@@ -69,6 +69,8 @@ public class QuadOverlay {
 
     public static final boolean TEXTO_SOMBRA = true;
 
+    public static final boolean TEXTO_COMBUSTIBLE_REAL = true;
+
     public static final int TEXTO_COMBUSTIBLE_MAX = 100;
 
     private static final ResourceLocation TEX_PANEL =
@@ -117,13 +119,16 @@ public class QuadOverlay {
                 quad.getHealth() / quad.getMaxHealth(), COLOR_VIDA, TEX_BARRA_VIDA,
                 vidaActual + "/" + vidaMaxima);
 
-        float proporcionGasolina = quad.usaCombustible()
-                ? quad.getCombustible() / quad.getCombustibleMaximo()
-                : 1.0F;
-        int gasolinaActual = Math.round(proporcionGasolina * TEXTO_COMBUSTIBLE_MAX);
-        dibujarBarra(g, 0, BARRA_ALTO + HUECO_ENTRE_BARRAS,
-                proporcionGasolina, COLOR_GASOLINA, TEX_BARRA_COMBUSTIBLE,
-                gasolinaActual + "/" + TEXTO_COMBUSTIBLE_MAX);
+        if (quad.usaCombustible()) {
+            float proporcionGasolina = quad.getCombustible() / quad.getCombustibleMaximo();
+
+            String textoGasolina = TEXTO_COMBUSTIBLE_REAL
+                    ? Math.round(quad.getCombustible()) + "/" + Math.round(quad.getCombustibleMaximo())
+                    : Math.round(proporcionGasolina * TEXTO_COMBUSTIBLE_MAX) + "/" + TEXTO_COMBUSTIBLE_MAX;
+
+            dibujarBarra(g, 0, BARRA_ALTO + HUECO_ENTRE_BARRAS,
+                    proporcionGasolina, COLOR_GASOLINA, TEX_BARRA_COMBUSTIBLE, textoGasolina);
+        }
 
         g.pose().popPose();
 
@@ -173,8 +178,9 @@ public class QuadOverlay {
     private static void dibujarEntidad(GuiGraphics g, VehiculoBase quad, int x, int y) {
         g.pose().pushPose();
 
-        g.pose().translate(x, y, 50.0D);
-        g.pose().scale(TAMANIO_ENTIDAD, -TAMANIO_ENTIDAD, TAMANIO_ENTIDAD);
+        g.pose().translate(x + quad.getOffsetHudX(), y + quad.getOffsetHudY(), 50.0D);
+        float escala = TAMANIO_ENTIDAD * quad.getEscalaHud();
+        g.pose().scale(escala, -escala, escala);
         g.pose().mulPose(Axis.XP.rotationDegrees(ENTIDAD_PITCH));
         g.pose().mulPose(Axis.YP.rotationDegrees(ENTIDAD_YAW));
 

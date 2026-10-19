@@ -92,6 +92,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> CADAVER = BLOCKS.register("cadaver",
             () -> new Cadaver(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL).strength(0.6F).noOcclusion().explosionResistance(1200.0F)));
 
+    public static final RegistryObject<Block> COFRE_CANDADO = registerBlock("cofre_candado",
+            () -> new CofreCandado(BlockBehaviour.Properties.copy(Blocks.CHEST).strength(4.0F, 1200.0F).noOcclusion()));
+
     private static <T extends Block> RegistryObject<T> registerBlockConItemPropio(
             String name, Supplier<T> block, Function<RegistryObject<T>, Supplier<Item>> item) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

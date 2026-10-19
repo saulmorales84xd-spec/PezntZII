@@ -27,6 +27,13 @@ public class ModBlockEntities {
                             ModBlocks.CADAVER.get()
                     ).build(null));
 
+    public static final RegistryObject<BlockEntityType<CofreCandadoEntity>> COFRE_CANDADO =
+            BLOCK_ENTITIES.register("cofre_candado",
+                    () -> BlockEntityType.Builder.of(
+                            CofreCandadoEntity::new,
+                            ModBlocks.COFRE_CANDADO.get()
+                    ).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

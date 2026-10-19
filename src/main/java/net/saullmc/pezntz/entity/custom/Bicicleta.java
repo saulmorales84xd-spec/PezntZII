@@ -48,6 +48,11 @@ public class Bicicleta extends VehiculoBase {
         return 3.6F;
     }
 
+    @Override
+    public float getEscalaHud() {
+        return 1.15F;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 80.0D)

@@ -41,6 +41,11 @@ public class Quad extends VehiculoBase {
         return 2.5F;
     }
 
+    @Override
+    public float getEscalaHud() {
+        return 1.0F;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 200.0D)

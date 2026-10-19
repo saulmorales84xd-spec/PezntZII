@@ -104,6 +104,18 @@ public abstract class VehiculoBase extends PathfinderMob {
         return 250.0F;
     }
 
+    public float getEscalaHud() {
+        return 1.0F;
+    }
+
+    public float getOffsetHudX() {
+        return 0.0F;
+    }
+
+    public float getOffsetHudY() {
+        return 0.0F;
+    }
+
     public int getNumeroDeAsientos() {
         return Math.min(this.getAsientos().length, MAX_ASIENTOS);
     }
@@ -411,6 +423,13 @@ public abstract class VehiculoBase extends PathfinderMob {
             this.entityData.set(GIRO_RUEDA, this.entityData.get(GIRO_RUEDA) + this.velocidadActual);
 
             this.setDeltaMovement(adelante.x, this.calcularMovimientoVertical(), adelante.z);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            return;
+        }
+
+        if (this.esAcuatico()) {
+            Vec3 actual = this.getDeltaMovement();
+            this.setDeltaMovement(actual.x * 0.85D, this.calcularMovimientoVertical(), actual.z * 0.85D);
             this.move(MoverType.SELF, this.getDeltaMovement());
             return;
         }

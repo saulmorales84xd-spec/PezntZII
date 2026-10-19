@@ -1,5 +1,6 @@
 package net.saullmc.pezntz.entity.custom;
 
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -21,9 +22,13 @@ public class Lancha extends VehiculoBase {
             {-1.80F, 0.45F,  0.60F},
     };
 
-    private static final double EMPUJE = 0.08D;
+    private static final double CALADO = 0.22D;
 
-    private static final double ASENTAMIENTO = -0.012D;
+    private static final double MARGEN = 0.06D;
+
+    private static final double EMPUJE = 0.06D;
+
+    private static final double ASENTAMIENTO = -0.03D;
 
     public Lancha(EntityType<? extends PathfinderMob> tipo, Level nivel) {
         super(tipo, nivel);
@@ -80,7 +85,12 @@ public class Lancha extends VehiculoBase {
         if (!this.isInWater()) {
             return Math.max(this.getDeltaMovement().y - 0.08D, VELOCIDAD_CAIDA_MAXIMA);
         }
-        return this.isUnderWater() ? EMPUJE : ASENTAMIENTO;
+        double sumergido = this.getFluidHeight(FluidTags.WATER);
+
+        if (sumergido > CALADO + MARGEN) return EMPUJE;
+        if (sumergido < CALADO - MARGEN) return ASENTAMIENTO;
+
+        return 0.0D;
     }
 
     @Override
@@ -92,6 +102,16 @@ public class Lancha extends VehiculoBase {
     public boolean hurt(DamageSource fuente, float cantidad) {
         if (fuente.is(net.minecraft.world.damagesource.DamageTypes.DROWN)) return false;
         return super.hurt(fuente, cantidad);
+    }
+
+    @Override
+    public float getEscalaHud() {
+        return 0.38F;
+    }
+
+    @Override
+    public float getOffsetHudY() {
+        return 2.0F;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
