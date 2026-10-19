@@ -50,6 +50,18 @@ public class ModEntities {
             ENTITY_TYPES.register("quad", () -> EntityType.Builder.of(Quad::new, MobCategory.MISC)
                     .sized(1.5f, 1.2f).build("quad"));
 
+    public static final RegistryObject<EntityType<Bicicleta>> BICICLETA =
+            ENTITY_TYPES.register("bicicleta", () -> EntityType.Builder.of(Bicicleta::new, MobCategory.MISC)
+                    .sized(1.0f, 1.2f).build("bicicleta"));
+
+    public static final RegistryObject<EntityType<Motocicleta>> MOTOCICLETA =
+            ENTITY_TYPES.register("motocicleta", () -> EntityType.Builder.of(Motocicleta::new, MobCategory.MISC)
+                    .sized(1.2f, 1.3f).build("motocicleta"));
+
+    public static final RegistryObject<EntityType<Lancha>> LANCHA =
+            ENTITY_TYPES.register("lancha", () -> EntityType.Builder.of(Lancha::new, MobCategory.MISC)
+                    .sized(2.6f, 1.4f).clientTrackingRange(10).build("lancha"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

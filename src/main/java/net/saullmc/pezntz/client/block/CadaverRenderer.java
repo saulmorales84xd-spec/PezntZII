@@ -25,31 +25,38 @@ import java.util.UUID;
 
 public class CadaverRenderer implements BlockEntityRenderer<CadaverEntity> {
 
-    public static final float OFFSET_X = 0.5F;
-    public static final float OFFSET_Z = 0.5F;
+    public static final float[] CABEZA_POS      = { 0.0000F, 0.2500F,  0.2500F};
+    public static final float[] CABEZA_ROT      = {90.0F,  0.0F,  22.5F};
 
-    public static final float OFFSET_Y = 0.25F;
+    public static final float[] CUERPO_POS      = { 0.0000F, 0.1250F, -0.3750F};
+    public static final float[] CUERPO_ROT      = {90.0F,  0.0F,   0.0F};
 
-    public static final float DESPLAZAMIENTO_LARGO = -1.0F;
+    public static final float[] BRAZO_IZQ_POS   = {-0.3750F, 0.1250F, -0.3750F};
+    public static final float[] BRAZO_IZQ_ROT   = {90.0F, 22.5F,   0.0F};
 
-    public static final float ESCALA = 1.0F;
+    public static final float[] BRAZO_DER_POS   = { 0.5000F, 0.1250F, -0.3125F};
+    public static final float[] BRAZO_DER_ROT   = {90.0F,-22.5F,   0.0F};
 
-    public static final float GIRO_EXTRA = 0.0F;
+    public static final float[] PIERNA_IZQ_POS  = {-0.1250F, 0.1250F, -1.1250F};
+    public static final float[] PIERNA_IZQ_ROT  = {90.0F,  0.0F,   0.0F};
 
-    public static final float CABEZA_Z = 22.5F;
-    public static final float CABEZA_Y = 0.0F;
-
-    public static final float BRAZO_IZQ_Z = -22.5F;
-    public static final float BRAZO_DER_Z = 22.5F;
-
-    public static final float PIERNA_IZQ_Z = 0.0F;
-    public static final float PIERNA_DER_Z = -22.5F;
+    public static final float[] PIERNA_DER_POS  = { 0.1250F, 0.1250F, -1.1250F};
+    public static final float[] PIERNA_DER_ROT  = {90.0F,-22.5F,   0.0F};
 
     public static final boolean MOSTRAR_CAPAS = true;
 
+    public static final float GIRO_EXTRA = 0.0F;
+
     public static final int DISTANCIA_MAXIMA = 48;
 
-    private static final float A_RADIANES = (float) (Math.PI / 180.0);
+    private static final float[] C_CABEZA = {0.0F, -4.0F, 0.0F};
+    private static final float[] C_CUERPO = {0.0F,  6.0F, 0.0F};
+    private static final float[] C_PIERNA = {0.0F,  6.0F, 0.0F};
+
+    private static final float[] C_BRAZO_DER_ANCHO = {-1.0F, 4.0F, 0.0F};
+    private static final float[] C_BRAZO_IZQ_ANCHO = { 1.0F, 4.0F, 0.0F};
+    private static final float[] C_BRAZO_DER_FINO  = {-0.5F, 4.0F, 0.0F};
+    private static final float[] C_BRAZO_IZQ_FINO  = { 0.5F, 4.0F, 0.0F};
 
     private final PlayerModel<AbstractClientPlayer> modeloNormal;
     private final PlayerModel<AbstractClientPlayer> modeloFino;
@@ -63,68 +70,59 @@ public class CadaverRenderer implements BlockEntityRenderer<CadaverEntity> {
     public void render(CadaverEntity be, float partialTick, PoseStack poseStack,
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        PlayerModel<AbstractClientPlayer> modelo = esFino(be) ? this.modeloFino : this.modeloNormal;
-        ResourceLocation skin = resolverSkin(be);
-
-        prepararPostura(modelo);
+        boolean fino = esFino(be);
+        PlayerModel<AbstractClientPlayer> m = fino ? this.modeloFino : this.modeloNormal;
+        VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityTranslucent(resolverSkin(be)));
 
         poseStack.pushPose();
 
-        poseStack.translate(OFFSET_X, OFFSET_Y, OFFSET_Z);
-
+        poseStack.translate(0.5D, 0.0D, 0.5D);
         Direction cara = be.getBlockState().getValue(Cadaver.FACING);
         poseStack.mulPose(Axis.YP.rotationDegrees(-cara.toYRot() + GIRO_EXTRA));
+        poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-        poseStack.translate(0.0F, 0.0F, DESPLAZAMIENTO_LARGO);
+        float[] cBrazoDer = fino ? C_BRAZO_DER_FINO : C_BRAZO_DER_ANCHO;
+        float[] cBrazoIzq = fino ? C_BRAZO_IZQ_FINO : C_BRAZO_IZQ_ANCHO;
 
-        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-
-        poseStack.scale(-1.0F, -1.0F, 1.0F);
-        poseStack.scale(ESCALA, ESCALA, ESCALA);
-        poseStack.translate(0.0F, -1.501F, 0.0F);
-
-        VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityTranslucent(skin));
-        modelo.renderToBuffer(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY,
-                1.0F, 1.0F, 1.0F, 1.0F);
+        pieza(poseStack, buffer, packedLight, m.head,     m.hat,         CABEZA_POS,     CABEZA_ROT,     C_CABEZA);
+        pieza(poseStack, buffer, packedLight, m.body,     m.jacket,      CUERPO_POS,     CUERPO_ROT,     C_CUERPO);
+        pieza(poseStack, buffer, packedLight, m.leftArm,  m.leftSleeve,  BRAZO_IZQ_POS,  BRAZO_IZQ_ROT,  cBrazoIzq);
+        pieza(poseStack, buffer, packedLight, m.rightArm, m.rightSleeve, BRAZO_DER_POS,  BRAZO_DER_ROT,  cBrazoDer);
+        pieza(poseStack, buffer, packedLight, m.leftLeg,  m.leftPants,   PIERNA_IZQ_POS, PIERNA_IZQ_ROT, C_PIERNA);
+        pieza(poseStack, buffer, packedLight, m.rightLeg, m.rightPants,  PIERNA_DER_POS, PIERNA_DER_ROT, C_PIERNA);
 
         poseStack.popPose();
     }
 
-    private void prepararPostura(PlayerModel<AbstractClientPlayer> m) {
-        m.young = false;
-        m.crouching = false;
-        m.riding = false;
-        m.attackTime = 0.0F;
-        m.swimAmount = 0.0F;
+    private static void pieza(PoseStack ps, VertexConsumer buffer, int light,
+                              ModelPart parte, ModelPart capa,
+                              float[] pos, float[] rot, float[] centro) {
 
-        m.head.setPos(0.0F, 0.0F, 0.0F);
-        m.head.setRotation(0.0F, CABEZA_Y * A_RADIANES, CABEZA_Z * A_RADIANES);
+        ps.pushPose();
 
-        m.body.setRotation(0.0F, 0.0F, 0.0F);
+        ps.translate(0.5F + pos[0], pos[1], 0.5F + pos[2]);
 
-        m.rightArm.setRotation(0.0F, 0.0F, BRAZO_DER_Z * A_RADIANES);
-        m.leftArm.setRotation(0.0F, 0.0F, BRAZO_IZQ_Z * A_RADIANES);
+        ps.mulPose(Axis.YP.rotationDegrees(rot[1]));
+        ps.mulPose(Axis.ZP.rotationDegrees(rot[2]));
+        ps.mulPose(Axis.XP.rotationDegrees(rot[0]));
 
-        m.rightLeg.setRotation(0.0F, 0.0F, PIERNA_DER_Z * A_RADIANES);
-        m.leftLeg.setRotation(0.0F, 0.0F, PIERNA_IZQ_Z * A_RADIANES);
+        ps.scale(-1.0F, -1.0F, 1.0F);
 
-        m.hat.copyFrom(m.head);
-        m.jacket.copyFrom(m.body);
-        m.rightSleeve.copyFrom(m.rightArm);
-        m.leftSleeve.copyFrom(m.leftArm);
-        m.rightPants.copyFrom(m.rightLeg);
-        m.leftPants.copyFrom(m.leftLeg);
+        ps.translate(-centro[0] / 16.0F, -centro[1] / 16.0F, -centro[2] / 16.0F);
 
-        capa(m.hat);
-        capa(m.jacket);
-        capa(m.rightSleeve);
-        capa(m.leftSleeve);
-        capa(m.rightPants);
-        capa(m.leftPants);
-    }
+        parte.setPos(0.0F, 0.0F, 0.0F);
+        parte.setRotation(0.0F, 0.0F, 0.0F);
+        parte.visible = true;
+        parte.render(ps, buffer, light, OverlayTexture.NO_OVERLAY);
 
-    private static void capa(ModelPart parte) {
-        parte.visible = MOSTRAR_CAPAS;
+        if (MOSTRAR_CAPAS && capa != null) {
+            capa.setPos(0.0F, 0.0F, 0.0F);
+            capa.setRotation(0.0F, 0.0F, 0.0F);
+            capa.visible = true;
+            capa.render(ps, buffer, light, OverlayTexture.NO_OVERLAY);
+        }
+
+        ps.popPose();
     }
 
     private static ResourceLocation resolverSkin(CadaverEntity be) {
@@ -146,6 +144,7 @@ public class CadaverRenderer implements BlockEntityRenderer<CadaverEntity> {
         return uuid != null ? DefaultPlayerSkin.getDefaultSkin(uuid) : DefaultPlayerSkin.getDefaultSkin();
     }
 
+    /** Si la skin es de brazos finos, tipo Alex. */
     private static boolean esFino(CadaverEntity be) {
         Minecraft mc = Minecraft.getInstance();
         UUID uuid = be.getDuenioUuid();

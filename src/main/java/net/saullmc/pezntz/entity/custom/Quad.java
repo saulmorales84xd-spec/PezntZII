@@ -1,173 +1,44 @@
 package net.saullmc.pezntz.entity.custom;
 
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.ItemStack;
 import net.saullmc.pezntz.item.ModItems;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import java.util.UUID;
-import net.saullmc.pezntz.item.custom.LlaveVehiculo;
 
-public class Quad extends PathfinderMob {
+public class Quad extends VehiculoBase {
 
-    private static final EntityDataAccessor<Integer> DRIVER_ID = SynchedEntityData.defineId(Quad.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> PASSENGER_ID = SynchedEntityData.defineId(Quad.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> WHEEL_ROTATION = SynchedEntityData.defineId(Quad.class, EntityDataSerializers.FLOAT);
-
-    private static final EntityDataAccessor<Float> FUEL =
-            SynchedEntityData.defineId(Quad.class, EntityDataSerializers.FLOAT);
-
-    /** Deposito lleno. */
     public static final float MAX_FUEL = 2500.0F;
 
-    /**
-     * Gasolina por bloque recorrido.
-     *
-     * Con el deposito en 1000 y este valor, el quad da unos 400 bloques por deposito.
-     * Subelo para que gaste mas, bajalo para que rinda mas.
-     */
-    private static final float GASTO_POR_BLOQUE = 2.5F;
+    private static final float[][] ASIENTOS = {
+            {-0.1F, 0.3F},   // conductor
+            {-0.9F, 0.6F},   // acompaniante
+    };
 
-    /** Tope de caida, el mismo que usa vanilla. Evita que acelere sin fin al caer. */
-    private static final double VELOCIDAD_CAIDA_MAXIMA = -3.92D;
-
-    /** Lo que repone un item de combustible. */
-    public static final float RECARGA_POR_ITEM = 250.0F;
-
-    private static final EntityDataAccessor<Boolean> ENCENDIDO =
-            SynchedEntityData.defineId(Quad.class, EntityDataSerializers.BOOLEAN);
-
-    private float currentSpeed;
-
-    private double ultimaX;
-    private double ultimaZ;
-
-    public Quad(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
-        this.setMaxUpStep(1.1F);
+    public Quad(EntityType<? extends PathfinderMob> tipo, Level nivel) {
+        super(tipo, nivel);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DRIVER_ID, -1);
-        this.entityData.define(PASSENGER_ID, -1);
-        this.entityData.define(WHEEL_ROTATION, 0.0F);
-        this.entityData.define(FUEL, MAX_FUEL);
-        this.entityData.define(ENCENDIDO, false);
-    }
-
-    public float getFuel() {
-        return this.entityData.get(FUEL);
-    }
-
-    public void setFuel(float cantidad) {
-        this.entityData.set(FUEL, Mth.clamp(cantidad, 0.0F, MAX_FUEL));
-    }
-
-    public boolean estaEncendido() {
-        return this.entityData.get(ENCENDIDO);
-    }
-
-    public void setEncendido(boolean encendido) {
-        this.entityData.set(ENCENDIDO, encendido);
-    }
-
-    public boolean tieneGasolina() {
-        return this.getFuel() > 0.0F;
+    public float[][] getAsientos() {
+        return ASIENTOS;
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putFloat("Fuel", this.getFuel());
-        tag.putBoolean("Encendido", this.estaEncendido());
+    public float getCombustibleMaximo() {
+        return MAX_FUEL;
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setFuel(tag.contains("Fuel") ? tag.getFloat("Fuel") : MAX_FUEL);
-        this.setEncendido(tag.getBoolean("Encendido"));
+    public Item getLlave() {
+        return ModItems.LLAVE_VEHICULO.get();
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        if (this.level().isClientSide()) return;
-
-        if (this.isVehicle() && this.getFuel() > 0.0F) {
-            double dx = this.getX() - this.ultimaX;
-            double dz = this.getZ() - this.ultimaZ;
-            double avance = Math.sqrt(dx * dx + dz * dz);
-
-            if (avance > 0.02D) {
-                this.setFuel(this.getFuel() - (float) (avance * GASTO_POR_BLOQUE));
-            }
-        }
-
-        this.ultimaX = this.getX();
-        this.ultimaZ = this.getZ();
-    }
-
-    private void usarLlave(Player jugador, ItemStack llave) {
-        UUID mio = this.getUUID();
-
-        if (!LlaveVehiculo.estaEmparejada(llave)) {
-            LlaveVehiculo.emparejar(llave, mio);
-            this.setEncendido(true);
-
-            jugador.displayClientMessage(
-                    Component.literal("Llave emparejada con este vehiculo").withStyle(ChatFormatting.GOLD), true);
-            this.level().playSound(null, this.blockPosition(),
-                    SoundEvents.IRON_DOOR_OPEN, SoundSource.NEUTRAL, 0.7F, 1.4F);
-            return;
-        }
-
-        if (!LlaveVehiculo.sirvePara(llave, mio)) {
-            jugador.displayClientMessage(
-                    Component.literal("Esta llave no es de este vehiculo").withStyle(ChatFormatting.RED), true);
-            this.level().playSound(null, this.blockPosition(),
-                    SoundEvents.IRON_DOOR_CLOSE, SoundSource.NEUTRAL, 0.5F, 0.8F);
-            return;
-        }
-
-        boolean encender = !this.estaEncendido();
-        this.setEncendido(encender);
-
-        jugador.displayClientMessage(
-                Component.literal(encender ? "Motor encendido" : "Motor apagado")
-                        .withStyle(encender ? ChatFormatting.GREEN : ChatFormatting.GRAY), true);
-
-        this.level().playSound(null, this.blockPosition(),
-                encender ? SoundEvents.DISPENSER_LAUNCH : SoundEvents.DISPENSER_FAIL,
-                SoundSource.NEUTRAL, 0.8F, encender ? 1.2F : 0.9F);
-    }
-
-    @Override
-    protected void registerGoals() {
+    public float getGastoPorBloque() {
+        return 2.5F;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -177,205 +48,15 @@ public class Quad extends PathfinderMob {
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
+    public float getFuel() {
+        return this.getCombustible();
+    }
+
+    public void setFuel(float cantidad) {
+        this.setCombustible(cantidad);
+    }
+
     public float getWheelRotation() {
-        return this.entityData.get(WHEEL_ROTATION);
-    }
-
-    @Override
-    public boolean showVehicleHealth() {
-        return false;
-    }
-
-    @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pPos, BlockState pState) {
-    }
-
-    @Override
-    public boolean canFreeze() {
-        return false;
-    }
-
-    @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-
-        ItemStack enMano = pPlayer.getItemInHand(pHand);
-
-        if (enMano.getItem() instanceof LlaveVehiculo) {
-            if (!this.level().isClientSide()) {
-                usarLlave(pPlayer, enMano);
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
-        }
-
-        if (enMano.is(ModItems.BIDON_GASOLINA.get()) && this.getFuel() < MAX_FUEL) {
-            if (!this.level().isClientSide()) {
-                this.setFuel(this.getFuel() + RECARGA_POR_ITEM);
-
-                if (!pPlayer.getAbilities().instabuild) {
-                    enMano.shrink(1);
-                }
-
-                this.level().playSound(null, this.blockPosition(),
-                        SoundEvents.BUCKET_FILL, SoundSource.NEUTRAL, 0.8F, 1.2F);
-            }
-
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
-        }
-
-        if (!this.level().isClientSide) {
-            if (this.entityData.get(DRIVER_ID) == -1) {
-                pPlayer.setYRot(this.getYRot());
-                pPlayer.setXRot(0.0F);
-                pPlayer.setYBodyRot(this.getYRot());
-                pPlayer.setYHeadRot(this.getYRot());
-            }
-            pPlayer.startRiding(this);
-        } else {
-            if (this.entityData.get(DRIVER_ID) == -1) {
-                pPlayer.setYRot(this.getYRot());
-                pPlayer.setXRot(0.0F);
-                pPlayer.setYBodyRot(this.getYRot());
-                pPlayer.setYHeadRot(this.getYRot());
-            }
-        }
-        return InteractionResult.sidedSuccess(this.level().isClientSide);
-    }
-
-    @Override
-    protected boolean canAddPassenger(Entity pPassenger) {
-        return this.getPassengers().size() < 2;
-    }
-
-    @Override
-    protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
-        if (!this.level().isClientSide) {
-            if (this.entityData.get(DRIVER_ID) == -1) {
-                this.entityData.set(DRIVER_ID, passenger.getId());
-            }
-            else if (this.entityData.get(PASSENGER_ID) == -1) {
-                this.entityData.set(PASSENGER_ID, passenger.getId());
-            }
-        }
-    }
-
-    @Override
-    protected void removePassenger(Entity passenger) {
-        super.removePassenger(passenger);
-        if (!this.level().isClientSide) {
-            if (passenger.getId() == this.entityData.get(DRIVER_ID)) {
-                this.entityData.set(DRIVER_ID, -1);
-            }
-            if (passenger.getId() == this.entityData.get(PASSENGER_ID)) {
-                this.entityData.set(PASSENGER_ID, -1);
-            }
-        }
-    }
-
-    @Nullable
-    @Override
-    public LivingEntity getControllingPassenger() {
-        int driverId = this.entityData.get(DRIVER_ID);
-        if (driverId != -1) {
-            Entity driver = this.level().getEntity(driverId);
-            if (driver instanceof LivingEntity living && this.hasPassenger(driver)) {
-                return living;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    protected void positionRider(Entity pPassenger, Entity.MoveFunction pCallback) {
-        if (this.hasPassenger(pPassenger)) {
-
-            float conductorAdelanteZ = -0.1F;
-            float conductorAlturaY = 0.3F;
-
-            float pasajeroAtrasZ = -0.9F;
-            float pasajeroAlturaY = 0.6F;
-
-            float rotacionCuerpo = this.yBodyRot * ((float)Math.PI / 180F);
-
-            if (pPassenger.getId() == this.entityData.get(DRIVER_ID)) {
-                double offsetX = Math.sin(-rotacionCuerpo) * conductorAdelanteZ;
-                double offsetZ = Math.cos(rotacionCuerpo) * conductorAdelanteZ;
-                pCallback.accept(pPassenger, this.getX() + offsetX, this.getY() + conductorAlturaY, this.getZ() + offsetZ);
-            } else {
-                double offsetX = Math.sin(-rotacionCuerpo) * pasajeroAtrasZ;
-                double offsetZ = Math.cos(rotacionCuerpo) * pasajeroAtrasZ;
-                pCallback.accept(pPassenger, this.getX() + offsetX, this.getY() + pasajeroAlturaY, this.getZ() + offsetZ);
-            }
-        }
-    }
-
-    @Override
-    public void onPassengerTurned(Entity pEntityToUpdate) {
-        if (pEntityToUpdate.getId() == this.entityData.get(DRIVER_ID)) {
-            pEntityToUpdate.setYBodyRot(this.getYRot());
-            float f = Mth.wrapDegrees(pEntityToUpdate.getYRot() - this.getYRot());
-            float f1 = Mth.clamp(f, -105.0F, 105.0F);
-            pEntityToUpdate.yRotO += f1 - f;
-            pEntityToUpdate.setYRot(pEntityToUpdate.getYRot() + f1 - f);
-            pEntityToUpdate.setYHeadRot(pEntityToUpdate.getYRot());
-        }
-    }
-
-    @Override
-    public void travel(Vec3 travelVector) {
-        LivingEntity driver = this.getControllingPassenger();
-
-        if (this.isUnderWater()) {
-            this.currentSpeed = 0.0F;
-            super.travel(travelVector);
-            return;
-        }
-
-        if (this.isVehicle() && driver != null) {
-
-            float steer = driver.xxa;
-            float throttle = driver.zza;
-
-            if (!this.estaEncendido()) {
-                throttle = 0.0F;
-                this.currentSpeed *= 0.90F;
-            }
-
-            if (!this.tieneGasolina()) {
-                throttle = 0.0F;
-                this.currentSpeed *= 0.90F;
-            }
-
-            float maxSpeed = 0.6F;
-            if (throttle > 0) this.currentSpeed = Mth.clamp(this.currentSpeed + 0.02F, -maxSpeed * 0.5F, maxSpeed);
-            else if (throttle < 0) this.currentSpeed = Mth.clamp(this.currentSpeed - 0.02F, -maxSpeed * 0.5F, maxSpeed);
-            else this.currentSpeed *= 0.92F;
-
-            if (Math.abs(this.currentSpeed) > 0.01F) {
-                float turnRate = 3.0F * Math.signum(this.currentSpeed);
-                this.setYRot(this.getYRot() - steer * turnRate);
-            }
-
-            this.yRotO = this.getYRot();
-            this.yBodyRot = this.getYRot();
-            this.yHeadRot = this.getYRot();
-
-            Vec3 forward = Vec3.directionFromRotation(0, this.getYRot()).scale(this.currentSpeed);
-
-            this.entityData.set(WHEEL_ROTATION, this.entityData.get(WHEEL_ROTATION) + this.currentSpeed);
-
-            double motionY = Math.max(this.getDeltaMovement().y - 0.08D, VELOCIDAD_CAIDA_MAXIMA);
-
-            this.setDeltaMovement(forward.x, motionY, forward.z);
-
-            this.move(MoverType.SELF, this.getDeltaMovement());
-            return;
-        }
-        super.travel(travelVector);
+        return this.getGiroRueda();
     }
 }

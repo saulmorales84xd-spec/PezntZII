@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.saullmc.pezntz.PezntZMod;
-import net.saullmc.pezntz.entity.custom.Quad;
+import net.saullmc.pezntz.entity.custom.VehiculoBase;
 
 @OnlyIn(Dist.CLIENT)
 public class QuadOverlay {
@@ -85,7 +85,7 @@ public class QuadOverlay {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.options.hideGui) return;
 
-        if (!(mc.player.getVehicle() instanceof Quad quad)) return;
+        if (!(mc.player.getVehicle() instanceof VehiculoBase quad)) return;
 
         g.pose().pushPose();
         g.pose().scale(SCALE, SCALE, 1.0F);
@@ -117,7 +117,9 @@ public class QuadOverlay {
                 quad.getHealth() / quad.getMaxHealth(), COLOR_VIDA, TEX_BARRA_VIDA,
                 vidaActual + "/" + vidaMaxima);
 
-        float proporcionGasolina = quad.getFuel() / Quad.MAX_FUEL;
+        float proporcionGasolina = quad.usaCombustible()
+                ? quad.getCombustible() / quad.getCombustibleMaximo()
+                : 1.0F;
         int gasolinaActual = Math.round(proporcionGasolina * TEXTO_COMBUSTIBLE_MAX);
         dibujarBarra(g, 0, BARRA_ALTO + HUECO_ENTRE_BARRAS,
                 proporcionGasolina, COLOR_GASOLINA, TEX_BARRA_COMBUSTIBLE,
@@ -168,7 +170,7 @@ public class QuadOverlay {
         g.pose().popPose();
     }
 
-    private static void dibujarEntidad(GuiGraphics g, Quad quad, int x, int y) {
+    private static void dibujarEntidad(GuiGraphics g, VehiculoBase quad, int x, int y) {
         g.pose().pushPose();
 
         g.pose().translate(x, y, 50.0D);

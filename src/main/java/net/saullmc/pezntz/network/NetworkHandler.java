@@ -58,6 +58,11 @@ public class NetworkHandler {
                 .decoder(HealSpecificPartPacket::new)
                 .encoder(HealSpecificPartPacket::toBytes)
                 .consumerMainThread(HealSpecificPartPacket::handle).add();
+
+        net.messageBuilder(CambiarAsientoPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(CambiarAsientoPacket::new)
+                .encoder(CambiarAsientoPacket::toBytes)
+                .consumerMainThread(CambiarAsientoPacket::handle).add();
     }
 
     public static <MSG> void sendToTracking(MSG message, Entity entity) {

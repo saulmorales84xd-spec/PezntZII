@@ -29,4 +29,13 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation QUAD_LAYER = new ModelLayerLocation(
             new ResourceLocation(PezntZMod.MOD_ID, "quad_layer"),"main");
+
+    public static final ModelLayerLocation BICICLETA_LAYER = new ModelLayerLocation(
+            new ResourceLocation(PezntZMod.MOD_ID, "bicicleta_layer"),"main");
+
+    public static final ModelLayerLocation MOTOCICLETA_LAYER = new ModelLayerLocation(
+            new ResourceLocation(PezntZMod.MOD_ID, "motocicleta_layer"),"main");
+
+    public static final ModelLayerLocation LANCHA_LAYER = new ModelLayerLocation(
+            new ResourceLocation(PezntZMod.MOD_ID, "lancha_layer"),"main");
 }

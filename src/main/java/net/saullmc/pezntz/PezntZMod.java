@@ -19,7 +19,10 @@ import net.saullmc.pezntz.block.entity.ModBlockEntities;
 import net.saullmc.pezntz.effect.ModEffects;
 import net.saullmc.pezntz.entity.ModEntities;
 import net.saullmc.pezntz.entity.client.arrastrador.ZombieArrastradorRender;
+import net.saullmc.pezntz.entity.client.bicicleta.BicicletaRender;
 import net.saullmc.pezntz.entity.client.hinchado.ZombieHinchadoRender;
+import net.saullmc.pezntz.entity.client.lancha.LanchaRender;
+import net.saullmc.pezntz.entity.client.motocicleta.MotocicletaRender;
 import net.saullmc.pezntz.entity.client.parasitador.ZombieParasitadorRender;
 import net.saullmc.pezntz.entity.client.quad.QuadRender;
 import net.saullmc.pezntz.entity.client.rata.RataCarroneraRender;
@@ -97,6 +100,9 @@ public class PezntZMod {
             EntityRenderers.register(ModEntities.RATA_CARRONERA.get(), RataCarroneraRender::new);
             EntityRenderers.register(ModEntities.MOSQUITO_ZUMBADOR.get(), MosquitoZumbadorRender::new);
             EntityRenderers.register(ModEntities.QUAD.get(), QuadRender::new);
+            EntityRenderers.register(ModEntities.BICICLETA.get(), BicicletaRender::new);
+            EntityRenderers.register(ModEntities.MOTOCICLETA.get(), MotocicletaRender::new);
+            EntityRenderers.register(ModEntities.LANCHA.get(), LanchaRender::new);
 
             EntityRenderers.register(ModEntities.BOLA_ACIDO.get(),
                     context -> new ThrownItemRenderer<>(context, 2.5F, false));

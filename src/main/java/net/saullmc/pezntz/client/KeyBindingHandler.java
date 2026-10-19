@@ -12,7 +12,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.client.screen.HealingScreen;
 import org.lwjgl.glfw.GLFW;
 import net.saullmc.pezntz.network.NetworkHandler;
+import net.saullmc.pezntz.network.CambiarAsientoPacket;
 import net.saullmc.pezntz.network.OpenBackpackPacket;
+import net.saullmc.pezntz.entity.custom.VehiculoBase;
 
 @Mod.EventBusSubscriber(modid = "pezntz", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class KeyBindingHandler {
@@ -33,10 +35,19 @@ public class KeyBindingHandler {
             "category.pezntz.keys"
     );
 
+    public static final KeyMapping CAMBIAR_ASIENTO_KEY = new KeyMapping(
+            "key.pezntz.cambiar_asiento",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_LEFT_CONTROL,
+            "category.pezntz.keys"
+    );
+
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(MEDICAL_GUI_KEY);
         event.register(BACKPACK_KEY);
+        event.register(CAMBIAR_ASIENTO_KEY);
     }
 
     @Mod.EventBusSubscriber(modid = "pezntz", bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -48,6 +59,12 @@ public class KeyBindingHandler {
             if (MEDICAL_GUI_KEY.consumeClick()) {
                 if (mc.player != null && mc.screen == null) {
                     mc.setScreen(new HealingScreen());
+                }
+            }
+
+            if (CAMBIAR_ASIENTO_KEY.consumeClick()) {
+                if (mc.player != null && mc.player.getVehicle() instanceof VehiculoBase) {
+                    NetworkHandler.sendToServer(new CambiarAsientoPacket());
                 }
             }
 

@@ -8,6 +8,9 @@ import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.entity.ModBlockEntities;
 import net.saullmc.pezntz.client.block.CadaverRenderer;
 import net.saullmc.pezntz.client.block.PrensaRenderer;
+import net.saullmc.pezntz.entity.client.bicicleta.BicicletaModel;
+import net.saullmc.pezntz.entity.client.motocicleta.MotocicletaModel;
+import net.saullmc.pezntz.entity.client.lancha.LanchaModel;
 import net.saullmc.pezntz.entity.client.ModModelLayers;
 import net.saullmc.pezntz.entity.client.arrastrador.ZombieArrastradorModel;
 import net.saullmc.pezntz.entity.client.hinchado.ZombieHinchadoModel;
@@ -30,6 +33,9 @@ public class ModEventBusClientEvents {
         event.registerLayerDefinition(ModModelLayers.RATA_CARRONERA_LAYER, RataCarroneraModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.MOSQUITO_ZUMBADOR_LAYER, MosquitoZumbadorModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.QUAD_LAYER, QuadModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.BICICLETA_LAYER, BicicletaModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.MOTOCICLETA_LAYER, MotocicletaModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.LANCHA_LAYER, LanchaModel::createBodyLayer);
 
     }
 

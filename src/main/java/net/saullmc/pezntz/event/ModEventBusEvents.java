@@ -19,6 +19,9 @@ public class ModEventBusEvents {
         event.put(ModEntities.RATA_CARRONERA.get(), RataCarronera.createAttributes().build());
         event.put(ModEntities.MOSQUITO_ZUMBADOR.get(), MosquitoZumbador.createAttributes().build());
         event.put(ModEntities.QUAD.get(), Quad.createAttributes().build());
+        event.put(ModEntities.BICICLETA.get(), Bicicleta.createAttributes().build());
+        event.put(ModEntities.MOTOCICLETA.get(), Motocicleta.createAttributes().build());
+        event.put(ModEntities.LANCHA.get(), Lancha.createAttributes().build());
 
     }
 }
