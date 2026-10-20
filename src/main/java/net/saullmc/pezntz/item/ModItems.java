@@ -306,6 +306,15 @@ public class ModItems {
             () -> new ArmaduraModItem(ModArmorMaterials.TRAJE_BIOSEGURIDAD, ArmorItem.Type.BOOTS,
                     new Item.Properties(), "armadura_tactica", "traje_bioseguridad", 5.0D, 1.0F, true));
 
+    public static final RegistryObject<Item> BOTON_1 = ITEMS.register("boton_1",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> BOTON_2 = ITEMS.register("boton_2",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> BOTON_3 = ITEMS.register("boton_3",
+            () -> new Item(new Item.Properties()));
+
     public static void register (IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

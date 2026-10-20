@@ -16,6 +16,8 @@ import java.util.function.Supplier;
 
 public class CodigoCofrePacket {
 
+    public static final boolean ABRIR_AL_PONER_CODIGO = true;
+
     private static final int MAX_LARGO = 16;
 
     private static final double DISTANCIA_MAXIMA = 8.0D;
@@ -23,24 +25,19 @@ public class CodigoCofrePacket {
     private final BlockPos pos;
     private final String codigo;
 
-    private final boolean estableciendo;
-
-    public CodigoCofrePacket(BlockPos pos, String codigo, boolean estableciendo) {
+    public CodigoCofrePacket(BlockPos pos, String codigo) {
         this.pos = pos;
         this.codigo = codigo;
-        this.estableciendo = estableciendo;
     }
 
     public CodigoCofrePacket(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         this.codigo = buf.readUtf(MAX_LARGO);
-        this.estableciendo = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(this.pos);
         buf.writeUtf(this.codigo, MAX_LARGO);
-        buf.writeBoolean(this.estableciendo);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -58,12 +55,7 @@ public class CodigoCofrePacket {
             BlockEntity be = jugador.level().getBlockEntity(pos);
             if (!(be instanceof CofreCandadoEntity cofre)) return;
 
-            if (estableciendo) {
-                if (cofre.tieneCodigo()) {
-                    mensaje(jugador, "Este cofre ya tiene codigo", ChatFormatting.RED);
-                    return;
-                }
-
+            if (!cofre.tieneCodigo()) {
                 if (!cofre.ponerCodigo(codigo)) {
                     mensaje(jugador, "El codigo deben ser 4 numeros", ChatFormatting.RED);
                     return;
@@ -72,6 +64,10 @@ public class CodigoCofrePacket {
                 cofre.setDuenio(jugador);
                 mensaje(jugador, "Codigo guardado", ChatFormatting.GREEN);
                 sonido(jugador, SoundEvents.IRON_DOOR_CLOSE, 1.2F);
+
+                if (ABRIR_AL_PONER_CODIGO) {
+                    CofreCandado.abrirContenido(jugador, cofre);
+                }
                 return;
             }
 

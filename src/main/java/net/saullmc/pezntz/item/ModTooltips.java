@@ -494,6 +494,11 @@ public class ModTooltips {
         colorNombre(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD .get(), 0xcaa226);
         colorNombre(ModItems.BOOTS_TRAJE_BIOSEGURIDAD .get(), 0xcaa226);
 
+        colorNombre(ModItems.BOTON_1 .get(), 0xc4a333);
+        colorNombre(ModItems.BOTON_2 .get(), 0x4768a1);
+        colorNombre(ModItems.BOTON_3 .get(), 0x962424);
+
+
     }
 
     private static final Pattern MARCAS =

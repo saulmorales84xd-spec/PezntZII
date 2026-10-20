@@ -38,7 +38,4 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation LANCHA_LAYER = new ModelLayerLocation(
             new ResourceLocation(PezntZMod.MOD_ID, "lancha_layer"),"main");
-
-    public static final ModelLayerLocation COFRE_CANDADO_LAYER = new ModelLayerLocation(
-            new ResourceLocation(PezntZMod.MOD_ID, "cofre_candado_layer"),"main");
 }

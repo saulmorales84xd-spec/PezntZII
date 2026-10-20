@@ -68,6 +68,11 @@ public class NetworkHandler {
                 .decoder(CodigoCofrePacket::new)
                 .encoder(CodigoCofrePacket::toBytes)
                 .consumerMainThread(CodigoCofrePacket::handle).add();
+
+        net.messageBuilder(AbrirTecladoPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(AbrirTecladoPacket::new)
+                .encoder(AbrirTecladoPacket::toBytes)
+                .consumerMainThread(AbrirTecladoPacket::handle).add();
     }
 
     public static <MSG> void sendToTracking(MSG message, Entity entity) {

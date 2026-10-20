@@ -3,12 +3,13 @@ package net.saullmc.pezntz.client.screen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.entity.CofreCandadoEntity;
 import net.saullmc.pezntz.network.CodigoCofrePacket;
 import net.saullmc.pezntz.network.NetworkHandler;
@@ -16,22 +17,94 @@ import org.lwjgl.glfw.GLFW;
 
 public class TecladoScreen extends Screen {
 
-    public static final int TECLA = 34;          // lado de cada tecla
-    public static final int HUECO = 4;           // separacion entre teclas
-    public static final int BARRA_ALTO = 26;     // alto de la barra del codigo
-    public static final int HUECO_BARRA = 8;     // separacion entre la barra y las teclas
+    public static final ResourceLocation TEXTURA =
+            new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/teclado.png");
 
-    public static final int COLOR_FONDO       = 0xE0101014;
-    public static final int COLOR_TECLA       = 0xFF2B2B33;
-    public static final int COLOR_TECLA_SOBRE = 0xFF3D3D47;
-    public static final int COLOR_BORDE       = 0xFF000000;
+    /** Tamanio REAL del png, en pixeles. Minecraft lo necesita para recortar bien. */
+    public static final int TEXTURA_ANCHO = 256;
+    public static final int TEXTURA_ALTO = 256;
+
+    /** Trozo del png que se dibuja, y por tanto tamanio de la ventana en pantalla. */
+    public static final int GUI_ANCHO = 176;
+    public static final int GUI_ALTO = 200;
+
+    /** De que punto del png se empieza a recortar. */
+    public static final int GUI_U = 0;
+    public static final int GUI_V = 0;
+
+    /** Desplazamiento de toda la ventana respecto al centro de la pantalla. */
+    public static final int GUI_OFFSET_X = 0;
+    public static final int GUI_OFFSET_Y = 0;
+
+    /** Si es false no se pinta ningun fondo y solo quedan las teclas. */
+    public static final boolean DIBUJAR_FONDO = true;
+
+    /** Oscurecer el juego por detras. */
+    public static final boolean OSCURECER_DETRAS = true;
+
+    // LA REJILLA DE TECLAS
+    // Las coordenadas van desde la esquina de la ventana.
+
+    /** Esquina de la primera tecla, la del 1. */
+    public static final int TECLAS_X = 28;
+    public static final int TECLAS_Y = 60;
+
+    /** Tamanio de cada tecla. Esto es lo que las escala. */
+    public static final int TECLA_ANCHO = 34;
+    public static final int TECLA_ALTO = 30;
+
+    /** Separacion entre teclas. */
+    public static final int TECLA_HUECO_X = 4;
+    public static final int TECLA_HUECO_Y = 4;
+
+    /**
+     * Si tu textura YA trae los numeros dibujados, ponlo a false y aqui no se escribe
+     * nada encima.
+     */
+    public static final boolean MOSTRAR_NUMEROS = true;
+    public static final int NUMERO_COLOR = 0xFFFFFFFF;
+
+    /** Lo que se pinta encima de la tecla que tiene el raton. Un velo claro. */
+    public static final int COLOR_TECLA_SOBRE = 0x40FFFFFF;
+
+    /** Borde de la tecla que tiene el raton. 0 lo quita. */
+    public static final int GROSOR_BORDE = 1;
     public static final int COLOR_BORDE_SOBRE = 0xFFFFFFFF;
-    public static final int COLOR_TEXTO       = 0xFFFFFFFF;
-    public static final int COLOR_BORRAR      = 0xFFB33A3A;
-    public static final int COLOR_ENVIAR      = 0xFF3AA355;
-    public static final int COLOR_BARRA       = 0xFF17171C;
 
-    public static final int GROSOR_BORDE = 2;
+    // LA BARRA DEL CODIGO
+
+    public static final int BARRA_X = 28;
+    public static final int BARRA_Y = 26;
+    public static final int BARRA_ANCHO = 90;
+    public static final int BARRA_ALTO = 24;
+
+    /** Si tu textura ya trae el hueco dibujado, ponlo a false. */
+    public static final boolean DIBUJAR_FONDO_BARRA = false;
+    public static final int COLOR_BARRA = 0xFF17171C;
+
+    /** Tamanio del codigo escrito. 1.0 es el normal. */
+    public static final float CODIGO_ESCALA = 1.5F;
+    public static final int CODIGO_COLOR = 0xFFFFFFFF;
+
+    /** Caracter que tapa cada digito mientras esta oculto. */
+    public static final String CODIGO_OCULTO = "x";
+
+    /** Caracter de los huecos que faltan. */
+    public static final String CODIGO_VACIO = "_";
+
+    // EL BOTON DEL OJO
+
+    public static final int OJO_X = 124;
+    public static final int OJO_Y = 26;
+    public static final int OJO_ANCHO = 24;
+    public static final int OJO_ALTO = 24;
+
+    /** Si tu textura ya trae el ojo dibujado, ponlo a false. */
+    public static final boolean DIBUJAR_TEXTO_OJO = true;
+    public static final String TEXTO_OJO_VISIBLE = "O";
+    public static final String TEXTO_OJO_OCULTO = "-";
+
+    public static final String SONIDO_TECLA = "minecraft:ui.button.click";
 
     private static final int COLUMNAS = 3;
     private static final int FILAS = 4;
@@ -45,9 +118,8 @@ public class TecladoScreen extends Screen {
     private String aviso = "";
     private int avisoTicks = 0;
 
-    private int origenX;
-    private int origenY;
-    private int ancho;
+    private int guiX;
+    private int guiY;
 
     public TecladoScreen(BlockPos pos, boolean yaTieneCodigo) {
         super(Component.literal(yaTieneCodigo ? "Introduce el codigo" : "Elige un codigo"));
@@ -61,11 +133,8 @@ public class TecladoScreen extends Screen {
 
     @Override
     protected void init() {
-        this.ancho = COLUMNAS * TECLA + (COLUMNAS - 1) * HUECO;
-        int alto = BARRA_ALTO + HUECO_BARRA + FILAS * TECLA + (FILAS - 1) * HUECO;
-
-        this.origenX = (this.width - this.ancho) / 2;
-        this.origenY = (this.height - alto) / 2;
+        this.guiX = (this.width - GUI_ANCHO) / 2 + GUI_OFFSET_X;
+        this.guiY = (this.height - GUI_ALTO) / 2 + GUI_OFFSET_Y;
     }
 
     @Override
@@ -75,75 +144,98 @@ public class TecladoScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(g);
+        if (OSCURECER_DETRAS) this.renderBackground(g);
 
-        int margen = 10;
-        int alto = BARRA_ALTO + HUECO_BARRA + FILAS * TECLA + (FILAS - 1) * HUECO;
-        g.fill(origenX - margen, origenY - margen - 14,
-                origenX + ancho + margen, origenY + alto + margen, COLOR_FONDO);
+        if (DIBUJAR_FONDO) {
+            g.blit(TEXTURA, guiX, guiY, GUI_U, GUI_V, GUI_ANCHO, GUI_ALTO, TEXTURA_ANCHO, TEXTURA_ALTO);
+        }
 
-        g.drawCenteredString(this.font, this.title, origenX + ancho / 2, origenY - margen - 10, COLOR_TEXTO);
-
-        dibujarBarra(g, mouseX, mouseY);
+        dibujarBarra(g);
+        dibujarOjo(g, mouseX, mouseY);
 
         for (int i = 0; i < 12; i++) {
             dibujarTecla(g, i, mouseX, mouseY);
         }
 
         if (avisoTicks > 0) {
-            g.drawCenteredString(this.font, aviso, origenX + ancho / 2, origenY + alto + 4, COLOR_BORRAR);
+            g.drawCenteredString(this.font, aviso, guiX + GUI_ANCHO / 2, guiY + GUI_ALTO + 4, 0xFFFF5555);
         }
 
         super.render(g, mouseX, mouseY, partialTick);
     }
 
-    private void dibujarBarra(GuiGraphics g, int mouseX, int mouseY) {
-        int x = origenX;
-        int y = origenY;
-        int anchoOjo = BARRA_ALTO;
-        int anchoTexto = ancho - anchoOjo - HUECO;
+    private void dibujarBarra(GuiGraphics g) {
+        int x = guiX + BARRA_X;
+        int y = guiY + BARRA_Y;
 
-        g.fill(x, y, x + anchoTexto, y + BARRA_ALTO, COLOR_BARRA);
+        if (DIBUJAR_FONDO_BARRA) {
+            g.fill(x, y, x + BARRA_ANCHO, y + BARRA_ALTO, COLOR_BARRA);
+        }
 
         StringBuilder mostrado = new StringBuilder();
         for (int i = 0; i < CofreCandadoEntity.DIGITOS; i++) {
             if (i > 0) mostrado.append(' ');
-            if (i < codigo.length()) mostrado.append(visible ? codigo.charAt(i) : 'x');
-            else mostrado.append('_');
+
+            if (i < codigo.length()) {
+                mostrado.append(visible ? String.valueOf(codigo.charAt(i)) : CODIGO_OCULTO);
+            } else {
+                mostrado.append(CODIGO_VACIO);
+            }
         }
-        g.drawCenteredString(this.font, mostrado.toString(),
-                x + anchoTexto / 2, y + (BARRA_ALTO - 8) / 2, COLOR_TEXTO);
 
-        int ojoX = x + anchoTexto + HUECO;
-        boolean sobre = dentro(mouseX, mouseY, ojoX, y, anchoOjo, BARRA_ALTO);
+        String texto = mostrado.toString();
+        int ancho = this.font.width(texto);
 
-        g.fill(ojoX - GROSOR_BORDE, y - GROSOR_BORDE, ojoX + anchoOjo + GROSOR_BORDE, y + BARRA_ALTO + GROSOR_BORDE,
-                sobre ? COLOR_BORDE_SOBRE : COLOR_BORDE);
-        g.fill(ojoX, y, ojoX + anchoOjo, y + BARRA_ALTO, sobre ? COLOR_TECLA_SOBRE : COLOR_TECLA);
-        g.drawCenteredString(this.font, visible ? "O" : "-",
-                ojoX + anchoOjo / 2, y + (BARRA_ALTO - 8) / 2, COLOR_TEXTO);
+        g.pose().pushPose();
+        g.pose().translate(x + BARRA_ANCHO / 2.0F, y + BARRA_ALTO / 2.0F, 0.0F);
+        g.pose().scale(CODIGO_ESCALA, CODIGO_ESCALA, 1.0F);
+
+        g.drawString(this.font, texto, -ancho / 2, -4, CODIGO_COLOR, false);
+
+        g.pose().popPose();
+    }
+
+    private void dibujarOjo(GuiGraphics g, int mouseX, int mouseY) {
+        int x = guiX + OJO_X;
+        int y = guiY + OJO_Y;
+        boolean sobre = dentro(mouseX, mouseY, x, y, OJO_ANCHO, OJO_ALTO);
+
+        if (sobre) resaltar(g, x, y, OJO_ANCHO, OJO_ALTO);
+
+        if (DIBUJAR_TEXTO_OJO) {
+            String texto = visible ? TEXTO_OJO_VISIBLE : TEXTO_OJO_OCULTO;
+            g.drawCenteredString(this.font, texto, x + OJO_ANCHO / 2, y + (OJO_ALTO - 8) / 2, NUMERO_COLOR);
+        }
     }
 
     private void dibujarTecla(GuiGraphics g, int indice, int mouseX, int mouseY) {
-        int col = indice % COLUMNAS;
-        int fila = indice / COLUMNAS;
+        int x = teclaX(indice);
+        int y = teclaY(indice);
 
-        int x = origenX + col * (TECLA + HUECO);
-        int y = origenY + BARRA_ALTO + HUECO_BARRA + fila * (TECLA + HUECO);
+        if (dentro(mouseX, mouseY, x, y, TECLA_ANCHO, TECLA_ALTO)) {
+            resaltar(g, x, y, TECLA_ANCHO, TECLA_ALTO);
+        }
 
-        boolean sobre = dentro(mouseX, mouseY, x, y, TECLA, TECLA);
+        if (MOSTRAR_NUMEROS) {
+            g.drawCenteredString(this.font, etiqueta(indice),
+                    x + TECLA_ANCHO / 2, y + (TECLA_ALTO - 8) / 2, NUMERO_COLOR);
+        }
+    }
 
-        int fondo = switch (indice) {
-            case 9 -> COLOR_BORRAR;
-            case 11 -> COLOR_ENVIAR;
-            default -> sobre ? COLOR_TECLA_SOBRE : COLOR_TECLA;
-        };
+    private static void resaltar(GuiGraphics g, int x, int y, int ancho, int alto) {
+        if (GROSOR_BORDE > 0) {
+            g.fill(x - GROSOR_BORDE, y - GROSOR_BORDE, x + ancho + GROSOR_BORDE, y + alto + GROSOR_BORDE,
+                    COLOR_BORDE_SOBRE);
+        }
+        g.fill(x, y, x + ancho, y + alto, COLOR_TECLA_SOBRE);
+    }
 
-        g.fill(x - GROSOR_BORDE, y - GROSOR_BORDE, x + TECLA + GROSOR_BORDE, y + TECLA + GROSOR_BORDE,
-                sobre ? COLOR_BORDE_SOBRE : COLOR_BORDE);
-        g.fill(x, y, x + TECLA, y + TECLA, fondo);
+    private int teclaX(int indice) {
+        return guiX + TECLAS_X + (indice % COLUMNAS) * (TECLA_ANCHO + TECLA_HUECO_X);
+    }
 
-        g.drawCenteredString(this.font, etiqueta(indice), x + TECLA / 2, y + (TECLA - 8) / 2, COLOR_TEXTO);
+    private int teclaY(int indice) {
+        return guiY + TECLAS_Y + (indice / COLUMNAS) * (TECLA_ALTO + TECLA_HUECO_Y);
     }
 
     private static String etiqueta(int indice) {
@@ -166,21 +258,14 @@ public class TecladoScreen extends Screen {
         int mx = (int) mouseX;
         int my = (int) mouseY;
 
-        int anchoOjo = BARRA_ALTO;
-        int ojoX = origenX + (ancho - anchoOjo - HUECO) + HUECO;
-        if (dentro(mx, my, ojoX, origenY, anchoOjo, BARRA_ALTO)) {
+        if (dentro(mx, my, guiX + OJO_X, guiY + OJO_Y, OJO_ANCHO, OJO_ALTO)) {
             this.visible = !this.visible;
             clic(1.4F);
             return true;
         }
 
         for (int i = 0; i < 12; i++) {
-            int col = i % COLUMNAS;
-            int fila = i / COLUMNAS;
-            int x = origenX + col * (TECLA + HUECO);
-            int y = origenY + BARRA_ALTO + HUECO_BARRA + fila * (TECLA + HUECO);
-
-            if (!dentro(mx, my, x, y, TECLA, TECLA)) continue;
+            if (!dentro(mx, my, teclaX(i), teclaY(i), TECLA_ANCHO, TECLA_ALTO)) continue;
 
             switch (i) {
                 case 9 -> borrar();
@@ -237,8 +322,15 @@ public class TecladoScreen extends Screen {
             return;
         }
 
-        NetworkHandler.sendToServer(new CodigoCofrePacket(pos, codigo.toString(), !yaTieneCodigo));
-        Minecraft.getInstance().setScreen(null);
+        NetworkHandler.sendToServer(new CodigoCofrePacket(pos, codigo.toString()));
+
+        if (!yaTieneCodigo) {
+            Minecraft.getInstance().setScreen(null);
+            return;
+        }
+
+        codigo.setLength(0);
+        this.visible = false;
     }
 
     private void avisar(String texto) {
@@ -251,8 +343,6 @@ public class TecladoScreen extends Screen {
     public void tick() {
         if (avisoTicks > 0) avisoTicks--;
     }
-
-    public static final String SONIDO_TECLA = "minecraft:ui.button.click";
 
     private void clic(float tono) {
         SoundEvent evento = BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation(SONIDO_TECLA));

@@ -8,25 +8,32 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.ItemStack;
 
 public class BotonMenu extends AbstractButton {
 
-    public static final int GROSOR_BORDE = 2;
+    public static final int GROSOR_BORDE = 0;
 
     public static final int COLOR_BORDE_SOBRE = 0xFFFFFFFF;
 
     private final ResourceLocation textura;
+    private final ItemStack tooltip;
     private final SoundEvent sonido;
     private final float tono;
     private final Runnable alPulsar;
 
-    public BotonMenu(int x, int y, int ancho, int alto, Component titulo,
-                     ResourceLocation textura, SoundEvent sonido, float tono, Runnable alPulsar) {
+    public BotonMenu(int x, int y, int ancho, int alto, Component titulo, ResourceLocation textura,
+                     ItemStack tooltip, SoundEvent sonido, float tono, Runnable alPulsar) {
         super(x, y, ancho, alto, titulo);
         this.textura = textura;
+        this.tooltip = tooltip;
         this.sonido = sonido;
         this.tono = tono;
         this.alPulsar = alPulsar;
+    }
+
+    public ItemStack getItemTooltip() {
+        return this.tooltip;
     }
 
     @Override

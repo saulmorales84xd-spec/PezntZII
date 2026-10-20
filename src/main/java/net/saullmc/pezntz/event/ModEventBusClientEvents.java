@@ -7,7 +7,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.entity.ModBlockEntities;
 import net.saullmc.pezntz.client.block.CadaverRenderer;
-import net.saullmc.pezntz.client.block.CofreCandadoModel;
 import net.saullmc.pezntz.client.block.CofreCandadoRenderer;
 import net.saullmc.pezntz.client.block.PrensaRenderer;
 import net.saullmc.pezntz.entity.client.bicicleta.BicicletaModel;
@@ -38,7 +37,6 @@ public class ModEventBusClientEvents {
         event.registerLayerDefinition(ModModelLayers.BICICLETA_LAYER, BicicletaModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.MOTOCICLETA_LAYER, MotocicletaModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LANCHA_LAYER, LanchaModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.COFRE_CANDADO_LAYER, CofreCandadoModel::createBodyLayer);
 
     }
 

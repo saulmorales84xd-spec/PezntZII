@@ -11,7 +11,7 @@ import net.saullmc.pezntz.item.ModItems;
 public class Bicicleta extends VehiculoBase {
 
     private static final float[][] ASIENTOS = {
-            {-0.1F, 0.55F},
+            {-0.1F, 0.15F},
     };
 
     public Bicicleta(EntityType<? extends PathfinderMob> tipo, Level nivel) {
