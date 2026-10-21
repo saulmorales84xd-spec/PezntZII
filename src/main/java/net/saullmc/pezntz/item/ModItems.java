@@ -315,6 +315,42 @@ public class ModItems {
     public static final RegistryObject<Item> BOTON_3 = ITEMS.register("boton_3",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> BOTON_VOLVER = ITEMS.register("boton_volver",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_REGLAS = ITEMS.register("info_reglas",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_SERVER = ITEMS.register("info_server",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> MARCADOR_MINAS_AZUFRE = ITEMS.register("marcador_minas_azufre",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> MARCADOR_DROP = ITEMS.register("marcador_drop",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> MARCADOR_MINAS_TITANIO = ITEMS.register("marcador_minas_titanio",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_VIDA = ITEMS.register("info_vida",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_SUPERVIVENCIA = ITEMS.register("info_supervivencia",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_CABEZA = ITEMS.register("info_cabeza",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_CUERPO = ITEMS.register("info_cuerpo",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_BRAZOS = ITEMS.register("info_brazos",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFO_PIERNAS = ITEMS.register("info_piernas",
+            () -> new Item(new Item.Properties()));
+
     public static void register (IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

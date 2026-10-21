@@ -2,6 +2,7 @@ package net.saullmc.pezntz.event;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.PezntZMod;
@@ -9,6 +10,8 @@ import net.saullmc.pezntz.block.entity.ModBlockEntities;
 import net.saullmc.pezntz.client.block.CadaverRenderer;
 import net.saullmc.pezntz.client.block.CofreCandadoRenderer;
 import net.saullmc.pezntz.client.block.PrensaRenderer;
+import net.saullmc.pezntz.client.tooltip.ImagenTooltip;
+import net.saullmc.pezntz.client.tooltip.ImagenTooltipCliente;
 import net.saullmc.pezntz.entity.client.bicicleta.BicicletaModel;
 import net.saullmc.pezntz.entity.client.motocicleta.MotocicletaModel;
 import net.saullmc.pezntz.entity.client.lancha.LanchaModel;
@@ -45,5 +48,10 @@ public class ModEventBusClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.PRENSA.get(), PrensaRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CADAVER.get(), CadaverRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.COFRE_CANDADO.get(), CofreCandadoRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registrarTooltips(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(ImagenTooltip.class, ImagenTooltipCliente::new);
     }
 }

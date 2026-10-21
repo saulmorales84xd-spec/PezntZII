@@ -12,10 +12,6 @@ import net.minecraft.world.item.ItemStack;
 
 public class BotonMenu extends AbstractButton {
 
-    public static final int GROSOR_BORDE = 0;
-
-    public static final int COLOR_BORDE_SOBRE = 0xFFFFFFFF;
-
     private final ResourceLocation textura;
     private final ItemStack tooltip;
     private final SoundEvent sonido;
@@ -47,12 +43,6 @@ public class BotonMenu extends AbstractButton {
 
     @Override
     protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        if (this.isHoveredOrFocused() && GROSOR_BORDE > 0) {
-            g.fill(this.getX() - GROSOR_BORDE, this.getY() - GROSOR_BORDE,
-                    this.getX() + this.width + GROSOR_BORDE, this.getY() + this.height + GROSOR_BORDE,
-                    COLOR_BORDE_SOBRE);
-        }
-
         g.blit(this.textura, this.getX(), this.getY(), 0, 0,
                 this.width, this.height, this.width, this.height);
     }
