@@ -90,64 +90,64 @@ public class ModBlocks {
             () -> new Caja2(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL).noOcclusion()));
 
     public static final RegistryObject<Block> ARMARIO_IZQ = registerBlock("armario_izq",
-            () -> new Armario(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD).noOcclusion(), BloqueContenedor.ALTO));
 
     public static final RegistryObject<Block> ARMARIO_DER = registerBlock("armario_der",
-            () -> new Armario(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD).noOcclusion(), BloqueContenedor.ALTO));
 
     public static final RegistryObject<Block> CAJON_COCINA_IZQ = registerBlock("cajon_cocina_izq",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> CAJON_COCINA_DER = registerBlock("cajon_cocina_der",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> ENCIMERA = registerBlock("encimera",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> CAJON_DOBLE = registerBlock("cajon_doble",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> CAJON_TRIPLE = registerBlock("cajon_triple",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> ESPEJO = registerBlock("espejo",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion())); //
+            () -> new Espejo(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
 
     public static final RegistryObject<Block> LOCKER = registerBlock("locker",
-            () -> new Armario(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.ALTO));
 
     public static final RegistryObject<Block> LOCKER_ABIERTO = registerBlock("locker_abierto",
-            () -> new Armario(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.ALTO));
 
     public static final RegistryObject<Block> LOCKER_BAJO = registerBlock("locker_bajo",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> LOCKER_BAJO_ABIERTO = registerBlock("locker_bajo_abierto",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> CAJAS_MILITARES = registerBlock("cajas_militares",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> CAJA_MILITAR = registerBlock("caja_militar",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> CUERPO_1 = registerBlock("cuerpo_1",
-            () -> new Caja2(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.PEQUENO));
 
     public static final RegistryObject<Block> CUERPO_2 = registerBlock("cuerpo_2",
-            () -> new Caja2(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.PEQUENO));
 
     public static final RegistryObject<Block> CUERPO_3 = registerBlock("cuerpo_3",
-            () -> new Caja2(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.PEQUENO));
 
     public static final RegistryObject<Block> CUERPO_4 = registerBlock("cuerpo_4",
-            () -> new Caja2(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.BAJO));
 
     public static final RegistryObject<Block> CUERPO_5 = registerBlock("cuerpo_5",
-            () -> new Caja2(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.BAJO));
 
     public static final RegistryObject<Block> CUERPO_6 = registerBlock("cuerpo_6",
-            () -> new Caja1(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.BAJO));
 
     public static final RegistryObject<Block> CADAVER = BLOCKS.register("cadaver",
             () -> new Cadaver(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL).strength(-1.0F).noOcclusion().explosionResistance(3600000.0F)));
