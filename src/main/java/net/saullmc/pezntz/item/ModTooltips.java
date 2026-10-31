@@ -26,20 +26,9 @@ import java.util.regex.Pattern;
 public class ModTooltips {
 
     public static final String GRIS = "§7";
-    public static final String GRIS_OSCURO = "§8";
-    public static final String BLANCO = "§f";
-    public static final String VERDE = "§a";
-    public static final String VERDE_OSCURO = "§2";
     public static final String ROJO = "§c";
     public static final String ROJO_OSCURO = "§4";
-    public static final String AMARILLO = "§e";
-    public static final String DORADO = "§6";
-    public static final String CIAN = "§b";
     public static final String AZUL = "§9";
-    public static final String AZUL_OSCURO = "§1";
-    public static final String MORADO = "§d";
-    public static final String MORADO_OSCURO = "§5";
-    public static final String NEGRO = "§0";
 
     public static final String KEYS = hex(0xae68dc);
     public static final String BYI = hex(0xFB9F5E);
@@ -51,6 +40,10 @@ public class ModTooltips {
     public static final String PEZ = hex(0xff650a);
     public static final String RAD = hex(0xedb71d);
     public static final String ITEMS = hex(0x7372ae);
+    public static final String REC = hex(0x8f7053);
+    public static final String CON = hex(0x6aabb7);
+    public static final String BIO = hex(0xcaa226);
+    public static final String PART = hex(0x1ceedd);
 
     public static final String BR = "{br}";
 
@@ -253,7 +246,7 @@ public class ModTooltips {
 
         registrar(ModItems.COAGULANTE.get(),
                 "Al aplicarte esta jeringa te quitaras ", "todo los " + EFE + "efectos negativos " + GRIS + "que tengas,",
-                "menos la " + UBICACIONES + "Radiación." + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
+                "menos la " + RAD + "Radiación." + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
 
         registrar(ModItems.QUELANTE.get(),
                 "Al aplicarte esta jeringa te quitaras ", "la " + RAD + "radiación " + GRIS + "por completo."
@@ -449,6 +442,47 @@ public class ModTooltips {
         registrar(Items.COPPER_INGOT,
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
                 "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.INFO_REGLAS.get(),
+                ROJO_OSCURO + "✞ Avancen juntos: " + GRIS + "En estas calles, un jugador aislado", "es un jugador muerto. Mantengan la formación y no ",
+                        "se separen del grupo." + BR + BR + ROJO_OSCURO + "✞ Cooperación absoluta: " + GRIS + "Compartan recursos, munición", "y suministros médicos. " +
+                        "La supervivencia depende del", "grupo, no de individualismos." + BR + BR + ROJO_OSCURO + "✞ Cero sabotaje: " + GRIS + "Está estrictamente prohibido provocar",
+                        "la muerte de un compañero, de forma directa o indirecta.", "Cuídense la espalda entre todos." + BR + BR + ROJO_OSCURO + "✞ Entorno Modificado: " + GRIS +
+                        "Esto no es un servidor Vanilla", "tradicional. Aquí todo se rige por mecánicas técnicas,", "médicas y de supervivencia urbana pesada. Adapta tu",
+                        "estrategia desde el primer minuto.");
+
+        registrar(ModItems.INFO_SERVER.get(),
+                CON + "⟡ Despawn de Ítems: " + GRIS + "El ambiente corroerá cualquier", "recurso abandonado, todo ítem en el suelo desaparecerá", "en solo 60 segundos. Recoge tu botín de inmediato.",
+                        BR + CON +"⟡ Oscuridad Absoluta: " + GRIS + "La noche en Huatenolgo es total.", "La visibilidad será de cero sin fuentes de luz, prepárate ", "antes de que caiga el sol.",
+                        BR + CON +"⟡ Eventos Diarios: " + GRIS + "La ciudad cambia constantemente.", "Cada día se activarán nuevos eventos y peligros en", "el mapa.",
+                        BR + CON +"⟡ Soporte Administrativo: " + GRIS + "Si experimentas un bug crítico", "o necesitas asistencia técnica del Staff, ejecuta", "el comando /help en el chat para enviar una", "alerta a los administradores.");
+
+        registrar(ModItems.MARCADOR_MINAS_AZUFRE.get(),
+                "Zona inestable con depósitos de Azufre.", "El ambiente es tóxico, po lo que requiere", "el " + BIO + "Traje de Bioseguridad " + GRIS + "completo para", "poder entrar de manera segura.");
+
+        registrar(ModItems.MARCADOR_MINAS_TITANIO.get(),
+                "Zona inestable con depósitos de Titanio.", "El ambiente es tóxico, po lo que requiere", "el " + BIO + "Traje de Bioseguridad " + GRIS + "completo para", "poder entrar de manera segura.");
+
+        registrar(ModItems.MARCADOR_DROP.get(),
+                "Cargamento Militar lanzado por vía", "aerea. Puede contener " + REC + "Munición," + BR + REC + "Armamento, Comida y Medicamentos");
+
+        registrar(ModItems.INFO_CABEZA.get(),
+                "Si recibes daño de Fuego, Lava, Caída, del Fundidor", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en la" + BR + PART + "cabeza." + BR + BR + PART + "➤ Ceguera." + BR + PART + "➤ Nauseas");
+
+        registrar(ModItems.INFO_CUERPO.get(),
+                "Si recibes daño de Fuego, Lava, Caída, del Infectado", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en el" + BR + PART + "cuerpo." + BR + BR + PART + "➤ Debilidad.");
+
+        registrar(ModItems.INFO_BRAZOS.get(),
+                "Si recibes daño de Fuego, Lava, Caída, del Infectado", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en los" + BR + PART + "brazos." + BR + BR + PART + "➤ Debilidad.");
+
+        registrar(ModItems.INFO_PIERNAS.get(),
+                "Si recibes daño de Fuego, Lava, Caída, del Arrastrador", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en las" + BR + PART + "piernas." + BR + BR + PART + "➤ Lentitud.");
+
+
 
         colorNombre(ModItems.BACKPACK.get(), 0xffff55);
         colorNombre(ModItems.PEZNSINITA_BRUTE.get(), 0xff7625);

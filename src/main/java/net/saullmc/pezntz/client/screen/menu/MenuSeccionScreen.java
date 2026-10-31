@@ -19,29 +19,21 @@ import java.util.List;
 
 public class MenuSeccionScreen extends Screen {
 
-    /** Cuantos items por fila. */
     public static final int COLUMNAS = 7;
 
-    /** Cuantas filas se ven a la vez. Lo que sobre se mira con la ruedita. */
     public static final int FILAS_VISIBLES = 4;
 
-    /** Hueco que ocupa cada item. Es tambien el area donde se detecta el raton. */
     public static final int CELDA = 24;
 
-    /** Separacion entre celdas. */
     public static final int HUECO = 4;
 
-    /** Tamanio del icono. 1.0 es el normal de 16x16. Cada item puede llevar el suyo. */
     public static final float ESCALA_ITEM = 1.0F;
 
-    /** Desplazamiento de toda la rejilla respecto al centro de la pantalla. */
     public static final int OFFSET_X = 0;
     public static final int OFFSET_Y = 0;
 
-    /** Recuadro sobre la celda que tiene el raton. 0 en el alfa lo quita. */
-    public static final int COLOR_CELDA_SOBRE = 0x60FFFFFF;
+    public static final int COLOR_CELDA_SOBRE = 0;
 
-    /** El oscurecimiento normal de cualquier menu. Debajo de los items ya no hay nada mas. */
     public static final boolean OSCURECER_FONDO = true;
 
     public static final boolean MOSTRAR_BARRA = true;
@@ -57,52 +49,48 @@ public class MenuSeccionScreen extends Screen {
     public static final ResourceLocation TEXTURA_VOLVER =
             new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/boton_volver.png");
 
-    /** Tamanio REAL del archivo png, en pixeles. */
     public static final int VOLVER_TEXTURA_ANCHO = 32;
     public static final int VOLVER_TEXTURA_ALTO = 32;
 
-    /** Trozo del png que se dibuja. Si usas el png entero, igual que los de arriba. */
     public static final int VOLVER_ANCHO = 32;
     public static final int VOLVER_ALTO = 32;
 
-    /** De que punto del png se empieza a recortar. */
     public static final int VOLVER_U = 0;
     public static final int VOLVER_V = 0;
 
-    /**
-     * Si tu png lleva DOS dibujos, el normal arriba y el de raton encima debajo, pon aqui la
-     * altura donde empieza el segundo. Con -1 se usa siempre el mismo.
-     */
     public static final int VOLVER_V_SOBRE = -1;
 
-    /** Tamanio en pantalla = el trozo de arriba por esto. 2.0 lo pone al doble. */
     public static final float VOLVER_ESCALA = 1.0F;
 
-    /**
-     * Donde se mide la altura del boton:
-     *   false = justo debajo de la rejilla, asi que baja si agrandas la rejilla
-     *   true  = pegado al borde de abajo de la pantalla, pase lo que pase con la rejilla
-     */
     public static final boolean VOLVER_PEGADO_ABAJO = false;
 
-    /** Ajuste fino. La X va desde el centro de la pantalla, la Y desde lo de arriba. */
     public static final int VOLVER_OFFSET_X = 0;
-    public static final int VOLVER_OFFSET_Y = 14;
+    public static final int VOLVER_OFFSET_Y = 60;
 
     public static final int VOLVER_COLOR_SOBRE = 0x40FFFFFF;
 
     public static final String SONIDO_VOLVER = "minecraft:ui.button.click";
     public static final float TONO_VOLVER = 0.9F;
 
+    public static final int MARGEN_VOLVER = 6;
+
     private static List<ItemMenu> contenido(int seccion) {
         return switch (seccion) {
 
             case 0 -> List.of(
-                    new ItemMenu(ModItems.INFO_REGLAS.get()).en(-40, 0).escala(1.15F),
-                    new ItemMenu(ModItems.INFO_SERVER.get()).en(-40, 0).escala(1.15F),
-                    new ItemMenu(ModItems.MARCADOR_MINAS_AZUFRE.get()).en(-40, 0).escala(1.15F),
-                    new ItemMenu(ModItems.MARCADOR_DROP.get()).en(-40, 0).escala(1.15F),
-                    new ItemMenu(ModItems.MARCADOR_MINAS_TITANIO.get()).en(-40, 0).escala(1.15F));
+                    new ItemMenu(ModItems.INFO_REGLAS.get()).en(40, -40).escala(1.35F),
+                    new ItemMenu(ModItems.INFO_SERVER.get()).en(140, -37).escala(1F),
+                    new ItemMenu(ModItems.MARCADOR_MINAS_AZUFRE.get()).en(40, 0).escala(1.25F),
+                    new ItemMenu(ModItems.MARCADOR_DROP.get()).en(90, 0).escala(1.25F).imagenItem(ModItems.CHATARRA.get(), 0, 0),
+                    new ItemMenu(ModItems.MARCADOR_MINAS_TITANIO.get()).en(140, 0).escala(1.25F),
+                    new ItemMenu(ModItems.INFO_CABEZA.get()).en(90, 40).escala(1.25F),
+                    new ItemMenu(ModItems.INFO_CUERPO.get()).en(90, 70).escala(1.25F),
+                    new ItemMenu(ModItems.INFO_BRAZOS.get()).en(110, 70).escala(1.25F),
+                    new ItemMenu(ModItems.INFO_BRAZOS.get()).en(70, 70).escala(1.25F),
+                    new ItemMenu(ModItems.INFO_VIDA.get()).en(40, 70).escala(1.35F),
+                    new ItemMenu(ModItems.INFO_SUPERVIVENCIA.get()).en(140, 70).escala(1.3F),
+                    new ItemMenu(ModItems.INFO_PIERNAS.get()).en(91, 100).escala(1.25F));
+
 
             case 1 -> List.of(
                     new ItemMenu(ModItems.AZUFRE.get()));
@@ -179,8 +167,34 @@ public class MenuSeccionScreen extends Screen {
         return (this.rejilla.size() + COLUMNAS - 1) / COLUMNAS;
     }
 
+    private static int paso() {
+        return CELDA + HUECO;
+    }
+
+    private int altoVisible() {
+        if (!MOSTRAR_VOLVER) return altoRejilla();
+
+        return Math.max(altoRejilla(), this.volverY - MARGEN_VOLVER - this.rejillaY);
+    }
+
+    private int fondoLibres() {
+        int fondo = 0;
+
+        for (ItemMenu entrada : this.libres) {
+            int tamanio = Math.max(1, Math.round(16.0F * entrada.getEscala(ESCALA_ITEM)));
+            fondo = Math.max(fondo, entrada.getY() + tamanio);
+        }
+
+        return fondo;
+    }
+
     private int desplazamientoMaximo() {
-        return Math.max(0, filasTotales() - FILAS_VISIBLES);
+        int porRejilla = Math.max(0, filasTotales() - FILAS_VISIBLES);
+
+        int sobra = fondoLibres() - altoVisible();
+        int porLibres = sobra <= 0 ? 0 : (sobra + paso() - 1) / paso();
+
+        return Math.max(porRejilla, porLibres);
     }
 
     @Override
@@ -250,7 +264,7 @@ public class MenuSeccionScreen extends Screen {
             int tamanio = Math.max(1, Math.round(16.0F * escala));
 
             int x = this.rejillaX + entrada.getX();
-            int y = this.rejillaY + entrada.getY();
+            int y = this.rejillaY + entrada.getY() - this.desplazamiento * paso();
 
             if (dentro(mouseX, mouseY, x, y, tamanio, tamanio)) {
                 if ((COLOR_CELDA_SOBRE >>> 24) != 0) {
@@ -283,13 +297,14 @@ public class MenuSeccionScreen extends Screen {
         int maximo = desplazamientoMaximo();
         if (maximo <= 0) return;
 
-        int alto = altoRejilla();
+        int visible = altoVisible();
+        int total = visible + maximo * paso();
         int x = this.rejillaX + anchoRejilla() + BARRA_SEPARACION;
 
-        g.fill(x, this.rejillaY, x + BARRA_ANCHO, this.rejillaY + alto, COLOR_BARRA_FONDO);
+        g.fill(x, this.rejillaY, x + BARRA_ANCHO, this.rejillaY + visible, COLOR_BARRA_FONDO);
 
-        int altoPulgar = Math.max(8, alto * FILAS_VISIBLES / filasTotales());
-        int recorrido = alto - altoPulgar;
+        int altoPulgar = Math.max(8, visible * visible / total);
+        int recorrido = visible - altoPulgar;
         int y = this.rejillaY + recorrido * this.desplazamiento / maximo;
 
         g.fill(x, y, x + BARRA_ANCHO, y + altoPulgar, COLOR_BARRA);

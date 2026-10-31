@@ -5,12 +5,25 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.saullmc.pezntz.client.tooltip.ImagenTooltip;
+import net.saullmc.pezntz.client.tooltip.ItemEnImagen;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ItemMenu {
 
     public static final int SIN_PONER = Integer.MIN_VALUE;
+
+    public static final String TEXTURA_POR_DEFECTO = "pezntz:textures/gui/receta.png";
+
+    public static final int TEXTURA_POR_DEFECTO_ANCHO = 16;
+    public static final int TEXTURA_POR_DEFECTO_ALTO = 16;
+
+    public static final float TEXTURA_POR_DEFECTO_ESCALA = 3.0F;
+
+    public static final int TEXTURA_POR_DEFECTO_MARGEN_X = 0;
+    public static final int TEXTURA_POR_DEFECTO_MARGEN_Y = 2;
 
     private final ItemStack stack;
 
@@ -27,8 +40,12 @@ public class ItemMenu {
     private float imagenEscala = 1.0F;
     private int imagenOffsetX = 0;
     private int imagenOffsetY = 0;
-    private int imagenMargenX = 0;
-    private int imagenMargenY = 2;
+    private int imagenMargenX = TEXTURA_POR_DEFECTO_MARGEN_X;
+    private int imagenMargenY = TEXTURA_POR_DEFECTO_MARGEN_Y;
+
+    private boolean imagenEscalaPuesta = false;
+
+    private final List<ItemEnImagen> imagenItems = new ArrayList<>();
 
     public ItemMenu(Item item) {
         this(new ItemStack(item));
@@ -66,6 +83,7 @@ public class ItemMenu {
 
     public ItemMenu imagenEscala(float escala) {
         this.imagenEscala = escala;
+        this.imagenEscalaPuesta = true;
         return this;
     }
 
@@ -78,6 +96,23 @@ public class ItemMenu {
     public ItemMenu imagenMargen(int x, int y) {
         this.imagenMargenX = x;
         this.imagenMargenY = y;
+        return this;
+    }
+
+    public ItemMenu imagenItem(Item item, int x, int y) {
+        return this.imagenItem(new ItemStack(item), x, y, 1.0F);
+    }
+
+    public ItemMenu imagenItem(Item item, int x, int y, float escala) {
+        return this.imagenItem(new ItemStack(item), x, y, escala);
+    }
+
+    public ItemMenu imagenItem(ItemStack stack, int x, int y) {
+        return this.imagenItem(stack, x, y, 1.0F);
+    }
+
+    public ItemMenu imagenItem(ItemStack stack, int x, int y, float escala) {
+        this.imagenItems.add(new ItemEnImagen(stack, x, y, escala));
         return this;
     }
 
@@ -102,14 +137,30 @@ public class ItemMenu {
     }
 
     public Optional<TooltipComponent> getImagenTooltip() {
-        if (this.imagen == null) return Optional.empty();
+        boolean porDefecto = (this.imagen == null);
+
+        if (porDefecto && this.imagenItems.isEmpty()) return Optional.empty();
+
+        ResourceLocation textura = porDefecto
+                ? new ResourceLocation(TEXTURA_POR_DEFECTO)
+                : this.imagen;
+
+        int ancho = porDefecto ? TEXTURA_POR_DEFECTO_ANCHO : this.imagenAncho;
+        int alto = porDefecto ? TEXTURA_POR_DEFECTO_ALTO : this.imagenAlto;
+        int texturaAncho = porDefecto ? TEXTURA_POR_DEFECTO_ANCHO : this.imagenTexturaAncho;
+        int texturaAlto = porDefecto ? TEXTURA_POR_DEFECTO_ALTO : this.imagenTexturaAlto;
+
+        float escala = this.imagenEscalaPuesta
+                ? this.imagenEscala
+                : (porDefecto ? TEXTURA_POR_DEFECTO_ESCALA : 1.0F);
 
         return Optional.<TooltipComponent>of(new ImagenTooltip(
-                this.imagen,
-                this.imagenAncho, this.imagenAlto,
-                this.imagenTexturaAncho, this.imagenTexturaAlto,
-                this.imagenEscala,
+                textura,
+                ancho, alto,
+                texturaAncho, texturaAlto,
+                escala,
                 this.imagenOffsetX, this.imagenOffsetY,
-                this.imagenMargenX, this.imagenMargenY));
+                this.imagenMargenX, this.imagenMargenY,
+                this.imagenItems));
     }
 }

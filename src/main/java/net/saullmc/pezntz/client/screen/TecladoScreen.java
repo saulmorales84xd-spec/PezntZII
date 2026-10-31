@@ -20,33 +20,24 @@ public class TecladoScreen extends Screen {
     public static final ResourceLocation TEXTURA =
             new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/teclado.png");
 
-    /** Tamanio REAL del png, en pixeles. Minecraft lo necesita para recortar bien. */
-    public static final int TEXTURA_ANCHO = 256;
-    public static final int TEXTURA_ALTO = 256;
+    public static final int TEXTURA_ANCHO = 224;
+    public static final int TEXTURA_ALTO = 240;
 
-    /** Trozo del png que se dibuja, y por tanto tamanio de la ventana en pantalla. */
-    public static final int GUI_ANCHO = 176;
-    public static final int GUI_ALTO = 200;
+    public static final int GUI_ANCHO = 224;
+    public static final int GUI_ALTO = 240;
 
-    /** De que punto del png se empieza a recortar. */
     public static final int GUI_U = 0;
     public static final int GUI_V = 0;
 
-    /** Desplazamiento de toda la ventana respecto al centro de la pantalla. */
     public static final int GUI_OFFSET_X = 0;
     public static final int GUI_OFFSET_Y = 0;
 
-    /** Si es false no se pinta ningun fondo y solo quedan las teclas. */
     public static final boolean DIBUJAR_FONDO = true;
 
     /** Oscurecer el juego por detras. */
     public static final boolean OSCURECER_DETRAS = true;
 
-    // LA REJILLA DE TECLAS
-    // Las coordenadas van desde la esquina de la ventana.
-
-    /** Esquina de la primera tecla, la del 1. */
-    public static final int TECLAS_X = 28;
+    public static final int TECLAS_X = 52;
     public static final int TECLAS_Y = 60;
 
     /** Tamanio de cada tecla. Esto es lo que las escala. */
@@ -54,13 +45,9 @@ public class TecladoScreen extends Screen {
     public static final int TECLA_ALTO = 30;
 
     /** Separacion entre teclas. */
-    public static final int TECLA_HUECO_X = 4;
-    public static final int TECLA_HUECO_Y = 4;
+    public static final int TECLA_HUECO_X = 9;
+    public static final int TECLA_HUECO_Y = 13;
 
-    /**
-     * Si tu textura YA trae los numeros dibujados, ponlo a false y aqui no se escribe
-     * nada encima.
-     */
     public static final boolean MOSTRAR_NUMEROS = true;
     public static final int NUMERO_COLOR = 0xFFFFFFFF;
 
@@ -68,39 +55,35 @@ public class TecladoScreen extends Screen {
     public static final int COLOR_TECLA_SOBRE = 0x40FFFFFF;
 
     /** Borde de la tecla que tiene el raton. 0 lo quita. */
-    public static final int GROSOR_BORDE = 1;
+    public static final int GROSOR_BORDE = 0;
     public static final int COLOR_BORDE_SOBRE = 0xFFFFFFFF;
 
     // LA BARRA DEL CODIGO
 
-    public static final int BARRA_X = 28;
-    public static final int BARRA_Y = 26;
-    public static final int BARRA_ANCHO = 90;
-    public static final int BARRA_ALTO = 24;
+    public static final int BARRA_X = 52;
+    public static final int BARRA_Y = 20;
+    public static final int BARRA_ANCHO = 120;
+    public static final int BARRA_ALTO = 30;
 
     /** Si tu textura ya trae el hueco dibujado, ponlo a false. */
-    public static final boolean DIBUJAR_FONDO_BARRA = false;
+    public static final boolean DIBUJAR_FONDO_BARRA = true;
     public static final int COLOR_BARRA = 0xFF17171C;
 
     /** Tamanio del codigo escrito. 1.0 es el normal. */
-    public static final float CODIGO_ESCALA = 1.5F;
+    public static final float CODIGO_ESCALA = 1.2F;
     public static final int CODIGO_COLOR = 0xFFFFFFFF;
 
-    /** Caracter que tapa cada digito mientras esta oculto. */
     public static final String CODIGO_OCULTO = "x";
 
-    /** Caracter de los huecos que faltan. */
     public static final String CODIGO_VACIO = "_";
 
-    // EL BOTON DEL OJO
-
-    public static final int OJO_X = 124;
-    public static final int OJO_Y = 26;
-    public static final int OJO_ANCHO = 24;
-    public static final int OJO_ALTO = 24;
+    public static final int OJO_X = 175;
+    public static final int OJO_Y = 27;
+    public static final int OJO_ANCHO = 18;
+    public static final int OJO_ALTO = 18;
 
     /** Si tu textura ya trae el ojo dibujado, ponlo a false. */
-    public static final boolean DIBUJAR_TEXTO_OJO = true;
+    public static final boolean DIBUJAR_TEXTO_OJO = false;
     public static final String TEXTO_OJO_VISIBLE = "O";
     public static final String TEXTO_OJO_OCULTO = "-";
 
@@ -240,9 +223,9 @@ public class TecladoScreen extends Screen {
 
     private static String etiqueta(int indice) {
         return switch (indice) {
-            case 9 -> "X";
+            case 9 -> "";
             case 10 -> "0";
-            case 11 -> ">";
+            case 11 -> "";
             default -> String.valueOf(indice + 1);
         };
     }

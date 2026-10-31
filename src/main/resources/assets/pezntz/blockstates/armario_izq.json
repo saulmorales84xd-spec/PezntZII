@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "pezntz:block/armario_izq" },
+    "facing=east":  { "model": "pezntz:block/armario_izq", "y": 90 },
+    "facing=south": { "model": "pezntz:block/armario_izq", "y": 180 },
+    "facing=west":  { "model": "pezntz:block/armario_izq", "y": 270 }
+  }
+}

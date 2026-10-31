@@ -126,6 +126,27 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModBlocks.CAJA_3.get());
                         pOutput.accept(ModBlocks.CAJA_4.get());
                         pOutput.accept(ModBlocks.CAJA_5.get());
+                        pOutput.accept(ModBlocks.ARMARIO_IZQ.get());
+                        pOutput.accept(ModBlocks.ARMARIO_DER.get());
+                        pOutput.accept(ModBlocks.CAJON_COCINA_IZQ.get());
+                        pOutput.accept(ModBlocks.CAJON_COCINA_DER.get());
+                        pOutput.accept(ModBlocks.ENCIMERA.get());
+                        pOutput.accept(ModBlocks.CAJON_DOBLE.get());
+                        pOutput.accept(ModBlocks.CAJON_TRIPLE.get());
+                        pOutput.accept(ModBlocks.ESPEJO.get());
+                        pOutput.accept(ModBlocks.LOCKER.get());
+                        pOutput.accept(ModBlocks.LOCKER_ABIERTO.get());
+                        pOutput.accept(ModBlocks.LOCKER_BAJO.get());
+                        pOutput.accept(ModBlocks.LOCKER_BAJO_ABIERTO.get());
+                        pOutput.accept(ModBlocks.CAJAS_MILITARES.get());
+                        pOutput.accept(ModBlocks.CAJA_MILITAR.get());
+                        pOutput.accept(ModBlocks.CUERPO_1.get());
+                        pOutput.accept(ModBlocks.CUERPO_2.get());
+                        pOutput.accept(ModBlocks.CUERPO_3.get());
+                        pOutput.accept(ModBlocks.CUERPO_4.get());
+                        pOutput.accept(ModBlocks.CUERPO_5.get());
+                        pOutput.accept(ModBlocks.CUERPO_6.get());
+
                         pOutput.accept(ModBlocks.BRICKS_1.get());
                         pOutput.accept(ModBlocks.BRICKS_2.get());
                         pOutput.accept(ModBlocks.BRICKS_3.get());

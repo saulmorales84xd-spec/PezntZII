@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "pezntz:block/locker_bajo_abierto" },
+    "facing=east":  { "model": "pezntz:block/locker_bajo_abierto", "y": 90 },
+    "facing=south": { "model": "pezntz:block/locker_bajo_abierto", "y": 180 },
+    "facing=west":  { "model": "pezntz:block/locker_bajo_abierto", "y": 270 }
+  }
+}

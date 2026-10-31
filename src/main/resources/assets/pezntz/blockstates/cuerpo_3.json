@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "pezntz:block/cuerpo_3" },
+    "facing=east":  { "model": "pezntz:block/cuerpo_3", "y": 90 },
+    "facing=south": { "model": "pezntz:block/cuerpo_3", "y": 180 },
+    "facing=west":  { "model": "pezntz:block/cuerpo_3", "y": 270 }
+  }
+}

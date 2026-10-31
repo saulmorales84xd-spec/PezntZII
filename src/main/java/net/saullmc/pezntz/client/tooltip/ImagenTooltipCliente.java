@@ -33,5 +33,30 @@ public class ImagenTooltipCliente implements ClientTooltipComponent {
                 0.0F, 0.0F,
                 this.datos.ancho(), this.datos.alto(),
                 this.datos.texturaAncho(), this.datos.texturaAlto());
+
+        dibujarItems(font, destinoX, destinoY, g);
+    }
+
+    private void dibujarItems(Font font, int destinoX, int destinoY, GuiGraphics g) {
+        float escalaImagen = this.datos.escala();
+
+        for (ItemEnImagen item : this.datos.items()) {
+            if (item.stack().isEmpty()) continue;
+
+            float escala = item.escala() * escalaImagen;
+
+            int itemX = destinoX + Math.round(item.x() * escalaImagen);
+            int itemY = destinoY + Math.round(item.y() * escalaImagen);
+
+            g.pose().pushPose();
+
+            g.pose().translate(itemX, itemY, 0.0F);
+            g.pose().scale(escala, escala, 1.0F);
+
+            g.renderItem(item.stack(), 0, 0);
+            g.renderItemDecorations(font, item.stack(), 0, 0);
+
+            g.pose().popPose();
+        }
     }
 }
