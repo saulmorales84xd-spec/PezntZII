@@ -13,6 +13,7 @@ import net.saullmc.pezntz.capability.BodyHealthProvider;
 import net.saullmc.pezntz.network.NetworkHandler;
 import net.saullmc.pezntz.network.SyncBodyHealthPacket;
 import net.saullmc.pezntz.capability.BackpackProvider;
+import net.saullmc.pezntz.capability.BestiarioProvider;
 
 @Mod.EventBusSubscriber(modid = "pezntz")
 public class ModEvents {
@@ -27,6 +28,10 @@ public class ModEvents {
             if (!event.getObject().getCapability(BackpackProvider.PLAYER_BACKPACK).isPresent()) {
                 event.addCapability(new ResourceLocation("pezntz", "backpack"), new BackpackProvider());
             }
+
+            if (!event.getObject().getCapability(BestiarioProvider.PLAYER_BESTIARIO).isPresent()) {
+                event.addCapability(new ResourceLocation("pezntz", "bestiario"), new BestiarioProvider());
+            }
         }
     }
 
@@ -36,6 +41,12 @@ public class ModEvents {
         event.getOriginal().reviveCaps();
         event.getOriginal().getCapability(BackpackProvider.PLAYER_BACKPACK).ifPresent(vieja ->
                 event.getEntity().getCapability(BackpackProvider.PLAYER_BACKPACK).ifPresent(nueva ->
+                        nueva.copyFrom(vieja)));
+        event.getOriginal().invalidateCaps();
+
+        event.getOriginal().reviveCaps();
+        event.getOriginal().getCapability(BestiarioProvider.PLAYER_BESTIARIO).ifPresent(vieja ->
+                event.getEntity().getCapability(BestiarioProvider.PLAYER_BESTIARIO).ifPresent(nueva ->
                         nueva.copyFrom(vieja)));
         event.getOriginal().invalidateCaps();
 

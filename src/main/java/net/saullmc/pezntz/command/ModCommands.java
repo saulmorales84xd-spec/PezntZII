@@ -21,6 +21,8 @@ import net.saullmc.pezntz.capability.BodyHealthData;
 import net.saullmc.pezntz.capability.BodyHealthProvider;
 import net.saullmc.pezntz.network.NetworkHandler;
 import net.saullmc.pezntz.block.entity.ContenedorLootEntity;
+import net.saullmc.pezntz.capability.BestiarioProvider;
+import net.saullmc.pezntz.network.SyncBestiarioPacket;
 import net.saullmc.pezntz.network.SyncBodyHealthPacket;
 
 import java.util.Collection;
@@ -52,6 +54,14 @@ public class ModCommands {
                 .then(Commands.argument("radio", IntegerArgumentType.integer(1, RADIO_MAXIMO))
                         .executes(ctx -> regenerarEnRadio(ctx.getSource(),
                                 IntegerArgumentType.getInteger(ctx, "radio")))));
+
+        raiz.then(Commands.literal("bestiario")
+                .then(Commands.literal("borrar")
+                        .executes(ctx -> borrarBestiario(ctx.getSource(),
+                                List.of(ctx.getSource().getPlayerOrException())))
+                        .then(Commands.argument("objetivos", EntityArgument.players())
+                                .executes(ctx -> borrarBestiario(ctx.getSource(),
+                                        EntityArgument.getPlayers(ctx, "objetivos"))))));
 
         event.getDispatcher().register(raiz);
     }
@@ -98,6 +108,24 @@ public class ModCommands {
 
         final int total = cuantos;
         source.sendSuccess(() -> Component.literal("Loot regenerado en " + total + " contenedores"), false);
+        return cuantos;
+    }
+
+    private static int borrarBestiario(CommandSourceStack source, Collection<ServerPlayer> objetivos) {
+        for (ServerPlayer jugador : objetivos) {
+            jugador.getCapability(BestiarioProvider.PLAYER_BESTIARIO).ifPresent(bestiario -> {
+                bestiario.getVistos().clear();
+
+                NetworkHandler.sendToPlayer(new SyncBestiarioPacket(bestiario), jugador);
+            });
+        }
+
+        int cuantos = objetivos.size();
+        Component mensaje = cuantos == 1
+                ? Component.literal("Bestiario borrado a " + objetivos.iterator().next().getName().getString())
+                : Component.literal("Bestiario borrado a " + cuantos + " jugadores");
+
+        source.sendSuccess(() -> mensaje, false);
         return cuantos;
     }
 

@@ -1,9 +1,13 @@
 package net.saullmc.pezntz.client.screen.menu;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.saullmc.pezntz.client.tooltip.ImagenTooltip;
 import net.saullmc.pezntz.client.tooltip.ItemEnImagen;
 
@@ -46,6 +50,62 @@ public class ItemMenu {
     private boolean imagenEscalaPuesta = false;
 
     private final List<ItemEnImagen> imagenItems = new ArrayList<>();
+
+    public static final String ITEM_ARMA = "tacz:modern_kinetic_gun";
+    public static final String ITEM_ACCESORIO = "tacz:attachment";
+    public static final String ITEM_MUNICION = "tacz:ammo";
+    public static final String ITEM_CAJAS = "tacz:ammo_box";
+
+    public static final String MODO_DISPARO = "SEMI";
+
+    /** Un arma del pack: "ak47", "m4a1", "deagle"... */
+    public static ItemMenu arma(String id) {
+        return new ItemMenu(construir(ITEM_ARMA,
+                "{GunId:\"tacz:" + id + "\",GunFireMode:\"" + MODO_DISPARO + "\"}", 1));
+    }
+
+    /** Una mira, canion, culata, empuniadura o cargador: "scope_vudu", "grip_cobra"... */
+    public static ItemMenu accesorio(String id) {
+        return new ItemMenu(construir(ITEM_ACCESORIO, "{AttachmentId:\"tacz:" + id + "\"}", 1));
+    }
+
+    /** Un calibre: "9mm", "12g", "45acp"... */
+    public static ItemMenu municion(String calibre, int cantidad) {
+        return new ItemMenu(construir(ITEM_MUNICION, "{AmmoId:\"tacz:" + calibre + "\"}", cantidad));
+    }
+
+    public static ItemMenu cajas(String cajas, int cantidad) {
+        return new ItemMenu(construir(ITEM_CAJAS, "{AmmoId:\"tacz:" + cajas + "\"}", 1));
+    }
+
+    /** Lo mismo pero para meterlo DENTRO del png de un tooltip con .imagenItem(...). */
+    public static ItemStack stackArma(String id) {
+        return construir(ITEM_ARMA,
+                "{GunId:\"tacz:" + id + "\",GunFireMode:\"" + MODO_DISPARO + "\"}", 1);
+    }
+
+    public static ItemStack stackAccesorio(String id) {
+        return construir(ITEM_ACCESORIO, "{AttachmentId:\"tacz:" + id + "\"}", 1);
+    }
+
+    public static ItemStack stackMunicion(String calibre, int cantidad) {
+        return construir(ITEM_MUNICION, "{AmmoId:\"tacz:" + calibre + "\"}", cantidad);
+    }
+
+    private static ItemStack construir(String item, String nbt, int cantidad) {
+        Item base = ForgeRegistries.ITEMS.getValue(new ResourceLocation(item));
+        if (base == null) return ItemStack.EMPTY;
+
+        ItemStack stack = new ItemStack(base, Math.max(1, cantidad));
+
+        try {
+            CompoundTag tag = TagParser.parseTag(nbt);
+            stack.setTag(tag);
+        } catch (CommandSyntaxException e) {
+        }
+
+        return stack;
+    }
 
     public ItemMenu(Item item) {
         this(new ItemStack(item));

@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.saullmc.pezntz.PezntZMod;
+import net.saullmc.pezntz.client.screen.FondoBorroso;
 import net.saullmc.pezntz.item.ModItems;
 
 public class MenuPrincipalScreen extends Screen {
@@ -51,6 +52,8 @@ public class MenuPrincipalScreen extends Screen {
 
     private BotonMenu[] botones = new BotonMenu[0];
 
+    private final FondoBorroso borroso = new FondoBorroso();
+
     public MenuPrincipalScreen() {
         super(Component.literal("Menu"));
     }
@@ -73,6 +76,8 @@ public class MenuPrincipalScreen extends Screen {
 
     @Override
     protected void init() {
+        this.borroso.preparar();
+
         ItemStack[] items = tooltips();
         int cuantos = TEXTURAS.length;
 
@@ -106,7 +111,15 @@ public class MenuPrincipalScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        if (OSCURECER_FONDO) this.renderBackground(g);
+        boolean hayDesenfoque = this.borroso.dibujar(partialTick);
+
+        if (hayDesenfoque) {
+            if ((FondoBorroso.COLOR_VELO >>> 24) != 0) {
+                g.fill(0, 0, this.width, this.height, FondoBorroso.COLOR_VELO);
+            }
+        } else if (OSCURECER_FONDO) {
+            this.renderBackground(g);
+        }
 
         super.render(g, mouseX, mouseY, partialTick);
 
@@ -119,5 +132,11 @@ public class MenuPrincipalScreen extends Screen {
             g.renderTooltip(this.font, stack, mouseX, mouseY);
             break;
         }
+    }
+
+    @Override
+    public void removed() {
+        this.borroso.cerrar();
+        super.removed();
     }
 }

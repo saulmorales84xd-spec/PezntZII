@@ -11,8 +11,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.ModBlocks;
+import net.minecraft.world.entity.EntityType;
+import net.saullmc.pezntz.client.screen.FondoBorroso;
+import net.saullmc.pezntz.entity.ModEntities;
 import net.saullmc.pezntz.item.ModItems;
 
 import javax.annotation.Nullable;
@@ -43,6 +47,10 @@ public class MenuSeccionScreen extends Screen {
     public static final int BARRA_SEPARACION = 150;
     public static final int COLOR_BARRA_FONDO = 0x50FFFFFF;
     public static final int COLOR_BARRA = 0xFFFFFFFF;
+
+    public static final int BARRA_ALTO = 0;
+
+    public static final int BARRA_OFFSET_Y = 0;
 
     public static final int FILAS_POR_PASO = 1;
 
@@ -76,6 +84,43 @@ public class MenuSeccionScreen extends Screen {
 
     public static final int MARGEN_VOLVER = 6;
 
+    private static List<EntidadMenu> entidades(int seccion) {
+        return switch (seccion) {
+
+            case 0 -> List.of(
+                    new EntidadMenu(EntityType.TROPICAL_FISH).en(90, -70).tamanio(50).variante(EntidadMenu.PEZ_PAYASO).giro(220, 10F)
+                            .titulo("Pez payaso"));
+
+            case 2 -> List.of(
+
+                    new EntidadMenu(EntityType.ZOMBIE).en(90, 0).tamanio(30).giro(220,0).secreto()
+                            .titulo("Infectado"),
+
+                    new EntidadMenu(ModEntities.ZOMBIE_HINCHADO.get()).en(-40, 70).tamanio(30).giro(220,0).secreto()
+                            .titulo("Zombie hinchado"),
+
+                    new EntidadMenu(ModEntities.ZOMBIE_TANQUE.get()).en(90, 160).tamanio(20).giro(220,0).secreto()
+                            .titulo("Zombie tanque"),
+
+                    new EntidadMenu(ModEntities.ZOMBIE_ARRASTRADOR.get()).en(50, 50).tamanio(30).giro(220,0).secreto()
+                            .titulo("Zombie arrastrador"),
+
+                    new EntidadMenu(ModEntities.ZOMBIE_TOXICO.get()).en(130, 70).tamanio(30).giro(220,0).secreto()
+                            .titulo("Zombie toxico"),
+
+                    new EntidadMenu(ModEntities.ZOMBIE_PARASITADOR.get()).en(220, 70).tamanio(30).giro(220,0).secreto()
+                            .titulo("Zombie parasitador"),
+
+                    new EntidadMenu(ModEntities.RATA_CARRONERA.get()).en(0, 140).tamanio(30).giro(220,0).secreto()
+                            .titulo("Rata carronera"),
+
+                    new EntidadMenu(ModEntities.MOSQUITO_ZUMBADOR.get()).en(180, 140).tamanio(30).giro(220,0).secreto()
+                            .titulo("Mosquito zumbador"));
+
+            default -> List.of();
+        };
+    }
+
     private static List<ItemMenu> contenido(int seccion) {
         return switch (seccion) {
 
@@ -95,6 +140,7 @@ public class MenuSeccionScreen extends Screen {
 
 
             case 1 -> List.of(
+
                     new ItemMenu(ModItems.MUESTRA_VIRUS.get()).en(60, -60).escala(1.5F),
                     new ItemMenu(ModItems.FISHY.get()).en(90, -60).escala(1.5F),
                     new ItemMenu(ModItems.DOCUMENTOS_PEZNT.get()).en(120, -60).escala(1.5F),
@@ -102,7 +148,7 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.TELA.get()).en(-40, -10).escala(1.25F),
                     new ItemMenu(ModItems.CHATARRA.get()).en(-10, -10).escala(1.25F),
                     new ItemMenu(ModItems.CHATARRA_REFORZADA.get()).en(20, -10).escala(1.25F),
-                    new ItemMenu(ModItems.AGUJA_HILO.get()).en(50, -10).escala(1.25F),
+                    new ItemMenu(ModItems.AGUJA_HILO.get()).en(50, -10).escala(1.25F).imagenItem(Items.STRING, 0, 0).imagenItem(Items.STRING,0,0).imagenItem(Items.STRING,0,0).imagenItem(Items.LEATHER,0,0).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0),
                     new ItemMenu(ModItems.PEZNSINITA_BRUTE.get()).en(80, -10).escala(1.25F),
                     new ItemMenu(ModItems.PEZNSINITA_INGOT.get()).en(110, -10).escala(1.25F),
                     new ItemMenu(ModItems.TITANIUM_BRUTE.get()).en(140, -10).escala(1.25F),
@@ -131,7 +177,7 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(Item.byBlock(ModBlocks.METEORITO_PEZNSINITA.get())).en(200, 60).escala(1.25F),
 
                     new ItemMenu(ModItems.ADRENALINA.get()).en(35, 100).escala(1.25F),
-                    new ItemMenu(ModItems.MORFINA.get()).en(63, 100).escala(1.25F),
+                    new ItemMenu(ModItems.MORFINA.get()).en(65, 100).escala(1.25F),
                     new ItemMenu(ModItems.COAGULANTE.get()).en(95, 100).escala(1.25F),
                     new ItemMenu(ModItems.QUELANTE.get()).en(125, 100).escala(1.25F),
                     new ItemMenu(ModItems.CURA.get()).en(155, 100).escala(1.25F),
@@ -139,12 +185,71 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.HELMET_TRAJE_BIOSEGURIDAD.get()).en(35, 140).escala(1.25F),
                     new ItemMenu(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD.get()).en(35, 160).escala(1.25F),
                     new ItemMenu(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get()).en(35, 180).escala(1.25F),
-                    new ItemMenu(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get()).en(35, 200).escala(1.25F)
+                    new ItemMenu(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get()).en(35, 200).escala(1.25F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_TACTICA.get()).en(65, 140).escala(1.25F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_TACTICA.get()).en(65, 160).escala(1.25F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_TACTICA.get()).en(65, 180).escala(1.25F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_TACTICA.get()).en(65, 200).escala(1.25F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 140).escala(1.25F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 160).escala(1.25F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 180).escala(1.25F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 200).escala(1.25F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_CONTENCION.get()).en(125, 140).escala(1.25F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_CONTENCION.get()).en(125, 160).escala(1.25F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_CONTENCION.get()).en(125, 180).escala(1.25F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_CONTENCION.get()).en(125, 200).escala(1.25F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_BLINDADA.get()).en(155, 140).escala(1.25F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_BLINDADA.get()).en(155, 160).escala(1.25F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_BLINDADA.get()).en(155, 180).escala(1.25F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_BLINDADA.get()).en(155, 200).escala(1.25F),
+
+                    new ItemMenu(ModItems.CUCHILLO.get()).en(-10, 240).escala(1.25F),
+                    new ItemMenu(ModItems.BATE.get()).en(20, 240).escala(1.25F),
+                    new ItemMenu(ModItems.LUCILLE.get()).en(50, 240).escala(1.25F),
+                    new ItemMenu(ModItems.PALANCA.get()).en(80, 240).escala(1.25F),
+                    new ItemMenu(ModItems.GUITARRA.get()).en(110, 240).escala(1.25F),
+                    new ItemMenu(ModItems.KATANA.get()).en(140, 240).escala(1.25F),
+                    new ItemMenu(ModItems.MOTOSIERRA.get()).en(170, 240).escala(1.25F),
+                    new ItemMenu(ModItems.LANZALLAMAS.get()).en(200, 240).escala(1.25F),
+
+                    new ItemMenu(ModItems.PEZNSINITA_PICKAXE.get()).en(50, 280).escala(1.25F),
+                    new ItemMenu(ModItems.PEZNSINITA_AXE.get()).en(80, 280).escala(1.25F),
+                    new ItemMenu(ModItems.PEZNSINITA_SHOVEL.get()).en(110, 280).escala(1.25F),
+                    new ItemMenu(ModItems.PEZNSINITA_HOE.get()).en(140, 280).escala(1.25F),
+
+                    ItemMenu.cajas("ammo_box", 1).en(65, 320).escala(1.5F),
+                    ItemMenu.cajas("gold_ammo_box", 1).en(95, 320).escala(1.5F),
+                    ItemMenu.cajas("diamond_ammo_box", 1).en(125, 320).escala(1.5F),
+
+                    ItemMenu.arma("glock_17").en(35, 360).escala(1.5F),
+                    ItemMenu.arma("deagle_golden").en(35, 400).escala(1.5F),
+                    ItemMenu.arma("hk_mp5a5").en(65, 360).escala(1.5F),
+                    ItemMenu.arma("p90").en(65, 400).escala(1.5F),
+                    ItemMenu.arma("m870").en(95, 360).escala(1.5F),
+                    ItemMenu.arma("spas_12").en(95, 400).escala(1.5F),
+                    ItemMenu.arma("ak47").en(125, 360).escala(1.5F),
+                    ItemMenu.arma("scar_l").en(125, 400).escala(1.5F),
+                    ItemMenu.arma("kar98").en(155, 360).escala(1.5F),
+                    ItemMenu.arma("m95").en(155, 400).escala(1.5F),
+
+                    ItemMenu.municion("9mm", 1).en(-40, 440).escala(1.3F),
+                    ItemMenu.municion("45acp", 1).en(-10, 440).escala(1.3F),
+                    ItemMenu.municion("545x39", 1).en(20, 440).escala(1.3F),
+                    ItemMenu.municion("58x42", 1).en(50, 440).escala(1.3F),
+                    ItemMenu.municion("792x57", 1).en(80, 440).escala(1.3F),
+                    ItemMenu.municion("762x54", 1).en(110, 440).escala(1.3F),
+                    ItemMenu.municion("500mag", 1).en(140, 440).escala(1.3F),
+                    ItemMenu.municion("30_06", 1).en(170, 440).escala(1.3F),
+                    ItemMenu.municion("12g", 1).en(200, 440).escala(1.3F),
+                    ItemMenu.municion("rpg_rocket", 1).en(230, 440).escala(1.3F)
 
                     );
 
             default -> List.of(
-                    new ItemMenu(ModItems.AZUFRE.get()));
+                    ItemMenu.arma("ak47").en(40, -20).escala(1.5F).imagen("pezntz:textures/gui/receta.png", 16, 16)
+                            .imagenEscala(3.0F)
+                            .imagenMargen(2, 3)
+                            .imagenItem(ModItems.CHATARRA.get(), 0, 0));
         };
     }
 
@@ -153,6 +258,10 @@ public class MenuSeccionScreen extends Screen {
     private final List<ItemMenu> rejilla = new ArrayList<>();
 
     private final List<ItemMenu> libres = new ArrayList<>();
+
+    private final List<EntidadMenu> bichos = new ArrayList<>();
+
+    private final FondoBorroso borroso = new FondoBorroso();
 
     private int desplazamiento = 0;
     private int rejillaX;
@@ -183,6 +292,11 @@ public class MenuSeccionScreen extends Screen {
             if (entrada.tienePosicion()) this.libres.add(entrada);
             else this.rejilla.add(entrada);
         }
+
+        this.bichos.clear();
+        this.bichos.addAll(entidades(this.seccion));
+
+        this.borroso.preparar();
 
         this.rejillaX = (this.width - anchoRejilla()) / 2 + OFFSET_X;
         this.rejillaY = (this.height - altoRejilla()) / 2 + OFFSET_Y;
@@ -247,12 +361,23 @@ public class MenuSeccionScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        if (OSCURECER_FONDO) this.renderBackground(g);
+
+        boolean hayDesenfoque = this.borroso.dibujar(partialTick);
+
+        if (hayDesenfoque) {
+            if ((FondoBorroso.COLOR_VELO >>> 24) != 0) {
+                g.fill(0, 0, this.width, this.height, FondoBorroso.COLOR_VELO);
+            }
+        } else if (OSCURECER_FONDO) {
+            this.renderBackground(g);
+        }
 
         ItemMenu encima = dibujarRejilla(g, mouseX, mouseY);
 
         ItemMenu encimaLibre = dibujarLibres(g, mouseX, mouseY);
         if (encimaLibre != null) encima = encimaLibre;
+
+        EntidadMenu encimaBicho = dibujarBichos(g, mouseX, mouseY);
 
         dibujarBarra(g);
 
@@ -260,12 +385,46 @@ public class MenuSeccionScreen extends Screen {
 
         dibujarVolver(g, mouseX, mouseY);
 
-        if (encima != null) {
+        if (encimaBicho != null) {
+            List<Component> lineas = encimaBicho.getTooltip();
+            if (!lineas.isEmpty()) g.renderComponentTooltip(this.font, lineas, mouseX, mouseY);
+
+        } else if (encima != null) {
             g.renderTooltip(this.font,
                     getTooltipFromItem(Minecraft.getInstance(), encima.getStack()),
                     encima.getImagenTooltip(),
                     mouseX, mouseY);
         }
+    }
+
+    @Nullable
+    private EntidadMenu dibujarBichos(GuiGraphics g, int mouseX, int mouseY) {
+        EntidadMenu encima = null;
+
+        for (EntidadMenu bicho : this.bichos) {
+            int x = this.rejillaX + bicho.getX();
+            int y = this.rejillaY + bicho.getY() - this.desplazamiento * paso();
+
+            int zona = bicho.getZona();
+            int alto = bicho.getTamanio();
+
+
+            if (mouseX >= x - zona && mouseX <= x + zona
+                    && mouseY >= y - alto - zona && mouseY <= y + zona) {
+                encima = bicho;
+            }
+
+            bicho.dibujar(g, x, y);
+        }
+
+        return encima;
+    }
+
+    @Override
+    public void removed() {
+
+        this.borroso.cerrar();
+        super.removed();
     }
 
     @Nullable
@@ -347,13 +506,17 @@ public class MenuSeccionScreen extends Screen {
 
         int visible = altoVisible();
         int total = visible + maximo * paso();
+
+        int altoBarra = BARRA_ALTO > 0 ? BARRA_ALTO : visible;
+
         int x = this.rejillaX + anchoRejilla() + BARRA_SEPARACION;
+        int arriba = this.rejillaY + BARRA_OFFSET_Y;
 
-        g.fill(x, this.rejillaY, x + BARRA_ANCHO, this.rejillaY + visible, COLOR_BARRA_FONDO);
+        g.fill(x, arriba, x + BARRA_ANCHO, arriba + altoBarra, COLOR_BARRA_FONDO);
 
-        int altoPulgar = Math.max(8, visible * visible / total);
-        int recorrido = visible - altoPulgar;
-        int y = this.rejillaY + recorrido * this.desplazamiento / maximo;
+        int altoPulgar = Math.max(8, altoBarra * visible / total);
+        int recorrido = altoBarra - altoPulgar;
+        int y = arriba + recorrido * this.desplazamiento / maximo;
 
         g.fill(x, y, x + BARRA_ANCHO, y + altoPulgar, COLOR_BARRA);
     }

@@ -73,6 +73,11 @@ public class NetworkHandler {
                 .decoder(AbrirTecladoPacket::new)
                 .encoder(AbrirTecladoPacket::toBytes)
                 .consumerMainThread(AbrirTecladoPacket::handle).add();
+
+        net.messageBuilder(SyncBestiarioPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncBestiarioPacket::new)
+                .encoder(SyncBestiarioPacket::toBytes)
+                .consumerMainThread(SyncBestiarioPacket::handle).add();
     }
 
     public static <MSG> void sendToTracking(MSG message, Entity entity) {

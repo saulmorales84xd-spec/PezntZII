@@ -66,6 +66,7 @@ public class TablasLoot {
     public static final String HILO = "minecraft:string";
     public static final String CUERO = "minecraft:leather";
     public static final String POLVORA = "minecraft:gunpowder";
+    public static final String CUARZO = "minecraft:quartz";
     public static final String PEPITAS_HIERRO = "minecraft:iron_nugget";
     public static final String PEPITAS_ORO = "minecraft:gold_nugget";
     public static final String LINGOTE_HIERRO = "minecraft:iron_ingot";
@@ -98,9 +99,8 @@ public class TablasLoot {
     };
 
     public static final String[] MIRAS = {
-            "scope_1873_6x", "scope_98k", "scope_acog_ta31", "scope_aug_default", "scope_contender",
-            "scope_elcan_4x", "scope_hamr", "scope_lpvo_1_6", "scope_mk5hd", "scope_qmk152",
-            "scope_retro_2x", "scope_scout", "scope_standard_8x", "scope_vudu", "sight_552",
+            "scope_98k", "scope_acog_ta31", "scope_aug_default", "scope_elcan_4x", "scope_lpvo_1_6",
+            "scope_qmk152", "scope_retro_2x", "scope_standard_8x", "scope_vudu", "sight_552",
             "sight_coyote", "sight_deltapoint_pistol", "sight_deltapoint_rifle", "sight_exp3",
             "sight_fastfire_pistol", "sight_fastfire_rifle", "sight_okp7", "sight_p90",
             "sight_pk06_pistol", "sight_pk06_rifle", "sight_rmr_dot", "sight_sro_dot", "sight_srs_02",
@@ -110,8 +110,8 @@ public class TablasLoot {
     public static final String[] CANIONES = {
             "deagle_golden_long_barrel", "muzzle_brake_cthulhu", "muzzle_brake_cyclone_d2",
             "muzzle_brake_pioneer", "muzzle_brake_trex", "muzzle_compensator_trident",
-            "muzzle_duckbill_sg", "muzzle_silencer_knight_qd", "muzzle_silencer_phantom_s1",
-            "muzzle_silencer_ptilopsis", "muzzle_silencer_ursus", "muzzle_silencer_vulture"
+            "muzzle_silencer_knight_qd", "muzzle_silencer_phantom_s1", "muzzle_silencer_ptilopsis",
+            "muzzle_silencer_ursus", "muzzle_silencer_vulture"
     };
 
     public static final String[] CULATAS = {
@@ -152,30 +152,72 @@ public class TablasLoot {
 
     static {
 
-        Tabla muebles = new Tabla().comun(TELA, 1, 2).comun(CABLES, 1, 2).comun(CINTA, 1, 1).comun(COPPER_NUGGET, 1, 2)
-                .comun(PEPITAS_HIERRO, 1, 3).comun(HILO, 1, 2).limitado(CLAVOS, 1, 2).limitado(TUERCA, 1, 2)
-                .limitado(BOTELLA_ALCOHOL, 1, 1).raro(BATERIAS, 1, 1).raro(CUERO, 1, 2).conExplosivos();
+        Tabla muebles = new Tabla()
+                .comun(TELA, 1, 2)
+                .comun(CABLES, 1, 2)
+                .comun(CINTA, 1, 1)
+                .comun(COPPER_NUGGET, 1, 2)
+                .comun(PEPITAS_HIERRO, 1, 3)
+                .comun(HILO, 1, 2)
+                .limitado(CLAVOS, 1, 2)
+                .limitado(TUERCA, 1, 2)
+                .limitado(BOTELLA_ALCOHOL, 1, 1)
+                .raro(BATERIAS, 1, 1)
+                .raro(CUERO, 1, 2)
+                .conExplosivos();
 
         poner("armario_izq", muebles.copia());
         poner("armario_der", muebles.copia());
         poner("cajon_triple", muebles.copia());
 
-        Tabla cocina = muebles.copia().raro(LATA_ATUN, 1, 1).raro(LATA_POLLO, 1, 1).raro(LATA_CARNE, 1, 1).raro(CEREALES, 1, 1)
-                .raro(NACHOS, 1, 1).raro(PAQUETE_MRE, 1, 1).raro(BARRA_CHOCOLATE, 1, 2).raro(BARRA_GRANOLA, 1, 2);
+
+        Tabla cocina = muebles.copia()
+                .raro(LATA_ATUN, 1, 1)
+                .raro(LATA_POLLO, 1, 1)
+                .raro(LATA_CARNE, 1, 1)
+                .raro(CEREALES, 1, 1)
+                .raro(NACHOS, 1, 1)
+                .raro(PAQUETE_MRE, 1, 1)
+                .raro(BARRA_CHOCOLATE, 1, 2)
+                .raro(BARRA_GRANOLA, 1, 2);
 
         poner("cajon_cocina_izq", cocina.copia());
         poner("cajon_cocina_der", cocina.copia());
         poner("encimera", cocina.copia());
         poner("cajon_doble", cocina.copia());
 
-        poner("espejo", new Tabla().fijo(VENDAS, 1).comun(TELA, 1, 2).comun(PAPEL, 1, 2).comun(HILO, 1, 2)
-                .muyRaro(BOTIQUIN, 1, 1).conExplosivos());
 
-        Tabla lockers = new Tabla().comun(TELA, 1, 2).comun(CHATARRA, 1, 2).comun(CABLES, 1, 2).comun(CINTA, 1, 1)
-                .comun(PEPITAS_HIERRO, 1, 3).comun(PEPITAS_ORO, 1, 2).comun(COPPER_NUGGET, 1, 2).comun(HILO, 1, 2)
-                .limitado(CLAVOS, 1, 2).limitado(TUERCA, 1, 2).limitado(RESORTE, 1, 2).limitado(BOTELLA_ALCOHOL, 1, 1)
-                .raro(BATERIAS, 1, 1).raro(BARRA_CHOCOLATE, 1, 2).raro(BARRA_GRANOLA, 1, 2).raro(PAQUETE_MRE, 1, 1)
-                .raro(LINGOTE_HIERRO, 1, 1).raro(LINGOTE_ORO, 1, 1).raro(LINGOTE_COBRE, 1, 1).raro(CUERO, 1, 2).conExplosivos();
+        poner("espejo", new Tabla()
+                .fijo(VENDAS, 1)
+                .comun(TELA, 1, 2)
+                .comun(PAPEL, 1, 2)
+                .comun(HILO, 1, 2)
+                .muyRaro(BOTIQUIN, 1, 1)
+                .conMinerales());
+
+
+        Tabla lockers = new Tabla()
+                .comun(TELA, 1, 2)
+                .comun(CHATARRA, 1, 2)
+                .comun(CABLES, 1, 2)
+                .comun(CINTA, 1, 1)
+                .comun(PEPITAS_HIERRO, 1, 3)
+                .comun(PEPITAS_ORO, 1, 2)
+                .comun(COPPER_NUGGET, 1, 2)
+                .comun(HILO, 1, 2)
+                .limitado(CLAVOS, 1, 2)
+                .limitado(TUERCA, 1, 2)
+                .limitado(RESORTE, 1, 2)
+                .limitado(BOTELLA_ALCOHOL, 1, 1)
+                .raro(BATERIAS, 1, 1)
+                .raro(BARRA_CHOCOLATE, 1, 2)
+                .raro(BARRA_GRANOLA, 1, 2)
+                .raro(PAQUETE_MRE, 1, 1)
+                .raro(LINGOTE_HIERRO, 1, 1)
+                .raro(LINGOTE_ORO, 1, 1)
+                .raro(LINGOTE_COBRE, 1, 1)
+                .raro(CUERO, 1, 2)
+                .conExplosivos();
 
         poner("locker", lockers.copia());
         poner("locker_abierto", lockers.copia());
@@ -184,7 +226,9 @@ public class TablasLoot {
 
 
         Tabla municion = new Tabla()
-                .unSoloTipo(BALAS_POR_CAJA, MONTONES_BALAS_MIN, MONTONES_BALAS_MAX).municion(CALIBRES).conArmeria(PROBABILIDAD_ARMA_CAJA);
+                .unSoloTipo(BALAS_POR_CAJA, MONTONES_BALAS_MIN, MONTONES_BALAS_MAX)
+                .municion(CALIBRES)
+                .conArmeria(PROBABILIDAD_ARMA_CAJA);
 
         poner("cajas_militares", municion.copia());
         poner("caja_militar", municion.copia());
@@ -193,14 +237,24 @@ public class TablasLoot {
         poner("cuerpo_5", municion.copia());
 
 
-        Tabla cuerpos = new Tabla().comun(TELA, 1, 2).comun(PEPITAS_HIERRO, 1, 3).limitado(BOTELLA_ALCOHOL, 1, 1)
-                .raro(BATERIAS, 1, 1).raro(LATA_ATUN, 1, 1).raro(LATA_POLLO, 1, 1).raro(LATA_CARNE, 1, 1)
-                .raro(BARRA_CHOCOLATE, 1, 2).raro(BARRA_GRANOLA, 1, 2).raro(PAQUETE_MRE, 1, 1).raro(POLVORA, 1, 2)
+        Tabla cuerpos = new Tabla()
+                .comun(TELA, 1, 2)
+                .comun(PEPITAS_HIERRO, 1, 3)
+                .limitado(BOTELLA_ALCOHOL, 1, 1)
+                .raro(BATERIAS, 1, 1)
+                .raro(LATA_ATUN, 1, 1)
+                .raro(LATA_POLLO, 1, 1)
+                .raro(LATA_CARNE, 1, 1)
+                .raro(BARRA_CHOCOLATE, 1, 2)
+                .raro(BARRA_GRANOLA, 1, 2)
+                .raro(PAQUETE_MRE, 1, 1)
+                .raro(POLVORA, 1, 2)
                 .conArmeria(PROBABILIDAD_ARMA_CUERPO);
 
         poner("cuerpo_2", cuerpos.copia());
         poner("cuerpo_4", cuerpos.copia());
         poner("cuerpo_6", cuerpos.copia());
+
     }
 
     private static void poner(String bloque, Tabla tabla) {
@@ -231,7 +285,7 @@ public class TablasLoot {
 
         Map<String, ItemStack> porItem = new HashMap<>();
 
-        int restante = ITEMS_POR_CONTENEDOR;
+        int restante = tabla.items;
 
         for (Entrada fija : tabla.fijos) {
             if (restante <= 0) break;
@@ -251,7 +305,6 @@ public class TablasLoot {
             int cuantos = Math.min(cantidad(elegida, azar), restante);
 
             if (!aniadir(montones, porItem, elegida, cuantos, azar)) {
-                // El item no existe en el registro: fuera del sorteo para no dar vueltas.
                 fuera.add(elegida.clave());
                 continue;
             }
@@ -480,6 +533,8 @@ public class TablasLoot {
         private final List<Entrada> pesadas = new ArrayList<>();
         private int probabilidadArmeria = 0;
 
+        private int items = ITEMS_POR_CONTENEDOR;
+
         private boolean unSoloTipo = false;
         private int cantidadTotal = 0;
         private int montonesMin = 1;
@@ -510,8 +565,17 @@ public class TablasLoot {
             return this;
         }
 
+        public Tabla conMinerales() {
+            return this.raro(CUARZO, 1, 2).muyRaro(AZUFRE, 1, 1);
+        }
+
         public Tabla conExplosivos() {
-            return this.raro(POLVORA, 1, 2).muyRaro(AZUFRE, 1, 1);
+            return this.raro(POLVORA, 1, 2).conMinerales();
+        }
+
+        public Tabla items(int cuantos) {
+            this.items = cuantos;
+            return this;
         }
 
         public Tabla municion(String[] calibres) {
@@ -575,6 +639,7 @@ public class TablasLoot {
             nueva.armeria.addAll(this.armeria);
             nueva.pesadas.addAll(this.pesadas);
             nueva.probabilidadArmeria = this.probabilidadArmeria;
+            nueva.items = this.items;
             nueva.unSoloTipo = this.unSoloTipo;
             nueva.cantidadTotal = this.cantidadTotal;
             nueva.montonesMin = this.montonesMin;

@@ -12,5 +12,6 @@ public class ModCapabilities {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.register(BodyHealthData.class);
         event.register(BackpackData.class);
+        event.register(BestiarioData.class);
     }
 }

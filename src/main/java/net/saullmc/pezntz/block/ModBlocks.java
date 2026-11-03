@@ -4,6 +4,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -99,10 +100,10 @@ public class ModBlocks {
             bloque -> () -> new PrensaBlockItem(bloque.get(), new Item.Properties()));
 
     public static final RegistryObject<Block> BARRIL_1 = registerBlock("barril_1",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+            () -> new Cajon(BlockBehaviour.Properties.of().strength(2.5F, 6.0F).sound(SoundType.METAL).noOcclusion()));
 
     public static final RegistryObject<Block> BARRIL_2 = registerBlock("barril_2",
-            () -> new Cajon(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+            () -> new Cajon(BlockBehaviour.Properties.of().strength(2.5F, 6.0F).sound(SoundType.METAL).noOcclusion()));
 
     public static final RegistryObject<Block> CAJA_1 = registerBlock("caja_1",
             () -> new Caja1(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL).noOcclusion()));
