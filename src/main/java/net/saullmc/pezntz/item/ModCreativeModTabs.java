@@ -44,6 +44,7 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.CHATARRA_ELECTRONICA.get());
                         pOutput.accept(ModItems.CABLES.get());
                         pOutput.accept(ModItems.CINTA.get());
+                        pOutput.accept(ModItems.KIT_VEHICULOS.get());
                         pOutput.accept(ModItems.BATERIAS.get());
                         pOutput.accept(ModItems.GLANDULA_APESTOSA.get());
                         pOutput.accept(ModItems.ESPORAS.get());

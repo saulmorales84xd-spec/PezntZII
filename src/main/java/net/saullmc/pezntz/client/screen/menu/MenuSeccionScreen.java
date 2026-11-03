@@ -84,6 +84,14 @@ public class MenuSeccionScreen extends Screen {
 
     public static final int MARGEN_VOLVER = 6;
 
+    public static final boolean RECORTAR_CONTENIDO = true;
+
+    public static final int RECORTE_ARRIBA = 0;
+
+    public static final int RECORTE_ABAJO = 0;
+
+    private static final int RATON_FUERA = -10000;
+
     private static List<EntidadMenu> entidades(int seccion) {
         return switch (seccion) {
 
@@ -148,7 +156,7 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.TELA.get()).en(-40, -10).escala(1.25F),
                     new ItemMenu(ModItems.CHATARRA.get()).en(-10, -10).escala(1.25F),
                     new ItemMenu(ModItems.CHATARRA_REFORZADA.get()).en(20, -10).escala(1.25F),
-                    new ItemMenu(ModItems.AGUJA_HILO.get()).en(50, -10).escala(1.25F).imagenItem(Items.STRING, 0, 0).imagenItem(Items.STRING,0,0).imagenItem(Items.STRING,0,0).imagenItem(Items.LEATHER,0,0).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0),
+                    new ItemMenu(ModItems.AGUJA_HILO.get()).en(50, -10).escala(1.25F).imagenItem(Items.STRING, 0, 0).imagenItem(Items.STRING,0,0).imagenItem(Items.STRING,0,0).imagenItem(Items.LEATHER,6,10).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0),
                     new ItemMenu(ModItems.PEZNSINITA_BRUTE.get()).en(80, -10).escala(1.25F),
                     new ItemMenu(ModItems.PEZNSINITA_INGOT.get()).en(110, -10).escala(1.25F),
                     new ItemMenu(ModItems.TITANIUM_BRUTE.get()).en(140, -10).escala(1.25F),
@@ -217,9 +225,9 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.PEZNSINITA_SHOVEL.get()).en(110, 280).escala(1.25F),
                     new ItemMenu(ModItems.PEZNSINITA_HOE.get()).en(140, 280).escala(1.25F),
 
-                    ItemMenu.cajas("ammo_box", 1).en(65, 320).escala(1.5F),
-                    ItemMenu.cajas("gold_ammo_box", 1).en(95, 320).escala(1.5F),
-                    ItemMenu.cajas("diamond_ammo_box", 1).en(125, 320).escala(1.5F),
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_HIERRO, 0).en(65, 320).escala(1.5F),
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_ORO, 0).en(95, 320).escala(1.5F),
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_DIAMANTE, 0).en(125, 320).escala(1.5F),
 
                     ItemMenu.arma("glock_17").en(35, 360).escala(1.5F),
                     ItemMenu.arma("deagle_golden").en(35, 400).escala(1.5F),
@@ -243,7 +251,7 @@ public class MenuSeccionScreen extends Screen {
                     ItemMenu.municion("12g", 1).en(200, 440).escala(1.3F),
                     ItemMenu.municion("rpg_rocket", 1).en(230, 440).escala(1.3F)
 
-                    );
+            );
 
             default -> List.of(
                     ItemMenu.arma("ak47").en(40, -20).escala(1.5F).imagen("pezntz:textures/gui/receta.png", 16, 16)
@@ -339,6 +347,22 @@ public class MenuSeccionScreen extends Screen {
         return Math.max(altoRejilla(), this.volverY - MARGEN_VOLVER - this.rejillaY);
     }
 
+    private int recorteArriba() {
+        return Math.max(0, RECORTE_ARRIBA);
+    }
+
+    private int recorteAbajo() {
+        if (!MOSTRAR_VOLVER) return this.height;
+
+        return Mth.clamp(this.volverY - MARGEN_VOLVER - RECORTE_ABAJO, 0, this.height);
+    }
+
+    private boolean hayRecorte() {
+        if (!RECORTAR_CONTENIDO || !MOSTRAR_VOLVER) return false;
+
+        return recorteAbajo() > recorteArriba() && recorteAbajo() < this.height;
+    }
+
     private int fondoLibres() {
         int fondo = 0;
 
@@ -372,12 +396,22 @@ public class MenuSeccionScreen extends Screen {
             this.renderBackground(g);
         }
 
-        ItemMenu encima = dibujarRejilla(g, mouseX, mouseY);
+        boolean recorte = hayRecorte();
+        int arriba = recorteArriba();
+        int abajo = recorteAbajo();
 
-        ItemMenu encimaLibre = dibujarLibres(g, mouseX, mouseY);
+        int ratonY = (recorte && (mouseY < arriba || mouseY >= abajo)) ? RATON_FUERA : mouseY;
+
+        if (recorte) g.enableScissor(0, arriba, this.width, abajo);
+
+        ItemMenu encima = dibujarRejilla(g, mouseX, ratonY);
+
+        ItemMenu encimaLibre = dibujarLibres(g, mouseX, ratonY);
         if (encimaLibre != null) encima = encimaLibre;
 
-        EntidadMenu encimaBicho = dibujarBichos(g, mouseX, mouseY);
+        EntidadMenu encimaBicho = dibujarBichos(g, mouseX, ratonY);
+
+        if (recorte) g.disableScissor();
 
         dibujarBarra(g);
 

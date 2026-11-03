@@ -7,7 +7,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.saullmc.pezntz.block.custom.BloqueContenedor;
 import net.saullmc.pezntz.block.entity.ContenedorLootEntity;
@@ -15,15 +14,17 @@ import org.joml.Matrix4f;
 
 public class ContenedorLootRenderer implements BlockEntityRenderer<ContenedorLootEntity> {
 
-    public static final String FLECHA = "\u2193";
+    public static final String FLECHA = "↓";
 
     public static final int COLOR_FLECHA = 0xFF00FFFF;
 
     public static final float ESCALA_FLECHA = 0.060F;
 
-    public static final float FLOTE_ALTURA = 0.25F;
+    public static final float FLOTE_ALTURA = 0.35F;
 
-    public static final float FLOTE_VELOCIDAD = 0.10F;
+    public static final int FLOTE_TICKS = 40;
+
+    public static final boolean FLOTE_SOLO_FLECHA = true;
 
     public static final float CENTRO_X = 0.5F;
     public static final float ALTURA = 1.35F;
@@ -38,7 +39,7 @@ public class ContenedorLootRenderer implements BlockEntityRenderer<ContenedorLoo
 
     public static final String PREFIJO_RELOJ = "";
 
-    public static final boolean SOMBRA_RELOJ = true;
+    public static final boolean SOMBRA_RELOJ = false;
 
     public static final boolean SOMBRA_FLECHA = false;
 
@@ -76,8 +77,7 @@ public class ContenedorLootRenderer implements BlockEntityRenderer<ContenedorLoo
             reloj = PREFIJO_RELOJ + formatear(ticks);
         }
 
-        float tiempo = contenedor.getLevel().getGameTime() + partialTick;
-        float flote = Mth.sin(tiempo * FLOTE_VELOCIDAD) * FLOTE_ALTURA;
+        float flote = (saqueado && FLOTE_SOLO_FLECHA) ? 0.0F : flote(contenedor, partialTick);
 
         float extra = 0.0F;
         if (SUBIR_EN_MUEBLES_ALTOS
@@ -103,6 +103,17 @@ public class ContenedorLootRenderer implements BlockEntityRenderer<ContenedorLoo
         }
 
         poseStack.popPose();
+    }
+
+    private static float flote(ContenedorLootEntity contenedor, float partialTick) {
+        if (FLOTE_ALTURA == 0.0F) return 0.0F;
+
+        long ciclo = Math.max(1L, FLOTE_TICKS);
+
+        double t = (contenedor.getLevel().getGameTime() % ciclo) + partialTick;
+        double angulo = (t / (double) ciclo) * (Math.PI * 2.0D);
+
+        return (float) (Math.sin(angulo) * FLOTE_ALTURA);
     }
 
     private void dibujarLinea(String texto, int color, boolean sombra,

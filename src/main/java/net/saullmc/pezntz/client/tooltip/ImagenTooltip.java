@@ -11,6 +11,7 @@ public record ImagenTooltip(ResourceLocation textura,
                             float escala,
                             int offsetX, int offsetY,
                             int margenX, int margenY,
+                            float itemsEscala,
                             List<ItemEnImagen> items) implements TooltipComponent {
 
     public int anchoFinal() {

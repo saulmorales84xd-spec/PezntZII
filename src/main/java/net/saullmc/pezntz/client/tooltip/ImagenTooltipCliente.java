@@ -39,11 +39,12 @@ public class ImagenTooltipCliente implements ClientTooltipComponent {
 
     private void dibujarItems(Font font, int destinoX, int destinoY, GuiGraphics g) {
         float escalaImagen = this.datos.escala();
+        float escalaItems = this.datos.itemsEscala();
 
         for (ItemEnImagen item : this.datos.items()) {
             if (item.stack().isEmpty()) continue;
 
-            float escala = item.escala() * escalaImagen;
+            float escala = item.escala() * escalaImagen * escalaItems;
 
             int itemX = destinoX + Math.round(item.x() * escalaImagen);
             int itemY = destinoY + Math.round(item.y() * escalaImagen);

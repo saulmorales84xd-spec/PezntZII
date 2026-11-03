@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.saullmc.pezntz.item.ModItems;
+import net.saullmc.pezntz.item.custom.KitVehiculos;
 import net.saullmc.pezntz.item.custom.LlaveVehiculo;
 import org.jetbrains.annotations.Nullable;
 
@@ -96,12 +97,12 @@ public abstract class VehiculoBase extends PathfinderMob {
 
     /** Combustible gastado por bloque recorrido. */
     public float getGastoPorBloque() {
-        return 2.5F;
+        return 1.5F;
     }
 
     /** Lo que repone un bidon. */
     public float getRecargaPorItem() {
-        return 250.0F;
+        return 500.0F;
     }
 
     public float getEscalaHud() {
@@ -311,6 +312,13 @@ public abstract class VehiculoBase extends PathfinderMob {
     @Override
     public InteractionResult mobInteract(Player jugador, InteractionHand mano) {
         ItemStack enMano = jugador.getItemInHand(mano);
+
+        if (enMano.getItem() instanceof KitVehiculos) {
+            if (!this.level().isClientSide()) {
+                KitVehiculos.reparar(this, jugador, enMano);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide());
+        }
 
         if (enMano.getItem() instanceof LlaveVehiculo) {
             if (!this.level().isClientSide()) {

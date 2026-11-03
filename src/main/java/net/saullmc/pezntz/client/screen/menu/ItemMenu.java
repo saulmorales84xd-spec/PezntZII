@@ -29,6 +29,8 @@ public class ItemMenu {
     public static final int TEXTURA_POR_DEFECTO_MARGEN_X = 0;
     public static final int TEXTURA_POR_DEFECTO_MARGEN_Y = 2;
 
+    public static final float ITEMS_IMAGEN_ESCALA = 0.3F;
+
     private final ItemStack stack;
 
     private int x = SIN_PONER;
@@ -48,6 +50,8 @@ public class ItemMenu {
     private int imagenMargenY = TEXTURA_POR_DEFECTO_MARGEN_Y;
 
     private boolean imagenEscalaPuesta = false;
+
+    private float imagenItemsEscala = ITEMS_IMAGEN_ESCALA;
 
     private final List<ItemEnImagen> imagenItems = new ArrayList<>();
 
@@ -74,8 +78,19 @@ public class ItemMenu {
         return new ItemMenu(construir(ITEM_MUNICION, "{AmmoId:\"tacz:" + calibre + "\"}", cantidad));
     }
 
-    public static ItemMenu cajas(String cajas, int cantidad) {
-        return new ItemMenu(construir(ITEM_CAJAS, "{AmmoId:\"tacz:" + cajas + "\"}", 1));
+    public static final int CAJA_HIERRO = 0;
+    public static final int CAJA_ORO = 1;
+    public static final int CAJA_DIAMANTE = 2;
+
+    public static ItemMenu caja(String calibre, int nivel, int balas) {
+        return new ItemMenu(stackCaja(calibre, nivel, balas));
+    }
+
+    public static ItemStack stackCaja(String calibre, int nivel, int balas) {
+        int n = Math.max(CAJA_HIERRO, Math.min(CAJA_DIAMANTE, nivel));
+
+        return construir(ITEM_CAJAS,
+                "{AmmoId:\"tacz:" + calibre + "\",AmmoCount:" + Math.max(1, balas) + ",Level:" + n + "}", 1);
     }
 
     /** Lo mismo pero para meterlo DENTRO del png de un tooltip con .imagenItem(...). */
@@ -159,6 +174,11 @@ public class ItemMenu {
         return this;
     }
 
+    public ItemMenu imagenItemEscala(float escala) {
+        this.imagenItemsEscala = escala;
+        return this;
+    }
+
     public ItemMenu imagenItem(Item item, int x, int y) {
         return this.imagenItem(new ItemStack(item), x, y, 1.0F);
     }
@@ -221,6 +241,7 @@ public class ItemMenu {
                 escala,
                 this.imagenOffsetX, this.imagenOffsetY,
                 this.imagenMargenX, this.imagenMargenY,
+                this.imagenItemsEscala,
                 this.imagenItems));
     }
 }
