@@ -55,9 +55,23 @@ public class Motocicleta extends VehiculoBase {
         return 3.0F;
     }
 
+    public static final float HUD_ESCALA = 1.6F;
+    public static final float HUD_OFFSET_X = -11F;
+    public static final float HUD_OFFSET_Y = 10F;
+
     @Override
     public float getEscalaHud() {
-        return 0.9F;
+        return HUD_ESCALA;
+    }
+
+    @Override
+    public float getOffsetHudX() {
+        return HUD_OFFSET_X;
+    }
+
+    @Override
+    public float getOffsetHudY() {
+        return HUD_OFFSET_Y;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

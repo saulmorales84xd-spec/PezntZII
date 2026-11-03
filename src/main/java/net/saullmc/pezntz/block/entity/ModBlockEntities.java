@@ -34,6 +34,32 @@ public class ModBlockEntities {
                             ModBlocks.COFRE_CANDADO.get()
                     ).build(null));
 
+    public static final RegistryObject<BlockEntityType<ContenedorLootEntity>> CONTENEDOR_LOOT =
+            BLOCK_ENTITIES.register("contenedor_loot",
+                    () -> BlockEntityType.Builder.of(
+                            ContenedorLootEntity::new,
+                            ModBlocks.ARMARIO_IZQ.get(),
+                            ModBlocks.ARMARIO_DER.get(),
+                            ModBlocks.CAJON_COCINA_IZQ.get(),
+                            ModBlocks.CAJON_COCINA_DER.get(),
+                            ModBlocks.ENCIMERA.get(),
+                            ModBlocks.CAJON_DOBLE.get(),
+                            ModBlocks.CAJON_TRIPLE.get(),
+                            ModBlocks.ESPEJO.get(),
+                            ModBlocks.LOCKER.get(),
+                            ModBlocks.LOCKER_ABIERTO.get(),
+                            ModBlocks.LOCKER_BAJO.get(),
+                            ModBlocks.LOCKER_BAJO_ABIERTO.get(),
+                            ModBlocks.CAJAS_MILITARES.get(),
+                            ModBlocks.CAJA_MILITAR.get(),
+                            ModBlocks.CUERPO_1.get(),
+                            ModBlocks.CUERPO_2.get(),
+                            ModBlocks.CUERPO_3.get(),
+                            ModBlocks.CUERPO_4.get(),
+                            ModBlocks.CUERPO_5.get(),
+                            ModBlocks.CUERPO_6.get()
+                    ).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

@@ -1,12 +1,18 @@
 package net.saullmc.pezntz.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,6 +20,7 @@ import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.capability.BodyHealthData;
 import net.saullmc.pezntz.capability.BodyHealthProvider;
 import net.saullmc.pezntz.network.NetworkHandler;
+import net.saullmc.pezntz.block.entity.ContenedorLootEntity;
 import net.saullmc.pezntz.network.SyncBodyHealthPacket;
 
 import java.util.Collection;
@@ -23,6 +30,12 @@ import java.util.List;
 public class ModCommands {
 
     private static final int NIVEL_PERMISO = 2;
+
+    private static final double ALCANCE_MIRADA = 10.0D;
+
+    private static final int RADIO_MAXIMO = 32;
+
+    private static final int ALTURA_RADIO = 8;
 
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
@@ -34,7 +47,58 @@ public class ModCommands {
                 .then(Commands.argument("objetivos", EntityArgument.players())
                         .executes(ctx -> curar(ctx.getSource(), EntityArgument.getPlayers(ctx, "objetivos")))));
 
+        raiz.then(Commands.literal("loot")
+                .executes(ctx -> regenerarMirado(ctx.getSource()))
+                .then(Commands.argument("radio", IntegerArgumentType.integer(1, RADIO_MAXIMO))
+                        .executes(ctx -> regenerarEnRadio(ctx.getSource(),
+                                IntegerArgumentType.getInteger(ctx, "radio")))));
+
         event.getDispatcher().register(raiz);
+    }
+
+    private static int regenerarMirado(CommandSourceStack source) throws CommandSyntaxException {
+        ServerPlayer jugador = source.getPlayerOrException();
+        ServerLevel level = source.getLevel();
+
+        HitResult mirando = jugador.pick(ALCANCE_MIRADA, 0.0F, false);
+
+        if (mirando.getType() != HitResult.Type.BLOCK) {
+            source.sendFailure(Component.literal("No estas mirando ningun bloque"));
+            return 0;
+        }
+
+        BlockPos pos = ((BlockHitResult) mirando).getBlockPos();
+        BlockEntity be = level.getBlockEntity(pos);
+
+        if (!(be instanceof ContenedorLootEntity contenedor)) {
+            source.sendFailure(Component.literal("Eso no es un contenedor de loot"));
+            return 0;
+        }
+
+        contenedor.regenerar();
+        source.sendSuccess(() -> Component.literal("Loot regenerado"), false);
+        return 1;
+    }
+
+    private static int regenerarEnRadio(CommandSourceStack source, int radio) throws CommandSyntaxException {
+        ServerLevel level = source.getLevel();
+        BlockPos centro = BlockPos.containing(source.getPosition());
+
+        int cuantos = 0;
+
+        for (BlockPos pos : BlockPos.betweenClosed(centro.offset(-radio, -ALTURA_RADIO, -radio),
+                centro.offset(radio, ALTURA_RADIO, radio))) {
+
+            if (!level.isLoaded(pos)) continue;
+            if (!(level.getBlockEntity(pos) instanceof ContenedorLootEntity contenedor)) continue;
+
+            contenedor.regenerar();
+            cuantos++;
+        }
+
+        final int total = cuantos;
+        source.sendSuccess(() -> Component.literal("Loot regenerado en " + total + " contenedores"), false);
+        return cuantos;
     }
 
     private static int curar(CommandSourceStack source, Collection<ServerPlayer> objetivos)

@@ -46,6 +46,9 @@ public class ModItems {
     public static final RegistryObject<Item> TITANIUM_INGOT = ITEMS.register("titanium_ingot",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> CLAVOS = ITEMS.register("clavos",
             () -> new Item(new Item.Properties()));
 

@@ -9,6 +9,7 @@ import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.entity.ModBlockEntities;
 import net.saullmc.pezntz.client.block.CadaverRenderer;
 import net.saullmc.pezntz.client.block.CofreCandadoRenderer;
+import net.saullmc.pezntz.client.block.ContenedorLootRenderer;
 import net.saullmc.pezntz.client.block.PrensaRenderer;
 import net.saullmc.pezntz.client.tooltip.ImagenTooltip;
 import net.saullmc.pezntz.client.tooltip.ImagenTooltipCliente;
@@ -48,6 +49,7 @@ public class ModEventBusClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.PRENSA.get(), PrensaRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CADAVER.get(), CadaverRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.COFRE_CANDADO.get(), CofreCandadoRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CONTENEDOR_LOOT.get(), ContenedorLootRenderer::new);
     }
 
     @SubscribeEvent

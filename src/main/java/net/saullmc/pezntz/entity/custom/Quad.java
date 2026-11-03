@@ -41,9 +41,23 @@ public class Quad extends VehiculoBase {
         return 2.5F;
     }
 
+    public static final float HUD_ESCALA = 1.0F;
+    public static final float HUD_OFFSET_X = 0.0F;
+    public static final float HUD_OFFSET_Y = 0.0F;
+
     @Override
     public float getEscalaHud() {
-        return 1.0F;
+        return HUD_ESCALA;
+    }
+
+    @Override
+    public float getOffsetHudX() {
+        return HUD_OFFSET_X;
+    }
+
+    @Override
+    public float getOffsetHudY() {
+        return HUD_OFFSET_Y;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -11,7 +11,7 @@ import net.saullmc.pezntz.item.ModItems;
 public class Bicicleta extends VehiculoBase {
 
     private static final float[][] ASIENTOS = {
-            {-0.7F, 0.15F},
+            {-0.4F, 0.3F},
     };
 
     public Bicicleta(EntityType<? extends PathfinderMob> tipo, Level nivel) {
@@ -48,9 +48,23 @@ public class Bicicleta extends VehiculoBase {
         return 3.6F;
     }
 
+    public static final float HUD_ESCALA = 1.75F;
+    public static final float HUD_OFFSET_X = 0.0F;
+    public static final float HUD_OFFSET_Y = 8F;
+
     @Override
     public float getEscalaHud() {
-        return 1.5F;
+        return HUD_ESCALA;
+    }
+
+    @Override
+    public float getOffsetHudX() {
+        return HUD_OFFSET_X;
+    }
+
+    @Override
+    public float getOffsetHudY() {
+        return HUD_OFFSET_Y;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

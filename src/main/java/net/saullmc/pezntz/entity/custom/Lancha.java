@@ -13,7 +13,7 @@ import net.saullmc.pezntz.item.ModItems;
 public class Lancha extends VehiculoBase {
 
     private static final float[][] ASIENTOS = {
-            { 1.80F, 0.45F,  0.00F},   // conductor, al timon
+            { 1.80F, 0.45F,  0.00F},
             { 0.60F, 0.45F, -0.60F},
             { 0.60F, 0.45F,  0.60F},
             {-0.60F, 0.45F, -0.60F},
@@ -104,14 +104,23 @@ public class Lancha extends VehiculoBase {
         return super.hurt(fuente, cantidad);
     }
 
+    public static final float HUD_ESCALA = 0.6F;
+    public static final float HUD_OFFSET_X = 0.0F;
+    public static final float HUD_OFFSET_Y = -6F;
+
     @Override
     public float getEscalaHud() {
-        return 0.38F;
+        return HUD_ESCALA;
+    }
+
+    @Override
+    public float getOffsetHudX() {
+        return HUD_OFFSET_X;
     }
 
     @Override
     public float getOffsetHudY() {
-        return 2.0F;
+        return HUD_OFFSET_Y;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

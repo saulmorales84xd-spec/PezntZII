@@ -5,4 +5,4 @@
     "facing=south": { "model": "pezntz:block/locker_bajo", "y": 180 },
     "facing=west":  { "model": "pezntz:block/locker_bajo", "y": 270 }
   }
-}0
+}

@@ -125,6 +125,10 @@ public class ModTooltips {
                 "Material radiactivo dificil de", "manipular, puedes consegirlo", "cocinando un " + BYI + "Bloque de" + BR + BYI +
                         "Titanio.", "Ideal para fabricar curas,", "suministros y armaduras.");
 
+        registrar(ModItems.COPPER_NUGGET.get(),
+                "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
+                "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
+
         registrar(ModItems.CLAVOS.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
                 "Puedes encontrarlo en " + BYI + "barriles," + BR + RESET + "y " + BYI + "contenedores.");
@@ -177,7 +181,7 @@ public class ModTooltips {
                 "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
 
         registrar(ModItems.BATERIAS.get(),
-                "Coloca este objeto junto a una " + BR + ITEMS + "linterna " + GRIS + "para recargarla. ", "Esta la recargara un " + NUM + "20 %.");
+                "Coloca este objeto junto a una " + BR + ITEMS + "linterna " + GRIS + "para recargarla. ", "Esta la recargará un " + NUM + "20 %.");
 
         registrar(ModItems.GLANDULA_APESTOSA.get(),
                 "Combina este material con otros ", "recueros para obtener nuevos ", "objetos.",

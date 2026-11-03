@@ -30,6 +30,7 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.PEZNSINITA_INGOT.get());
                         pOutput.accept(ModItems.TITANIUM_BRUTE.get());
                         pOutput.accept(ModItems.TITANIUM_INGOT.get());
+                        pOutput.accept(ModItems.COPPER_NUGGET.get());
                         pOutput.accept(ModItems.CLAVOS.get());
                         pOutput.accept(ModItems.PLACA_ACERO.get());
                         pOutput.accept(ModItems.AGUJA_HILO.get());
@@ -146,6 +147,17 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModBlocks.CUERPO_4.get());
                         pOutput.accept(ModBlocks.CUERPO_5.get());
                         pOutput.accept(ModBlocks.CUERPO_6.get());
+
+                        pOutput.accept(ModBlocks.BLOQUE_AZUFRE_1.get());
+                        pOutput.accept(ModBlocks.BLOQUE_AZUFRE_2.get());
+                        pOutput.accept(ModBlocks.BLOQUE_AZUFRE_3.get());
+                        pOutput.accept(ModBlocks.MINERAL_AZUFRE.get());
+                        pOutput.accept(ModBlocks.STONE_QUARTZ.get());
+                        pOutput.accept(ModBlocks.DEEPSLATE_QUARTZ.get());
+                        pOutput.accept(ModBlocks.STONE_TITANIUM.get());
+                        pOutput.accept(ModBlocks.DEEPSLATE_TITANIUM.get());
+                        pOutput.accept(ModBlocks.METEORITO.get());
+                        pOutput.accept(ModBlocks.METEORITO_PEZNSINITA.get());
 
                         pOutput.accept(ModBlocks.BRICKS_1.get());
                         pOutput.accept(ModBlocks.BRICKS_2.get());

@@ -9,8 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.saullmc.pezntz.PezntZMod;
+import net.saullmc.pezntz.block.ModBlocks;
 import net.saullmc.pezntz.item.ModItems;
 
 import javax.annotation.Nullable;
@@ -38,7 +40,7 @@ public class MenuSeccionScreen extends Screen {
 
     public static final boolean MOSTRAR_BARRA = true;
     public static final int BARRA_ANCHO = 4;
-    public static final int BARRA_SEPARACION = 6;
+    public static final int BARRA_SEPARACION = 150;
     public static final int COLOR_BARRA_FONDO = 0x50FFFFFF;
     public static final int COLOR_BARRA = 0xFFFFFFFF;
 
@@ -93,7 +95,53 @@ public class MenuSeccionScreen extends Screen {
 
 
             case 1 -> List.of(
-                    new ItemMenu(ModItems.AZUFRE.get()));
+                    new ItemMenu(ModItems.MUESTRA_VIRUS.get()).en(60, -60).escala(1.5F),
+                    new ItemMenu(ModItems.FISHY.get()).en(90, -60).escala(1.5F),
+                    new ItemMenu(ModItems.DOCUMENTOS_PEZNT.get()).en(120, -60).escala(1.5F),
+
+                    new ItemMenu(ModItems.TELA.get()).en(-40, -10).escala(1.25F),
+                    new ItemMenu(ModItems.CHATARRA.get()).en(-10, -10).escala(1.25F),
+                    new ItemMenu(ModItems.CHATARRA_REFORZADA.get()).en(20, -10).escala(1.25F),
+                    new ItemMenu(ModItems.AGUJA_HILO.get()).en(50, -10).escala(1.25F),
+                    new ItemMenu(ModItems.PEZNSINITA_BRUTE.get()).en(80, -10).escala(1.25F),
+                    new ItemMenu(ModItems.PEZNSINITA_INGOT.get()).en(110, -10).escala(1.25F),
+                    new ItemMenu(ModItems.TITANIUM_BRUTE.get()).en(140, -10).escala(1.25F),
+                    new ItemMenu(ModItems.TITANIUM_INGOT.get()).en(170, -10).escala(1.25F),
+                    new ItemMenu(ModItems.AZUFRE.get()).en(200, -10).escala(1.25F),
+                    new ItemMenu(ModItems.BACKPACK.get()).en(230, -10).escala(1.25F),
+                    new ItemMenu(ModItems.CANDADO.get()).en(-40, 20).escala(1.25F),
+                    new ItemMenu(ModItems.LLAVE_CANDADO.get()).en(-10, 20).escala(1.25F),
+                    new ItemMenu(ModItems.LLAVE_VEHICULO.get()).en(20, 20).escala(1.25F),
+                    new ItemMenu(ModItems.VENDAS.get()).en(50, 20).escala(1.25F),
+                    new ItemMenu(ModItems.BOTIQUIN.get()).en(80, 20).escala(1.25F),
+                    new ItemMenu(ModItems.BATERIAS.get()).en(110, 20).escala(1.25F),
+                    new ItemMenu(ModItems.LANTERN.get()).en(140, 20).escala(1.25F),
+                    new ItemMenu(ModItems.ABRELATAS.get()).en(170, 20).escala(1.25F),
+                    new ItemMenu(ModItems.BIDON_GASOLINA.get()).en(200, 20).escala(1.25F),
+                    new ItemMenu(ModItems.PALANCA.get()).en(230, 20).escala(1.25F),
+
+                    new ItemMenu(Item.byBlock(ModBlocks.PRENSA.get())).en(-40, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.BARRIL_1.get())).en(-10, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.CAJA_2.get())).en(20, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.CAJON_DOBLE.get())).en(50, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.CAJA_MILITAR.get())).en(80, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.CUERPO_3.get())).en(110, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.STONE_QUARTZ.get())).en(140, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.STONE_TITANIUM.get())).en(170, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.METEORITO_PEZNSINITA.get())).en(200, 60).escala(1.25F),
+
+                    new ItemMenu(ModItems.ADRENALINA.get()).en(35, 100).escala(1.25F),
+                    new ItemMenu(ModItems.MORFINA.get()).en(63, 100).escala(1.25F),
+                    new ItemMenu(ModItems.COAGULANTE.get()).en(95, 100).escala(1.25F),
+                    new ItemMenu(ModItems.QUELANTE.get()).en(125, 100).escala(1.25F),
+                    new ItemMenu(ModItems.CURA.get()).en(155, 100).escala(1.25F),
+
+                    new ItemMenu(ModItems.HELMET_TRAJE_BIOSEGURIDAD.get()).en(35, 140).escala(1.25F),
+                    new ItemMenu(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD.get()).en(35, 160).escala(1.25F),
+                    new ItemMenu(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get()).en(35, 180).escala(1.25F),
+                    new ItemMenu(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get()).en(35, 200).escala(1.25F)
+
+                    );
 
             default -> List.of(
                     new ItemMenu(ModItems.AZUFRE.get()));

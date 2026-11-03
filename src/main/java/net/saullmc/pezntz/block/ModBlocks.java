@@ -22,6 +22,36 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, PezntZMod.MOD_ID);
 
+    public static final RegistryObject<Block> BLOQUE_AZUFRE_1 = registerBlock("bloque_azufre_1",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BLOQUE_AZUFRE_2 = registerBlock("bloque_azufre_2",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BLOQUE_AZUFRE_3 = registerBlock("bloque_azufre_3",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> MINERAL_AZUFRE = registerBlock("mineral_azufre",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> STONE_QUARTZ = registerBlock("stone_quartz",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> DEEPSLATE_QUARTZ = registerBlock("deepslate_quartz",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> STONE_TITANIUM = registerBlock("stone_titanium",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> DEEPSLATE_TITANIUM = registerBlock("deepslate_titanium",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> METEORITO = registerBlock("meteorito",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> METEORITO_PEZNSINITA = registerBlock("meteorito_peznsinita",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
     public static final RegistryObject<Block> BRICKS_1 = registerBlock("bricks_1",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
@@ -129,7 +159,7 @@ public class ModBlocks {
             () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
 
     public static final RegistryObject<Block> CAJA_MILITAR = registerBlock("caja_militar",
-            () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.COMPLETO));
+            () -> new CajaMilitar(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
 
     public static final RegistryObject<Block> CUERPO_1 = registerBlock("cuerpo_1",
             () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.PEQUENO));

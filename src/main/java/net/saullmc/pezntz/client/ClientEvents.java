@@ -23,6 +23,9 @@ import net.saullmc.pezntz.client.screen.CadaverScreen;
 import net.saullmc.pezntz.client.screen.CofreCandadoScreen;
 import net.saullmc.pezntz.effect.ModEffects;
 import net.saullmc.pezntz.entity.custom.Quad;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.saullmc.pezntz.block.ModBlocks;
 import net.saullmc.pezntz.init.ModMenuTypes;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -34,6 +37,11 @@ public class ClientEvents {
             MenuScreens.register(ModMenuTypes.BACKPACK_MENU.get(), BackpackScreen::new);
             MenuScreens.register(ModMenuTypes.CADAVER_MENU.get(), CadaverScreen::new);
             MenuScreens.register(ModMenuTypes.COFRE_CANDADO_MENU.get(), CofreCandadoScreen::new);
+
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ESPEJO.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.LOCKER_ABIERTO.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CUERPO_1.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CUERPO_2.get(), RenderType.translucent());
         });
     }
     public static final IGuiOverlay COMPASS = (gui, guiGraphics, partialTick, width, height) -> {
