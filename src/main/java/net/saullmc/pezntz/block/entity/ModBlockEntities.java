@@ -60,6 +60,13 @@ public class ModBlockEntities {
                             ModBlocks.CUERPO_6.get()
                     ).build(null));
 
+    public static final RegistryObject<BlockEntityType<DropEntity>> DROP =
+            BLOCK_ENTITIES.register("drop",
+                    () -> BlockEntityType.Builder.of(
+                            DropEntity::new,
+                            ModBlocks.DROP.get()
+                    ).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

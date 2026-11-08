@@ -6,7 +6,9 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 
 public class NetworkHandler {
     private static SimpleChannel INSTANCE;
@@ -78,6 +80,19 @@ public class NetworkHandler {
                 .decoder(SyncBestiarioPacket::new)
                 .encoder(SyncBestiarioPacket::toBytes)
                 .consumerMainThread(SyncBestiarioPacket::handle).add();
+
+        net.messageBuilder(DropWaypointPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(DropWaypointPacket::new)
+                .encoder(DropWaypointPacket::toBytes)
+                .consumerMainThread(DropWaypointPacket::handle).add();
+    }
+
+    public static <MSG> void sendToDimension(MSG message, ResourceKey<Level> dimension) {
+        INSTANCE.send(PacketDistributor.DIMENSION.with(() -> dimension), message);
+    }
+
+    public static <MSG> void sendToAll(MSG message) {
+        INSTANCE.send(PacketDistributor.ALL.noArg(), message);
     }
 
     public static <MSG> void sendToTracking(MSG message, Entity entity) {

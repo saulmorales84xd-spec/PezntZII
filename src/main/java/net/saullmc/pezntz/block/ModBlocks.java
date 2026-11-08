@@ -71,6 +71,18 @@ public class ModBlocks {
     public static final RegistryObject<Block> BRICKS_6 = registerBlock("bricks_6",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
+    public static final RegistryObject<Block> BRICKS_7 = registerBlock("bricks_7",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRICKS_8 = registerBlock("bricks_8",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRICKS_9 = registerBlock("bricks_9",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRICKS_10 = registerBlock("bricks_10",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
     public static final RegistryObject<Block> PLANKS_1 = registerBlock("planks_1",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)));
 
@@ -161,6 +173,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> CAJA_MILITAR = registerBlock("caja_militar",
             () -> new CajaMilitar(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+
+    public static final RegistryObject<Block> DROP = registerBlock("drop",
+            () -> new Drop(BlockBehaviour.Properties.of().strength(-1.0F, 3600000.0F).sound(SoundType.METAL).noOcclusion()));
 
     public static final RegistryObject<Block> CUERPO_1 = registerBlock("cuerpo_1",
             () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.PEQUENO));

@@ -17,14 +17,14 @@ public class BodyPartsOverlay {
     private static final ResourceLocation CUSTOM_ICON = new ResourceLocation("pezntz", "textures/gui/cuerpo.png");
 
 
-    public static final String TEXTO_ABATIDO = "te han abatido, necesitas atencion medica de un jugador";
+    public static final String TEXTO_ABATIDO = "¡Estás noqueado, necesitas atención médica!";
 
     public static final int ABATIDO_OFFSET_X = 0;
-    public static final int ABATIDO_OFFSET_Y = 30;
+    public static final int ABATIDO_OFFSET_Y = 80;
 
-    public static final float ABATIDO_ESCALA = 1.2f;
+    public static final float ABATIDO_ESCALA = 1.5f;
 
-    public static final int ABATIDO_COLOR = 0xFFFF4444;
+    public static final int ABATIDO_COLOR = 0xc9a37f;
 
     public static final boolean ABATIDO_SOMBRA = true;
 

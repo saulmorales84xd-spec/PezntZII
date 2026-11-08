@@ -62,6 +62,10 @@ public class ModEntities {
             ENTITY_TYPES.register("lancha", () -> EntityType.Builder.of(Lancha::new, MobCategory.MISC)
                     .sized(2.6f, 1.4f).clientTrackingRange(10).build("lancha"));
 
+    public static final RegistryObject<EntityType<DropCayendo>> DROP_CAYENDO =
+            ENTITY_TYPES.register("drop_cayendo", () -> EntityType.Builder.<DropCayendo>of(DropCayendo::new, MobCategory.MISC)
+                    .sized(2.0f, 2.0f).clientTrackingRange(16).updateInterval(2).build("drop_cayendo"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

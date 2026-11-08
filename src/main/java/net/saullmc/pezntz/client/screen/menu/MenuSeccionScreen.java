@@ -96,7 +96,7 @@ public class MenuSeccionScreen extends Screen {
         return switch (seccion) {
 
             case 0 -> List.of(
-                    new EntidadMenu(EntityType.TROPICAL_FISH).en(90, -70).tamanio(50).variante(EntidadMenu.PEZ_PAYASO).giro(220, 10F)
+                    new EntidadMenu(EntityType.TROPICAL_FISH).en(90, -70).tamanio(50).variante(EntidadMenu.PEZ_PAYASO).giro(220, 0F)
                             .titulo("Pez payaso"));
 
             case 2 -> List.of(
@@ -156,23 +156,23 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.TELA.get()).en(-40, -10).escala(1.25F),
                     new ItemMenu(ModItems.CHATARRA.get()).en(-10, -10).escala(1.25F),
                     new ItemMenu(ModItems.CHATARRA_REFORZADA.get()).en(20, -10).escala(1.25F),
-                    new ItemMenu(ModItems.AGUJA_HILO.get()).en(50, -10).escala(1.25F).imagenItem(Items.STRING, 0, 0).imagenItem(Items.STRING,0,0).imagenItem(Items.STRING,0,0).imagenItem(Items.LEATHER,6,10).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0).imagenItem(Items.IRON_NUGGET,0,0),
+                    new ItemMenu(ModItems.AGUJA_HILO.get()).en(50, -10).escala(1.25F).imagenItem(Items.STRING, 0.7F, 0.7F).imagenItem(Items.IRON_NUGGET,5.7F,0.7F).imagenItem(Items.STRING,10.7F,0.7F).imagenItem(Items.IRON_NUGGET,0.7F,5.7F).imagenItem(Items.STRING,5.7F,5.7F).imagenItem(Items.IRON_NUGGET,10.7F,5.7F).imagenItem(Items.LEATHER,5.7F,10.7F),
                     new ItemMenu(ModItems.PEZNSINITA_BRUTE.get()).en(80, -10).escala(1.25F),
                     new ItemMenu(ModItems.PEZNSINITA_INGOT.get()).en(110, -10).escala(1.25F),
                     new ItemMenu(ModItems.TITANIUM_BRUTE.get()).en(140, -10).escala(1.25F),
                     new ItemMenu(ModItems.TITANIUM_INGOT.get()).en(170, -10).escala(1.25F),
                     new ItemMenu(ModItems.AZUFRE.get()).en(200, -10).escala(1.25F),
-                    new ItemMenu(ModItems.BACKPACK.get()).en(230, -10).escala(1.25F),
-                    new ItemMenu(ModItems.CANDADO.get()).en(-40, 20).escala(1.25F),
-                    new ItemMenu(ModItems.LLAVE_CANDADO.get()).en(-10, 20).escala(1.25F),
-                    new ItemMenu(ModItems.LLAVE_VEHICULO.get()).en(20, 20).escala(1.25F),
-                    new ItemMenu(ModItems.VENDAS.get()).en(50, 20).escala(1.25F),
+                    new ItemMenu(ModItems.BACKPACK.get()).en(230, -10).escala(1.25F).imagenItem(Items.LEATHER, 0.7F, 0.7F).imagenItem(ModItems.TELA.get(),5.7F,0.7F).imagenItem(Items.LEATHER,10.7F,0.7F).imagenItem(Items.LEATHER,0.7F,5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F,5.7F).imagenItem(Items.LEATHER,10.7F,5.7F).imagenItem(Items.LEATHER,0.7F,10.7F).imagenItem(Items.LEATHER,5.7F,10.7F).imagenItem(Items.LEATHER,10.7F,10.7F),
+                    new ItemMenu(ModItems.CANDADO.get()).en(-40, 20).escala(1.25F).imagenItem(ModItems.PLACA_ACERO.get(),5.7F, 0.7F).imagenItem(Items.IRON_NUGGET, 0.7F, 5.7F).imagenItem(Items.QUARTZ,5.7F, 5.7F).imagenItem(Items.IRON_NUGGET, 10.7F, 5.7F),
+                    new ItemMenu(ModItems.LLAVE_CANDADO.get()).en(-10, 20).escala(1.25F).imagenItem(Items.IRON_INGOT, 0.7F, 5.7F).imagenItem(Items.IRON_NUGGET,5.7F,5.7F).imagenItem(Items.IRON_NUGGET,10.7F, 5.7F),
+                    new ItemMenu(ModItems.LLAVE_VEHICULO.get()).en(20, 20).escala(1.25F).imagenItem(Items.GOLD_INGOT, 0.7F, 5.7F).imagenItem(Items.GOLD_NUGGET,5.7F,5.7F).imagenItem(Items.GOLD_NUGGET,10.7F, 5.7F),
+                    new ItemMenu(ModItems.VENDAS.get()).en(50, 20).escala(1.25F).imagenItem(ModItems.TELA.get(),0.7F, 0.7F).imagenItem(Items.STRING,5.7F, 0.7F).imagenItem(ModItems.TELA.get(),5.7F, 5.7F).imagenItem(Items.STRING,0.7F, 5.7F),
                     new ItemMenu(ModItems.BOTIQUIN.get()).en(80, 20).escala(1.25F),
                     new ItemMenu(ModItems.BATERIAS.get()).en(110, 20).escala(1.25F),
-                    new ItemMenu(ModItems.LANTERN.get()).en(140, 20).escala(1.25F),
-                    new ItemMenu(ModItems.ABRELATAS.get()).en(170, 20).escala(1.25F),
-                    new ItemMenu(ModItems.BIDON_GASOLINA.get()).en(200, 20).escala(1.25F),
-                    new ItemMenu(ModItems.PALANCA.get()).en(230, 20).escala(1.25F),
+                    new ItemMenu(ModItems.LANTERN.get()).en(140, 20).escala(1.25F).imagenItem(ModItems.CHATARRA.get(),5.7F, 0.7F).imagenItem(Items.IRON_INGOT, 0.7F, 5.7F).imagenItem(ModItems.BATERIAS.get(),5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 5.7F).imagenItem(Items.IRON_INGOT,5.7F, 10.7F),
+                    new ItemMenu(ModItems.ABRELATAS.get()).en(170, 20).escala(1.25F).imagenItem(ModItems.CHATARRA.get(),10.7F, 0.7F).imagenItem(Items.IRON_INGOT,5.7F, 5.7F).imagenItem(Items.IRON_INGOT, 0.7F, 10.7F),
+                    new ItemMenu(ModItems.BIDON_GASOLINA.get()).en(200, 20).escala(1.25F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(),0.7F, 0.7F).imagenItem(Items.IRON_INGOT,5.7F, 0.7F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(), 10.7F, 0.7F).imagenItem(Items.LEATHER, 0.7F, 5.7F).imagenItem(ModItems.CINTA.get(), 5.7F, 5.7F).imagenItem(Items.LEATHER, 10.7F, 5.7F).imagenItem(Items.LEATHER, 0.7F, 10.7F).imagenItem(Items.LEATHER, 5.7F, 10.7F).imagenItem(Items.LEATHER, 10.7F, 10.7F),
+                    new ItemMenu(ModItems.KIT_VEHICULOS.get()).en(230, 20).escala(1.25F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 0.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 10.7F, 0.7F).imagenItem(Items.IRON_INGOT, 0.7F, 5.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 5.7F, 5.7F).imagenItem(Items.IRON_INGOT, 10.7F, 5.7F).imagenItem(Items.IRON_INGOT, 0.7F, 10.7F).imagenItem(Items.GOLD_INGOT, 5.7F, 10.7F).imagenItem(Items.IRON_INGOT, 10.7F, 10.7F),
 
                     new ItemMenu(Item.byBlock(ModBlocks.PRENSA.get())).en(-40, 60).escala(1.25F),
                     new ItemMenu(Item.byBlock(ModBlocks.BARRIL_1.get())).en(-10, 60).escala(1.25F),
@@ -184,46 +184,46 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(Item.byBlock(ModBlocks.STONE_TITANIUM.get())).en(170, 60).escala(1.25F),
                     new ItemMenu(Item.byBlock(ModBlocks.METEORITO_PEZNSINITA.get())).en(200, 60).escala(1.25F),
 
-                    new ItemMenu(ModItems.ADRENALINA.get()).en(35, 100).escala(1.25F),
-                    new ItemMenu(ModItems.MORFINA.get()).en(65, 100).escala(1.25F),
-                    new ItemMenu(ModItems.COAGULANTE.get()).en(95, 100).escala(1.25F),
-                    new ItemMenu(ModItems.QUELANTE.get()).en(125, 100).escala(1.25F),
+                    new ItemMenu(ModItems.ADRENALINA.get()).en(35, 100).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.JERINGA_VACIA.get(),5.7F, 5.7F).imagenItem(ModItems.FRUTO_ESTIMULANTE.get(),10.7F, 5.7F).imagenItem(ModItems.BATERIAS.get(),5.7F, 10.7F),
+                    new ItemMenu(ModItems.MORFINA.get()).en(65, 100).escala(1.25F).imagenItem(ModItems.VENDAS.get(),0.7F, 5.7F).imagenItem(ModItems.JERINGA_VACIA.get(),5.7F, 5.7F).imagenItem(ModItems.FRUTO_ESTIMULANTE.get(),10.7F, 5.7F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(),5.7F, 10.7F),
+                    new ItemMenu(ModItems.COAGULANTE.get()).en(95, 100).escala(1.25F).imagenItem(Items.BONE_MEAL,0.7F, 5.7F).imagenItem(ModItems.JERINGA_VACIA.get(),5.7F, 5.7F).imagenItem(ModItems.ESPORAS.get(),10.7F, 5.7F).imagenItem(ModItems.GLANDULA_APESTOSA.get(),5.7F, 10.7F),
+                    new ItemMenu(ModItems.QUELANTE.get()).en(125, 100).escala(1.25F).imagenItem(ModItems.AZUFRE.get(),0.7F, 5.7F).imagenItem(ModItems.JERINGA_VACIA.get(),5.7F, 5.7F).imagenItem(ModItems.AZUFRE.get(),10.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),5.7F, 10.7F),
                     new ItemMenu(ModItems.CURA.get()).en(155, 100).escala(1.25F),
 
-                    new ItemMenu(ModItems.HELMET_TRAJE_BIOSEGURIDAD.get()).en(35, 140).escala(1.25F),
-                    new ItemMenu(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD.get()).en(35, 160).escala(1.25F),
-                    new ItemMenu(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get()).en(35, 180).escala(1.25F),
-                    new ItemMenu(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get()).en(35, 200).escala(1.25F),
-                    new ItemMenu(ModItems.HELMET_ARMADURA_TACTICA.get()).en(65, 140).escala(1.25F),
-                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_TACTICA.get()).en(65, 160).escala(1.25F),
-                    new ItemMenu(ModItems.LEGGINS_ARMADURA_TACTICA.get()).en(65, 180).escala(1.25F),
-                    new ItemMenu(ModItems.BOOTS_ARMADURA_TACTICA.get()).en(65, 200).escala(1.25F),
-                    new ItemMenu(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 140).escala(1.25F),
-                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 160).escala(1.25F),
-                    new ItemMenu(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 180).escala(1.25F),
-                    new ItemMenu(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 200).escala(1.25F),
-                    new ItemMenu(ModItems.HELMET_ARMADURA_CONTENCION.get()).en(125, 140).escala(1.25F),
-                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_CONTENCION.get()).en(125, 160).escala(1.25F),
-                    new ItemMenu(ModItems.LEGGINS_ARMADURA_CONTENCION.get()).en(125, 180).escala(1.25F),
-                    new ItemMenu(ModItems.BOOTS_ARMADURA_CONTENCION.get()).en(125, 200).escala(1.25F),
-                    new ItemMenu(ModItems.HELMET_ARMADURA_BLINDADA.get()).en(155, 140).escala(1.25F),
-                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_BLINDADA.get()).en(155, 160).escala(1.25F),
-                    new ItemMenu(ModItems.LEGGINS_ARMADURA_BLINDADA.get()).en(155, 180).escala(1.25F),
-                    new ItemMenu(ModItems.BOOTS_ARMADURA_BLINDADA.get()).en(155, 200).escala(1.25F),
+                    new ItemMenu(ModItems.HELMET_TRAJE_BIOSEGURIDAD.get()).en(35, 140).escala(1.25F).imagenItem(Items.COPPER_INGOT,0.7F, 0.7F).imagenItem(Items.COPPER_INGOT,5.7F, 0.7F).imagenItem(Items.COPPER_INGOT,10.7F, 0.7F).imagenItem(ModItems.TELA.get(),0.7F, 5.7F).imagenItem(ModItems.TELA.get(),10.7F, 5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F),
+                    new ItemMenu(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD.get()).en(35, 160).escala(1.25F).imagenItem(Items.LEATHER,0.7F, 0.7F).imagenItem(Items.LEATHER,10.7F, 0.7F).imagenItem(Items.LEATHER,0.7F, 5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F).imagenItem(Items.LEATHER,10.7F, 5.7F).imagenItem(Items.GOLD_INGOT,0.7F, 10.7F).imagenItem(Items.GOLD_INGOT,5.7F, 10.7F).imagenItem(Items.GOLD_INGOT,10.7F, 10.7F),
+                    new ItemMenu(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get()).en(35, 180).escala(1.25F).imagenItem(Items.LEATHER,0.7F, 0.7F).imagenItem(Items.LEATHER,5.7F, 0.7F).imagenItem(Items.LEATHER,10.7F, 0.7F).imagenItem(Items.LEATHER,0.7F, 5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F).imagenItem(Items.LEATHER,10.7F, 5.7F).imagenItem(Items.GOLD_INGOT,0.7F, 10.7F).imagenItem(Items.GOLD_INGOT,10.7F, 10.7F),
+                    new ItemMenu(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get()).en(35, 200).escala(1.25F).imagenItem(Items.COPPER_INGOT,0.7F, 0.7F).imagenItem(Items.COPPER_INGOT,10.7F, 0.7F).imagenItem(ModItems.TELA.get(),0.7F, 5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F).imagenItem(ModItems.TELA.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_TACTICA.get()).en(65, 140).escala(1.25F).imagenItem(Items.IRON_INGOT,0.7F, 0.7F).imagenItem(Items.IRON_INGOT,5.7F, 0.7F).imagenItem(Items.IRON_INGOT,10.7F, 0.7F).imagenItem(ModItems.TELA.get(),0.7F, 5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F).imagenItem(ModItems.TELA.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_TACTICA.get()).en(65, 160).escala(1.25F).imagenItem(Items.IRON_INGOT,0.7F, 0.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 0.7F).imagenItem(ModItems.TELA.get(),0.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 10.7F).imagenItem(Items.IRON_INGOT,0.7F, 10.7F).imagenItem(Items.IRON_INGOT,5.7F, 10.7F).imagenItem(ModItems.TELA.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_TACTICA.get()).en(65, 180).escala(1.25F).imagenItem(Items.IRON_INGOT,0.7F, 0.7F).imagenItem(Items.IRON_INGOT,5.7F, 0.7F).imagenItem(Items.IRON_INGOT,10.7F, 0.7F).imagenItem(Items.IRON_INGOT,0.7F, 5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 5.7F).imagenItem(ModItems.TELA.get(),0.7F, 10.7F).imagenItem(ModItems.TELA.get(),10.7F, 10.7F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_TACTICA.get()).en(65, 200).escala(1.25F).imagenItem(Items.IRON_INGOT,0.7F, 0.7F).imagenItem(Items.IRON_INGOT,10.7F, 0.7F).imagenItem(ModItems.TELA.get(),0.7F, 5.7F).imagenItem(ModItems.AGUJA_HILO.get(),5.7F, 5.7F).imagenItem(ModItems.TELA.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 140).escala(1.25F).imagenItem(Items.DIAMOND,0.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),5.7F, 0.7F).imagenItem(Items.DIAMOND,10.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),0.7F, 5.7F).imagenItem(ModItems.HELMET_ARMADURA_TACTICA.get(),5.7F, 5.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 160).escala(1.25F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),0.7F, 0.7F).imagenItem(ModItems.CHESTPLATE_ARMADURA_TACTICA.get(),5.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),10.7F, 0.7F).imagenItem(Items.DIAMOND,0.7F, 5.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),5.7F, 5.7F).imagenItem(Items.DIAMOND,10.7F, 5.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),0.7F, 10.7F).imagenItem(Items.DIAMOND,5.7F, 10.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),10.7F, 10.7F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 180).escala(1.25F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),0.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),5.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),10.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),0.7F, 5.7F).imagenItem(ModItems.LEGGINS_ARMADURA_TACTICA.get(),5.7F, 5.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),10.7F, 5.7F).imagenItem(Items.DIAMOND,0.7F, 10.7F).imagenItem(Items.DIAMOND,10.7F, 10.7F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA.get()).en(95, 200).escala(1.25F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),0.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(),10.7F, 0.7F).imagenItem(Items.DIAMOND,0.7F, 5.7F).imagenItem(ModItems.BOOTS_ARMADURA_TACTICA.get(),5.7F, 5.7F).imagenItem(Items.DIAMOND,10.7F, 5.7F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_CONTENCION.get()).en(125, 140).escala(1.25F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA.get(),5.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_CONTENCION.get()).en(125, 160).escala(1.25F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA.get(),5.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 10.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),5.7F, 10.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 10.7F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_CONTENCION.get()).en(125, 180).escala(1.25F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA.get(),5.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 10.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 10.7F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_CONTENCION.get()).en(125, 200).escala(1.25F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA.get(),5.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.HELMET_ARMADURA_BLINDADA.get()).en(155, 140).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.HELMET_ARMADURA_CONTENCION.get(),5.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.CHESTPLATE_ARMADURA_BLINDADA.get()).en(155, 160).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.CHESTPLATE_ARMADURA_CONTENCION.get(),5.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 10.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 10.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 10.7F),
+                    new ItemMenu(ModItems.LEGGINS_ARMADURA_BLINDADA.get()).en(155, 180).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.LEGGINS_ARMADURA_CONTENCION.get(),5.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 10.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 10.7F),
+                    new ItemMenu(ModItems.BOOTS_ARMADURA_BLINDADA.get()).en(155, 200).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.BOOTS_ARMADURA_CONTENCION.get(),5.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 5.7F),
 
-                    new ItemMenu(ModItems.CUCHILLO.get()).en(-10, 240).escala(1.25F),
-                    new ItemMenu(ModItems.BATE.get()).en(20, 240).escala(1.25F),
-                    new ItemMenu(ModItems.LUCILLE.get()).en(50, 240).escala(1.25F),
-                    new ItemMenu(ModItems.PALANCA.get()).en(80, 240).escala(1.25F),
-                    new ItemMenu(ModItems.GUITARRA.get()).en(110, 240).escala(1.25F),
-                    new ItemMenu(ModItems.KATANA.get()).en(140, 240).escala(1.25F),
-                    new ItemMenu(ModItems.MOTOSIERRA.get()).en(170, 240).escala(1.25F),
-                    new ItemMenu(ModItems.LANZALLAMAS.get()).en(200, 240).escala(1.25F),
+                    new ItemMenu(ModItems.CUCHILLO.get()).en(-10, 240).escala(1.25F).imagenItem(Items.STICK,5.7F, 10.7F).imagenItem(Items.IRON_INGOT,5.7F, 5.7F),
+                    new ItemMenu(ModItems.BATE.get()).en(20, 240).escala(1.25F).imagenItem(Items.STICK,0.7F, 10.7F).imagenItem(Items.SPRUCE_LOG,5.7F, 5.7F).imagenItem(Items.SPRUCE_LOG,10.7F, 0.7F),
+                    new ItemMenu(ModItems.LUCILLE.get()).en(50, 240).escala(1.25F).imagenItem(ModItems.CLAVOS.get(),5.7F, 0.7F).imagenItem(ModItems.CLAVOS.get(),0.7F, 5.7F).imagenItem(ModItems.BATE.get(),5.7F, 5.7F).imagenItem(ModItems.CLAVOS.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.PALANCA.get()).en(80, 240).escala(1.25F).imagenItem(Items.IRON_INGOT,0.7F, 10.7F).imagenItem(Items.IRON_INGOT,5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 0.7F).imagenItem(ModItems.CHATARRA.get(),10.7F, 5.7F),
+                    new ItemMenu(ModItems.GUITARRA.get()).en(110, 240).escala(1.25F).imagenItem(Items.IRON_NUGGET,0.7F, 0.7F).imagenItem(Items.OAK_PLANKS,5.7F, 0.7F).imagenItem(Items.IRON_NUGGET,10.7F, 0.7F).imagenItem(Items.OAK_PLANKS,0.7F, 5.7F).imagenItem(ModItems.CABLES.get(),5.7F, 5.7F).imagenItem(Items.OAK_PLANKS,10.7F, 5.7F).imagenItem(Items.OAK_PLANKS,0.7F, 10.7F).imagenItem(Items.OAK_PLANKS,5.7F, 10.7F).imagenItem(Items.OAK_PLANKS,10.7F, 10.7F),
+                    new ItemMenu(ModItems.KATANA.get()).en(140, 240).escala(1.25F).imagenItem(Items.STICK,0.7F, 10.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),5.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),10.7F, 0.7F),
+                    new ItemMenu(ModItems.MOTOSIERRA.get()).en(170, 240).escala(1.25F).imagenItem(ModItems.CLAVOS.get(),0.7F, 0.7F).imagenItem(Items.IRON_INGOT,5.7F, 0.7F).imagenItem(ModItems.CLAVOS.get(),10.7F, 0.7F).imagenItem(Items.IRON_INGOT,0.7F, 5.7F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(), 5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 5.7F).imagenItem(Items.IRON_INGOT,0.7F, 10.7F).imagenItem(Items.IRON_INGOT,5.7F, 10.7F).imagenItem(Items.IRON_INGOT,10.7F, 10.7F),
+                    new ItemMenu(ModItems.LANZALLAMAS.get()).en(200, 240).escala(1.25F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(),5.7F, 0.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 5.7F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(),10.7F, 5.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),0.7F, 10.7F).imagenItem(ModItems.TITANIUM_INGOT.get(),5.7F, 10.7F),
 
-                    new ItemMenu(ModItems.PEZNSINITA_PICKAXE.get()).en(50, 280).escala(1.25F),
-                    new ItemMenu(ModItems.PEZNSINITA_AXE.get()).en(80, 280).escala(1.25F),
-                    new ItemMenu(ModItems.PEZNSINITA_SHOVEL.get()).en(110, 280).escala(1.25F),
-                    new ItemMenu(ModItems.PEZNSINITA_HOE.get()).en(140, 280).escala(1.25F),
+                    new ItemMenu(ModItems.PEZNSINITA_PICKAXE.get()).en(50, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),10.7F, 0.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
+                    new ItemMenu(ModItems.PEZNSINITA_AXE.get()).en(80, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 5.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
+                    new ItemMenu(ModItems.PEZNSINITA_SHOVEL.get()).en(110, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
+                    new ItemMenu(ModItems.PEZNSINITA_HOE.get()).en(140, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
 
                     ItemMenu.caja("9mm", ItemMenu.CAJA_HIERRO, 0).en(65, 320).escala(1.5F),
                     ItemMenu.caja("9mm", ItemMenu.CAJA_ORO, 0).en(95, 320).escala(1.5F),
@@ -421,7 +421,9 @@ public class MenuSeccionScreen extends Screen {
 
         if (encimaBicho != null) {
             List<Component> lineas = encimaBicho.getTooltip();
-            if (!lineas.isEmpty()) g.renderComponentTooltip(this.font, lineas, mouseX, mouseY);
+            if (!lineas.isEmpty()) {
+                g.renderTooltip(this.font, lineas, encimaBicho.getImagenTooltip(), mouseX, mouseY);
+            }
 
         } else if (encima != null) {
             g.renderTooltip(this.font,
@@ -440,7 +442,7 @@ public class MenuSeccionScreen extends Screen {
             int y = this.rejillaY + bicho.getY() - this.desplazamiento * paso();
 
             int zona = bicho.getZona();
-            int alto = bicho.getTamanio();
+            int alto = bicho.getAlto();
 
 
             if (mouseX >= x - zona && mouseX <= x + zona

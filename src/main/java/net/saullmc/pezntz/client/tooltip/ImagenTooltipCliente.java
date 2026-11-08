@@ -46,8 +46,8 @@ public class ImagenTooltipCliente implements ClientTooltipComponent {
 
             float escala = item.escala() * escalaImagen * escalaItems;
 
-            int itemX = destinoX + Math.round(item.x() * escalaImagen);
-            int itemY = destinoY + Math.round(item.y() * escalaImagen);
+            float itemX = destinoX + item.x() * escalaImagen;
+            float itemY = destinoY + item.y() * escalaImagen;
 
             g.pose().pushPose();
 

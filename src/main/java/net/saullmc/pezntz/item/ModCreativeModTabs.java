@@ -45,6 +45,7 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.CABLES.get());
                         pOutput.accept(ModItems.CINTA.get());
                         pOutput.accept(ModItems.KIT_VEHICULOS.get());
+                        pOutput.accept(ModItems.BENGALA.get());
                         pOutput.accept(ModItems.BATERIAS.get());
                         pOutput.accept(ModItems.GLANDULA_APESTOSA.get());
                         pOutput.accept(ModItems.ESPORAS.get());
@@ -166,6 +167,10 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModBlocks.BRICKS_4.get());
                         pOutput.accept(ModBlocks.BRICKS_5.get());
                         pOutput.accept(ModBlocks.BRICKS_6.get());
+                        pOutput.accept(ModBlocks.BRICKS_7.get());
+                        pOutput.accept(ModBlocks.BRICKS_8.get());
+                        pOutput.accept(ModBlocks.BRICKS_9.get());
+                        pOutput.accept(ModBlocks.BRICKS_10.get());
                         pOutput.accept(ModBlocks.PLANKS_1.get());
                         pOutput.accept(ModBlocks.WALL_1.get());
                         pOutput.accept(ModBlocks.WALL_2.get());

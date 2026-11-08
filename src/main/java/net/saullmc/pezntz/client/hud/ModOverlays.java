@@ -47,5 +47,7 @@ public class ModOverlays {
                 "pickup_log_overlay", PickupLogOverlay.OVERLAY);
 
         event.registerAboveAll("prensa_barra", ProcesadorBarOverlay.OVERLAY);
+
+        event.registerAboveAll("drop_waypoint", DropWaypointOverlay.OVERLAY);
     }
 }

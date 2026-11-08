@@ -88,6 +88,9 @@ public class ModItems {
     public static final RegistryObject<Item> CINTA = ITEMS.register("cinta",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> BENGALA = ITEMS.register("bengala",
+            () -> new Bengala(new Item.Properties().stacksTo(8)));
+
     public static final RegistryObject<Item> KIT_VEHICULOS = ITEMS.register("kit_vehiculos",
             () -> new KitVehiculos(new Item.Properties()));
 
