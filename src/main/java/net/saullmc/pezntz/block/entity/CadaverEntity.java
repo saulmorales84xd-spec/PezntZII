@@ -31,6 +31,8 @@ public class CadaverEntity extends BlockEntity implements MenuProvider {
 
     public static final int FILAS_MOCHILA = 3;
 
+    public static final boolean SOLTAR_SOBRANTE = true;
+
     private final ItemStackHandler inventario = new ItemStackHandler(SLOTS) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -44,6 +46,8 @@ public class CadaverEntity extends BlockEntity implements MenuProvider {
             setChanged();
         }
     };
+
+    private final int[] origen = new int[SLOTS];
 
     private boolean teniaMochila = false;
 
@@ -102,11 +106,22 @@ public class CadaverEntity extends BlockEntity implements MenuProvider {
 
     public void guardarInventarioDe(Player player) {
         Inventory inv = player.getInventory();
-        int destino = 0;
 
-        destino = volcar(inv.items, destino);
-        destino = volcar(inv.armor, destino);
-        volcar(inv.offhand, destino);
+        java.util.Arrays.fill(this.origen, -1);
+
+        int destino = 0;
+        int huecos = inv.getContainerSize();
+
+        for (int i = 0; i < huecos && destino < SLOTS; i++) {
+            ItemStack stack = inv.getItem(i);
+            if (stack.isEmpty()) continue;
+
+            this.inventario.setStackInSlot(destino, stack.copy());
+            this.origen[destino] = i;
+            destino++;
+
+            inv.setItem(i, ItemStack.EMPTY);
+        }
 
         this.duenioNombre = player.getGameProfile().getName();
         this.duenioUuid = player.getUUID();
@@ -137,16 +152,100 @@ public class CadaverEntity extends BlockEntity implements MenuProvider {
         sincronizar();
     }
 
-    private int volcar(java.util.List<ItemStack> origen, int destino) {
-        for (int i = 0; i < origen.size(); i++) {
-            ItemStack stack = origen.get(i);
-            if (stack.isEmpty()) continue;
-            if (destino >= SLOTS) break;
+    public int devolverA(Player player) {
+        if (this.level == null || this.level.isClientSide) return 0;
 
-            this.inventario.setStackInSlot(destino++, stack.copy());
-            origen.set(i, ItemStack.EMPTY);
+        Inventory inv = player.getInventory();
+        int movidos = 0;
+
+        for (int i = 0; i < this.inventario.getSlots(); i++) {
+            ItemStack stack = this.inventario.getStackInSlot(i);
+            if (stack.isEmpty()) continue;
+
+            int sitio = (i < this.origen.length) ? this.origen[i] : -1;
+            if (sitio < 0 || sitio >= inv.getContainerSize()) continue;
+            if (!inv.getItem(sitio).isEmpty()) continue;
+
+            inv.setItem(sitio, stack.copy());
+            this.inventario.setStackInSlot(i, ItemStack.EMPTY);
+            movidos++;
         }
-        return destino;
+
+        movidos += vaciarEn(player, this.inventario);
+        movidos += devolverMochila(player);
+
+        setChanged();
+        sincronizar();
+
+        return movidos;
+    }
+
+    private int devolverMochila(Player player) {
+        if (vacio(this.mochila)) return 0;
+
+        ItemStackHandler destino = mochilaDe(player);
+
+        if (destino == null) return vaciarEn(player, this.mochila);
+
+        int movidos = 0;
+        int tope = Math.min(this.mochila.getSlots(), destino.getSlots());
+
+        for (int i = 0; i < tope; i++) {
+            ItemStack stack = this.mochila.getStackInSlot(i);
+            if (stack.isEmpty()) continue;
+            if (!destino.getStackInSlot(i).isEmpty()) continue;
+
+            destino.setStackInSlot(i, stack.copy());
+            this.mochila.setStackInSlot(i, ItemStack.EMPTY);
+            movidos++;
+        }
+
+        return movidos + vaciarEn(player, this.mochila);
+    }
+
+    @Nullable
+    private static ItemStackHandler mochilaDe(Player player) {
+        if (!llevaMochila(player)) return null;
+
+        return player.getCapability(BackpackProvider.PLAYER_BACKPACK)
+                .map(datos -> datos.getInventario())
+                .orElse(null);
+    }
+
+    private static boolean llevaMochila(Player player) {
+        Inventory inv = player.getInventory();
+
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            if (inv.getItem(i).getItem() instanceof Backpack) return true;
+        }
+        return false;
+    }
+
+    private int vaciarEn(Player player, ItemStackHandler handler) {
+        int movidos = 0;
+
+        for (int i = 0; i < handler.getSlots(); i++) {
+            ItemStack stack = handler.getStackInSlot(i);
+            if (stack.isEmpty()) continue;
+
+            ItemStack copia = stack.copy();
+            player.getInventory().add(copia);
+
+            if (copia.isEmpty()) {
+                handler.setStackInSlot(i, ItemStack.EMPTY);
+                movidos++;
+
+            } else if (SOLTAR_SOBRANTE) {
+                player.drop(copia, false);
+                handler.setStackInSlot(i, ItemStack.EMPTY);
+                movidos++;
+
+            } else {
+                handler.setStackInSlot(i, copia);
+            }
+        }
+
+        return movidos;
     }
 
     public void soltarTodo() {
@@ -191,6 +290,7 @@ public class CadaverEntity extends BlockEntity implements MenuProvider {
         tag.put("Inventario", this.inventario.serializeNBT());
         tag.put("Mochila", this.mochila.serializeNBT());
         tag.putBoolean("TeniaMochila", this.teniaMochila);
+        tag.putIntArray("Origen", this.origen);
         guardarDuenio(tag);
     }
 
@@ -200,6 +300,11 @@ public class CadaverEntity extends BlockEntity implements MenuProvider {
         if (tag.contains("Inventario")) this.inventario.deserializeNBT(tag.getCompound("Inventario"));
         if (tag.contains("Mochila")) this.mochila.deserializeNBT(tag.getCompound("Mochila"));
         this.teniaMochila = tag.getBoolean("TeniaMochila");
+
+        java.util.Arrays.fill(this.origen, -1);
+        int[] guardado = tag.getIntArray("Origen");
+        System.arraycopy(guardado, 0, this.origen, 0, Math.min(guardado.length, this.origen.length));
+
         cargarDuenio(tag);
     }
 

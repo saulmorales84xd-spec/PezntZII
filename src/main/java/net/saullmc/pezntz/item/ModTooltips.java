@@ -242,11 +242,11 @@ public class ModTooltips {
 
         registrar(ModItems.ADRENALINA.get(),
                 "Esta jeringa otorga " + AZUL + "Fuerza I " + GRIS + "y " + BR + AZUL + "Velocidad I." + BR + BR + ROJO_OSCURO + "Importante: " + GRIS +
-                "Puedes aplicarsela a " + GRIS + "otro " + BR + MOBS + "jugador.");
+                        "Puedes aplicarsela a " + GRIS + "otro " + BR + MOBS + "jugador.");
 
         registrar(ModItems.MORFINA.get(),
                 "Al aplicarte esta jeringa te curaras", "un " + ROJO + "20% de Vida Principal " + GRIS + "y recuperaras " + BR + NUM +
-                "2 Puntos " + GRIS + "en todas las partes del cuerpo. " + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
+                        "2 Puntos " + GRIS + "en todas las partes del cuerpo. " + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
 
         registrar(ModItems.COAGULANTE.get(),
                 "Al aplicarte esta jeringa te quitaras ", "todo los " + EFE + "efectos negativos " + GRIS + "que tengas,",
@@ -258,7 +258,7 @@ public class ModTooltips {
 
         registrar(ModItems.CURA.get(),
                 "Al aplicarte esta jeringa te curara ", "del " + ZOM + "Virus Peznt." + BR + GRIS + "Sal del pueblo sano y salgo para poder ",
-                        "recrear la cura. " + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
+                "recrear la cura. " + BR + BR + ROJO_OSCURO + "Importante: " + GRIS + "Puedes aplicarsela a otro " + BR + MOBS + "jugador.");
 
         registrar(ModItems.LANTERN.get(),
                 "Este objeto te permite iluminar zonas ", "oscuras presionando " + KEYS + "[Click Derecho]." + BR + BR + GRIS +
@@ -278,7 +278,7 @@ public class ModTooltips {
 
         registrar(ModItems.PALANCA.get(),
                 "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.",
-                        "Permite romper " + BYI + "barriles y chatarra " + BR + GRIS + "para obtener su contenido.");
+                "Permite romper " + BYI + "barriles y chatarra " + BR + GRIS + "para obtener su contenido.");
 
         registrar(ModItems.GUITARRA.get(),
                 "Arma letal cuerpo a cuerpo contra " + BR + ZOM + "Infectados " + GRIS + "de todo tipo.");
@@ -294,7 +294,7 @@ public class ModTooltips {
 
         registrar(ModItems.PEZNSINITA_PICKAXE.get(),
                 "Herramienta reforzada de " + PEZ + "peznsinita " + BR + GRIS + "con mayor eficiencia y durabilidad.", "Ideal para recoletar recursos y ",
-                        "suministros básicos.");
+                "suministros básicos.");
 
         registrar(ModItems.PEZNSINITA_AXE.get(),
                 "Herramienta reforzada de " + PEZ + "peznsinita " + BR + GRIS + "con mayor eficiencia y durabilidad.", "Ideal para recoletar recursos y ",
@@ -314,99 +314,99 @@ public class ModTooltips {
 
         registrar(ModItems.HELMET_ARMADURA_TACTICA.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
-                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.CHESTPLATE_ARMADURA_TACTICA.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
-                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.LEGGINS_ARMADURA_TACTICA.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
-                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.BOOTS_ARMADURA_TACTICA.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
-                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "Vida Principal. " + BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.HELMET_ARMADURA_CHATARRA_REFORZADA.get(),
                 "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.CHESTPLATE_ARMADURA_CHATARRA_REFORZADA.get(),
                 "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.LEGGINS_ARMADURA_CHATARRA_REFORZADA.get(),
                 "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.BOOTS_ARMADURA_CHATARRA_REFORZADA.get(),
                 "Esta armadura te aumenta " + NUM + "2 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "explosiones."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.HELMET_ARMADURA_CONTENCION.get(),
                 "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.CHESTPLATE_ARMADURA_CONTENCION.get(),
                 "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.LEGGINS_ARMADURA_CONTENCION.get(),
                 "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.BOOTS_ARMADURA_CONTENCION.get(),
                 "Esta armadura te aumenta " + NUM + "3 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "7.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo reduce el daño recibido por ",
-                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "veneno."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.HELMET_ARMADURA_BLINDADA.get(),
                 "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
-                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.CHESTPLATE_ARMADURA_BLINDADA.get(),
                 "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
-                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.LEGGINS_ARMADURA_BLINDADA.get(),
                 "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
-                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.BOOTS_ARMADURA_BLINDADA.get(),
                 "Esta armadura te aumenta " + NUM + "4 Puntos " + GRIS + "en las partes ", "del cuerpo y " + NUM + "10 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo brinda defensa superior y ",
-                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                "maxima durabilidad."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.HELMET_TRAJE_BIOSEGURIDAD.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
-                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.CHESTPLATE_TRAJE_BIOSEGURIDAD.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
-                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.LEGGINS_TRAJE_BIOSEGURIDAD.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
-                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(ModItems.BOOTS_TRAJE_BIOSEGURIDAD.get(),
                 "Esta armadura te aumenta " + NUM + "1 Punto " + GRIS + "en las partes ", "del cuerpo y " + NUM + "2.5 Puntos "  + GRIS + "en la " + ROJO +
                         "Vida Principal. " + BR + GRIS +"El set completo elimina por completo la " + BR + RAD +
-                "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + BYI + "Kit de Costura.");
+                        "radiación."+ BR + BR + GRIS + "Puedes repararla con un " + ITEMS + "Kit de Costura.");
 
         registrar(Items.STRING,
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
@@ -449,17 +449,17 @@ public class ModTooltips {
 
         registrar(ModItems.INFO_REGLAS.get(),
                 ROJO_OSCURO + "✞ Avancen juntos: " + GRIS + "En estas calles, un jugador aislado", "es un jugador muerto. Mantengan la formación y no ",
-                        "se separen del grupo." + BR + BR + ROJO_OSCURO + "✞ Cooperación absoluta: " + GRIS + "Compartan recursos, munición", "y suministros médicos. " +
+                "se separen del grupo." + BR + BR + ROJO_OSCURO + "✞ Cooperación absoluta: " + GRIS + "Compartan recursos, munición", "y suministros médicos. " +
                         "La supervivencia depende del", "grupo, no de individualismos." + BR + BR + ROJO_OSCURO + "✞ Cero sabotaje: " + GRIS + "Está estrictamente prohibido provocar",
-                        "la muerte de un compañero, de forma directa o indirecta.", "Cuídense la espalda entre todos." + BR + BR + ROJO_OSCURO + "✞ Entorno Modificado: " + GRIS +
+                "la muerte de un compañero, de forma directa o indirecta.", "Cuídense la espalda entre todos." + BR + BR + ROJO_OSCURO + "✞ Entorno Modificado: " + GRIS +
                         "Esto no es un servidor Vanilla", "tradicional. Aquí todo se rige por mecánicas técnicas,", "médicas y de supervivencia urbana pesada. Adapta tu",
-                        "estrategia desde el primer minuto.");
+                "estrategia desde el primer minuto.");
 
         registrar(ModItems.INFO_SERVER.get(),
                 CON + "⟡ Despawn de Ítems: " + GRIS + "El ambiente corroerá cualquier", "recurso abandonado, todo ítem en el suelo desaparecerá", "en solo 60 segundos. Recoge tu botín de inmediato.",
-                        BR + CON +"⟡ Oscuridad Absoluta: " + GRIS + "La noche en Huatenolgo es total.", "La visibilidad será de cero sin fuentes de luz, prepárate ", "antes de que caiga el sol.",
-                        BR + CON +"⟡ Eventos Diarios: " + GRIS + "La ciudad cambia constantemente.", "Cada día se activarán nuevos eventos y peligros en", "el mapa.",
-                        BR + CON +"⟡ Soporte Administrativo: " + GRIS + "Si experimentas un bug crítico", "o necesitas asistencia técnica del Staff, ejecuta", "el comando /help en el chat para enviar una", "alerta a los administradores.");
+                BR + CON +"⟡ Oscuridad Absoluta: " + GRIS + "La noche en Huatenolgo es total.", "La visibilidad será de cero sin fuentes de luz, prepárate ", "antes de que caiga el sol.",
+                BR + CON +"⟡ Eventos Diarios: " + GRIS + "La ciudad cambia constantemente.", "Cada día se activarán nuevos eventos y peligros en", "el mapa.",
+                BR + CON +"⟡ Soporte Administrativo: " + GRIS + "Si experimentas un bug crítico", "o necesitas asistencia técnica del Staff, ejecuta", "el comando /help en el chat para enviar una", "alerta a los administradores.");
 
         registrar(ModItems.MARCADOR_MINAS_AZUFRE.get(),
                 "Zona inestable con depósitos de Azufre.", "El ambiente es tóxico, po lo que requiere", "el " + BIO + "Traje de Bioseguridad " + GRIS + "completo para", "poder entrar de manera segura.");
@@ -485,8 +485,6 @@ public class ModTooltips {
         registrar(ModItems.INFO_PIERNAS.get(),
                 "Si recibes daño de Fuego, Lava, Caída, del Arrastrador", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
                         + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en las" + BR + PART + "piernas." + BR + BR + PART + "➤ Lentitud.");
-
-
 
         colorNombre(ModItems.BACKPACK.get(), 0xffff55);
         colorNombre(ModItems.PEZNSINITA_BRUTE.get(), 0xff7625);
@@ -641,6 +639,27 @@ public class ModTooltips {
         }
 
         LISTO.put(item, salida);
+        return salida;
+    }
+
+    public static List<Component> formatear(String... lineas) {
+        Font font = Minecraft.getInstance().font;
+
+        List<Component> salida = new ArrayList<>();
+
+        for (String linea : lineas) {
+            for (String trozo : linea.split("\\{br}|\\R", -1)) {
+                List<Segmento> segmentos = segmentar(limpiar(trozo));
+
+                if (segmentos.isEmpty()) {
+                    salida.add(Component.empty());
+                    continue;
+                }
+
+                salida.addAll(repartir(segmentos, font));
+            }
+        }
+
         return salida;
     }
 

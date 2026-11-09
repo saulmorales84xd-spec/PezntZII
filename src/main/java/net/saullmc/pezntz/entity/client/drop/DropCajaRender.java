@@ -9,26 +9,40 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.ModBlocks;
-import net.saullmc.pezntz.entity.custom.DropCayendo;
+import net.saullmc.pezntz.entity.ModEntities;
+import net.saullmc.pezntz.entity.custom.DropCaja;
 
-public class DropCayendoRender extends EntityRenderer<DropCayendo> {
+@Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public class DropCajaRender extends EntityRenderer<DropCaja> {
 
     public static final float OFFSET_X = -0.5F;
     public static final float OFFSET_Y = 0.0F;
     public static final float OFFSET_Z = -0.5F;
 
+    public static final float SOMBRA = 0.9F;
+
     private final BlockRenderDispatcher bloques;
 
-    public DropCayendoRender(EntityRendererProvider.Context contexto) {
+    public DropCajaRender(EntityRendererProvider.Context contexto) {
         super(contexto);
 
         this.bloques = contexto.getBlockRenderDispatcher();
-        this.shadowRadius = 0.9F;
+        this.shadowRadius = SOMBRA;
+    }
+
+    @SubscribeEvent
+    public static void registrar(EntityRenderersEvent.RegisterRenderers evento) {
+        evento.registerEntityRenderer(ModEntities.DROP_CAJA.get(), DropCajaRender::new);
     }
 
     @Override
-    public void render(DropCayendo entidad, float giro, float partialTick,
+    public void render(DropCaja entidad, float giro, float partialTick,
                        PoseStack poseStack, MultiBufferSource bufferSource, int luz) {
 
         BlockState estado = ModBlocks.DROP.get().defaultBlockState();
@@ -44,7 +58,7 @@ public class DropCayendoRender extends EntityRenderer<DropCayendo> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DropCayendo entidad) {
+    public ResourceLocation getTextureLocation(DropCaja entidad) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }

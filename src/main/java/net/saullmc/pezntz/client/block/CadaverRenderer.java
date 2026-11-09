@@ -41,7 +41,7 @@ public class CadaverRenderer implements BlockEntityRenderer<CadaverEntity> {
     public static final float[] PIERNA_IZQ_ROT  = {90.0F,  0.0F,   0.0F};
 
     public static final float[] PIERNA_DER_POS  = { 0.1250F, 0.1250F, -1.1250F};
-    public static final float[] PIERNA_DER_ROT  = {90.0F,-22.5F,   0.0F};
+    public static final float[] PIERNA_DER_ROT  = {90.0F,  0.0F,   0.0F};
 
     public static final boolean MOSTRAR_CAPAS = true;
 
@@ -144,7 +144,6 @@ public class CadaverRenderer implements BlockEntityRenderer<CadaverEntity> {
         return uuid != null ? DefaultPlayerSkin.getDefaultSkin(uuid) : DefaultPlayerSkin.getDefaultSkin();
     }
 
-    /** Si la skin es de brazos finos, tipo Alex. */
     private static boolean esFino(CadaverEntity be) {
         Minecraft mc = Minecraft.getInstance();
         UUID uuid = be.getDuenioUuid();

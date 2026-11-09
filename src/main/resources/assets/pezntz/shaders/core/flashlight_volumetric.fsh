@@ -1,73 +1,31 @@
 #version 150
 
+// ============================================================================
+//  PEZNTZ - NIEBLA DEL HAZ DE LA LINTERNA
+//
+//  Esta pasada YA NO ILUMINA LAS PAREDES. Eso ahora lo hacen los shaders del mundo
+//  (assets/minecraft/shaders/core + include/pezntz_linterna.glsl), que suman la luz
+//  de la linterna cuando todavia tienen la textura entera.
+//
+//  Aqui solo queda el brillo del haz en el aire (la "niebla" del cono). Es luz que
+//  se SUMA, no multiplica nada, asi que no puede cambiar ni texturas ni colores.
+// ============================================================================
+
 uniform sampler2D uColorSampler;
 uniform sampler2D uDepthSampler;
 
 uniform mat4  uInvMVP;
-
-// Matriz sin invertir: para pasar de coordenadas de mundo a pantalla y poder consultar
-// el buffer de profundidad. Es la base del rastreo de sombras.
 uniform mat4  uMVP;
 
-uniform int   uShadowSteps;
 uniform float uShadowBias;
-
-// ===================== OPTIMIZACION: PASOS SEGUN LA DISTANCIA =====================
-//
-// POR QUE SE CAIAN LOS FPS
-//
-// Los dos bucles del shader daban SIEMPRE el mismo numero de pasos, da igual que el rayo
-// midiera 1 bloque o 22. Y como trazarSombra() se llamaba DENTRO del recorrido de niebla,
-// la cuenta por pixel y por linterna era:
-//
-//      1 sombra de superficie (20 muestras)
-//    + 24 pasos de niebla x 20 muestras de sombra  = 480 muestras
-//    = ~500 lecturas de la textura de profundidad POR PIXEL Y POR LINTERNA
-//
-// Con 4 linternas eso son 2000 lecturas por pixel. En 1080p, 4 mil millones por frame.
-//
-// Y lo peor: apuntar a un jugador pegado a la cara costaba EXACTAMENTE lo mismo que
-// apuntar al horizonte, solo que llenando toda la pantalla de pixeles caros. De ahi que
-// bajaran los FPS justo al apuntar a alguien.
-//
-// QUE SE HACE AHORA
-//
-// El numero de pasos sale de la LONGITUD REAL del rayo, manteniendo la separacion entre
-// muestras constante. Un rayo corto usa pocos pasos y uno largo muchos, pero la densidad
-// de muestreo es la misma, asi que la imagen no cambia: solo se dejan de gastar muestras
-// donde no hacian falta.
-// =================================================================================
-
-/** Muestras de sombra por bloque de distancia. Mas alto = sombras mas finas y mas caras. */
 uniform float uShadowStepsPerBlock;
-
-/**
- * Tope de muestras para las sombras de DENTRO de la niebla.
- *
- * La niebla es de frecuencia muy baja y encima lleva ruido y jitter encima, asi que no
- * necesita ni de lejos la precision de la sombra de una superficie. Este es el recorte
- * gordo: pasar de 20 a 6 aqui deja el recorrido de niebla en la tercera parte.
- */
 uniform int   uShadowStepsVolumetric;
-
-/** Pasos de niebla por bloque de recorrido. */
 uniform float uVolumetricStepsPerBlock;
-
-/**
- * Octavas de ruido de la niebla. 2 es lo de siempre, 1 cuesta la mitad.
- * Es el unico ajuste de aqui que cambia algo a la vista, y muy poquito: el grano queda
- * un pelin mas liso.
- */
 uniform int   uNoiseOctaves;
 uniform vec2  uScreenSize;
 
 uniform int   uLightCount;
 uniform vec3  uLightColor;
-uniform float uBrightnessMultiplier;
-
-uniform float uAmbient;
-
-uniform float uAmbientInfluence;
 
 uniform float uNearFade;
 
@@ -231,33 +189,6 @@ float trazarSombra(vec3 worldPos, vec3 lightOrigin, int pasosMax) {
     return 1.0;
 }
 
-void evaluateSurfaceLight(int i, vec3 worldPos, out float lit) {
-    float range = getRange(i);
-    if (range <= 0.0) { lit = 0.0; return; }
-
-    vec3  toPoint = worldPos - getLightOrigin(i);
-    float dist    = length(toPoint);
-    if (dist > range) { lit = 0.0; return; }
-
-    vec3  dirToPoint = toPoint / max(dist, 0.0001);
-    float cosAngle   = dot(dirToPoint, getLightDir(i));
-    float outerCos   = getConeAngleCos(i);
-    if (cosAngle < outerCos) { lit = 0.0; return; }
-
-    float halo   = smoothstep(outerCos, mix(outerCos, 1.0, 0.55), cosAngle);
-    float nucleo = smoothstep(mix(outerCos, 1.0, 0.45), mix(outerCos, 1.0, 0.85), cosAngle);
-    float forma  = halo * 0.35 + nucleo * 0.65;
-
-    float distAtten = pow(clamp(1.0 - dist / range, 0.0, 1.0), 2.0);
-
-    lit = forma * distAtten * getIntensity(i);
-
-    // Y lo ultimo: comprobar que de verdad haya linea de vision hasta el foco.
-    if (lit > 0.0) {
-        lit *= trazarSombra(worldPos, getLightOrigin(i), uShadowSteps);
-    }
-}
-
 bool volumetricInterval(int i, vec3 ro, vec3 rd, float tMax, out float t0, out float t1) {
     vec3  A = getLightOrigin(i) - ro;
     vec3  d = getLightDir(i);
@@ -392,70 +323,16 @@ void main() {
     vec3 worldPos  = reconstructWorldPos(screenUV, depth);
     vec3 rayOrigin = reconstructWorldPos(screenUV, 0.0);
 
-    float totalLit = 0.0;
-    vec3  glow = vec3(0.0);
+    vec3 glow = vec3(0.0);
 
     for (int i = 0; i < 4; i++) {
         if (i >= uLightCount) break;
-        float lit;
-        evaluateSurfaceLight(i, worldPos, lit);
-        totalLit = max(totalLit, lit);
-        if (uVolumetricIntensity > 0.0) {
-            glow += sampleVolumetric(rayOrigin, worldPos, i);
-        }
+        glow += sampleVolumetric(rayOrigin, worldPos, i);
     }
-    totalLit = clamp(totalLit, 0.0, 1.0);
 
+    // Sobre lo que ya brilla (el sol, una antorcha) no se nota la niebla: no se suma.
     float luminance = dot(sceneColor, vec3(0.299, 0.587, 0.114));
-
-    vec3 darkBase = sceneColor;
-
-    float ambientDamp = 1.0 - clamp(uAmbient, 0.0, 1.0) * clamp(uAmbientInfluence, 0.0, 1.0);
-    totalLit *= ambientDamp;
-    glow     *= ambientDamp;
-
     float selfLit = smoothstep(uSelfLitLow, uSelfLitHigh, luminance);
-    float fuerza  = totalLit * (1.0 - selfLit);
 
-    vec3 multiplicativo = vec3(1.0) + uBrightnessMultiplier * uLightColor * fuerza;
-    vec3 aditivo        = uLightColor * fuerza * 0.12;
-
-    vec3 litColor = sceneColor * multiplicativo + aditivo;
-
-    vec3 result = mix(darkBase, litColor, clamp(totalLit, 0.0, 1.0));
-
-    result += glow * 0.30 * (1.0 - selfLit);
-
-    // ================= COMPRESION DE BRILLO =================
-    //
-    // AQUI ESTABA LA DISTORSION DE COLOR AL MIRAR UNA LUZ.
-    //
-    // Dos fallos que se sumaban:
-    //
-    // 1) El tonemap se aplicaba canal por canal. Un naranja intenso como el de una antorcha
-    //    llega con algo asi como (1.5, 0.9, 0.4); al comprimir cada canal por separado, el
-    //    rojo baja muchisimo mas que el azul, y el color acaba siendo otro. Lo que se veia
-    //    no era mas brillo, era un tono cambiado.
-    //
-    // 2) La cantidad de compresion salia de totalLit, que dice si el pixel esta DENTRO DEL
-    //    CONO, no si la linterna le ha añadido algo. Una pared ya iluminada por el sol,
-    //    dentro del cono, recibia compresion completa aunque la linterna no aportara nada.
-    //
-    // Ahora se comprime la LUMINANCIA y se reparte el resultado entre los tres canales por
-    // igual: baja el brillo sin tocar el tono. Y la cantidad sale de la luz que la linterna
-    // ha añadido de verdad, asi que un pixel que ya era brillante pasa intacto.
-    float luzAniadida = clamp(fuerza + max(max(glow.r, glow.g), glow.b), 0.0, 1.0);
-
-    if (luzAniadida > 0.001) {
-        float brillo = dot(result, vec3(0.299, 0.587, 0.114));
-
-        if (brillo > 0.0001) {
-            float brilloComprimido = brillo / (1.0 + brillo * 0.35);
-            vec3  comprimido = result * (brilloComprimido / brillo);
-
-            result = mix(result, comprimido, luzAniadida);
-        }
-    }
-
-    fragColor = vec4(result, 1.0);
+    fragColor = vec4(sceneColor + glow * 0.30 * (1.0 - selfLit), 1.0);
 }

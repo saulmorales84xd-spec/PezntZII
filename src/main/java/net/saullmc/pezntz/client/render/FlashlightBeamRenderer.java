@@ -8,43 +8,32 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.core.BlockPos;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.saullmc.pezntz.PezntZMod;
-import net.saullmc.pezntz.item.custom.FlashlightItem;
 import org.joml.Matrix4f;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID, value = Dist.CLIENT)
 public class FlashlightBeamRenderer {
 
-    private static final float RANGE = 22.0f;
-    private static final float HALF_ANGLE_DEG = 50.0f;
-    private static final int MAX_VOLUMETRIC_LIGHTS = 4;
+    public static final boolean NIEBLA_ACTIVA = false;
+
     private static final int VOLUMETRIC_STEPS = 24;
     private static final float VOLUMETRIC_INTENSITY = 0.008f;
     private static final float VOLUMETRIC_NOISE = 0.30f;
-    private static final float BRIGHTNESS_MULTIPLIER = 7.0f;
     private static final float SELF_LIT_LOW = 0.6f;
     private static final float SELF_LIT_HIGH = 0.9f;
-    private static final float AMBIENT_INFLUENCE = 0.35f;
     private static final float NEAR_FADE = 1.6f;
-    private static final int SHADOW_STEPS = 20;
     private static final float SHADOW_BIAS = 0.0015f;
-    private static final float OFFSET_ADELANTE = 0.45f;
 
     private static final float SHADOW_STEPS_PER_BLOCK = 2.0f;
 
@@ -54,23 +43,16 @@ public class FlashlightBeamRenderer {
 
     private static final int NOISE_OCTAVES = 2;
 
-    private static final double DISTANCIA_MAXIMA_LUZ = 48.0D;
-
     private static final boolean REPARTIR_PASOS_ENTRE_LUCES = true;
 
     private static final int VOLUMETRIC_STEPS_MINIMO = 10;
 
-    private record ActiveLight(Vec3 origin, Vec3 dir, double distSq) {}
-
     private static TextureTarget sceneTarget;
-
-    private static final List<ActiveLight> LUCES = new ArrayList<>();
 
     @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            return;
-        }
+        if (!NIEBLA_ACTIVA) return;
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
 
         Minecraft mc = Minecraft.getInstance();
         Level level = mc.level;
@@ -78,39 +60,12 @@ public class FlashlightBeamRenderer {
 
         if (FlashlightShaders.volumetricShader == null || FlashlightShaders.copyShader == null) return;
 
-        float partialTick = event.getPartialTick();
         Vec3 camPos = event.getCamera().getPosition();
-        double limiteSq = DISTANCIA_MAXIMA_LUZ * DISTANCIA_MAXIMA_LUZ;
+        List<LucesLinterna.Luz> luces = LucesLinterna.recoger(level, event.getPartialTick(), camPos);
 
-        LUCES.clear();
+        if (luces.isEmpty()) return;
 
-        for (Player player : level.players()) {
-            ItemStack main = player.getMainHandItem();
-            ItemStack off = player.getOffhandItem();
-
-            boolean mainOn = main.getItem() instanceof FlashlightItem && FlashlightItem.estaEncendida(main);
-            boolean offOn = off.getItem() instanceof FlashlightItem && FlashlightItem.estaEncendida(off);
-
-            if (!mainOn && !offOn) continue;
-
-            Vec3 mira = player.getViewVector(partialTick).normalize();
-            Vec3 origen = player.getEyePosition(partialTick).add(mira.scale(OFFSET_ADELANTE));
-
-            double distSq = origen.distanceToSqr(camPos);
-            if (distSq > limiteSq) continue;
-
-            LUCES.add(new ActiveLight(origen, mira, distSq));
-        }
-
-        if (LUCES.isEmpty()) return;
-
-        if (LUCES.size() > MAX_VOLUMETRIC_LIGHTS) {
-            LUCES.sort((a, b) -> Double.compare(a.distSq(), b.distSq()));
-            LUCES.subList(MAX_VOLUMETRIC_LIGHTS, LUCES.size()).clear();
-        }
-
-        renderDarknessAndLighting(mc, level, LUCES, event.getProjectionMatrix(),
-                event.getPoseStack(), event.getCamera());
+        renderNiebla(mc, level, luces, event.getProjectionMatrix(), event.getPoseStack(), event.getCamera());
     }
 
     private static void ensureSceneTarget(int width, int height) {
@@ -122,8 +77,8 @@ public class FlashlightBeamRenderer {
         }
     }
 
-    private static void renderDarknessAndLighting(Minecraft mc, Level level, List<ActiveLight> lights,
-                                                  Matrix4f projectionMatrix, PoseStack poseStack, Camera camera) {
+    private static void renderNiebla(Minecraft mc, Level level, List<LucesLinterna.Luz> lights,
+                                     Matrix4f projectionMatrix, PoseStack poseStack, Camera camera) {
 
         var mainTarget = mc.getMainRenderTarget();
         int width = mainTarget.width;
@@ -141,67 +96,61 @@ public class FlashlightBeamRenderer {
         mvp.invert();
         poseStack.popPose();
 
-        float coneCos = (float) Math.cos(Math.toRadians(HALF_ANGLE_DEG));
+        float coneCos = (float) Math.cos(Math.toRadians(LucesLinterna.MEDIO_ANGULO));
 
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.disableCull();
         RenderSystem.disableBlend();
 
-        ShaderInstance lightingShader = FlashlightShaders.volumetricShader;
+        ShaderInstance shader = FlashlightShaders.volumetricShader;
 
         sceneTarget.bindWrite(true);
 
-        lightingShader.setSampler("uColorSampler", mainTarget.getColorTextureId());
-        lightingShader.setSampler("uDepthSampler", mainTarget.getDepthTextureId());
+        shader.setSampler("uColorSampler", mainTarget.getColorTextureId());
+        shader.setSampler("uDepthSampler", mainTarget.getDepthTextureId());
 
-        setMat4(lightingShader, "uInvMVP", mvp);
-        setMat4(lightingShader, "uMVP", mvpDirecta);
-        setFloat2(lightingShader, "uScreenSize", (float) width, (float) height);
-        setInt(lightingShader, "uLightCount", lights.size());
+        setMat4(shader, "uInvMVP", mvp);
+        setMat4(shader, "uMVP", mvpDirecta);
+        setFloat2(shader, "uScreenSize", (float) width, (float) height);
+        setInt(shader, "uLightCount", lights.size());
 
-        setFloat3(lightingShader, "uLightColor", 1.0f, 0.95f, 0.85f);
-        setFloat(lightingShader, "uBrightnessMultiplier", BRIGHTNESS_MULTIPLIER);
+        setFloat3(shader, "uLightColor", 1.0f, 0.95f, 0.85f);
+        setFloat(shader, "uNearFade", NEAR_FADE);
+        setFloat(shader, "uShadowBias", SHADOW_BIAS);
+        setFloat(shader, "uShadowStepsPerBlock", SHADOW_STEPS_PER_BLOCK);
+        setInt(shader, "uShadowStepsVolumetric", SHADOW_STEPS_VOLUMETRIC);
+        setFloat(shader, "uVolumetricStepsPerBlock", VOLUMETRIC_STEPS_PER_BLOCK);
+        setInt(shader, "uNoiseOctaves", NOISE_OCTAVES);
 
-        int luzBloque = level.getBrightness(LightLayer.BLOCK, BlockPos.containing(camPos));
-        setFloat(lightingShader, "uAmbient", luzBloque / 15.0f);
-        setFloat(lightingShader, "uAmbientInfluence", AMBIENT_INFLUENCE);
-        setFloat(lightingShader, "uNearFade", NEAR_FADE);
-        setInt(lightingShader, "uShadowSteps", SHADOW_STEPS);
-        setFloat(lightingShader, "uShadowBias", SHADOW_BIAS);
-        setFloat(lightingShader, "uShadowStepsPerBlock", SHADOW_STEPS_PER_BLOCK);
-        setInt(lightingShader, "uShadowStepsVolumetric", SHADOW_STEPS_VOLUMETRIC);
-        setFloat(lightingShader, "uVolumetricStepsPerBlock", VOLUMETRIC_STEPS_PER_BLOCK);
-        setInt(lightingShader, "uNoiseOctaves", NOISE_OCTAVES);
-
-        setFloat(lightingShader, "uSelfLitLow", SELF_LIT_LOW);
-        setFloat(lightingShader, "uSelfLitHigh", SELF_LIT_HIGH);
+        setFloat(shader, "uSelfLitLow", SELF_LIT_LOW);
+        setFloat(shader, "uSelfLitHigh", SELF_LIT_HIGH);
 
         int pasosNiebla = VOLUMETRIC_STEPS;
         if (REPARTIR_PASOS_ENTRE_LUCES && lights.size() > 1) {
             pasosNiebla = Math.max(VOLUMETRIC_STEPS_MINIMO, VOLUMETRIC_STEPS / lights.size());
         }
-        setInt(lightingShader, "uVolumetricSteps", pasosNiebla);
-        setFloat(lightingShader, "uVolumetricIntensity", VOLUMETRIC_INTENSITY);
-        setFloat(lightingShader, "uVolumetricNoise", VOLUMETRIC_NOISE);
-        setFloat(lightingShader, "uGameTime", (float) level.getGameTime());
+        setInt(shader, "uVolumetricSteps", pasosNiebla);
+        setFloat(shader, "uVolumetricIntensity", VOLUMETRIC_INTENSITY);
+        setFloat(shader, "uVolumetricNoise", VOLUMETRIC_NOISE);
+        setFloat(shader, "uGameTime", (float) level.getGameTime());
 
-        for (int i = 0; i < MAX_VOLUMETRIC_LIGHTS; i++) {
+        for (int i = 0; i < LucesLinterna.MAXIMO; i++) {
             String suffix = String.valueOf(i);
             if (i < lights.size()) {
-                ActiveLight l = lights.get(i);
+                LucesLinterna.Luz l = lights.get(i);
                 Vec3 dir = l.dir().normalize();
-                setFloat3(lightingShader, "uLightOrigin" + suffix, (float) l.origin().x, (float) l.origin().y, (float) l.origin().z);
-                setFloat3(lightingShader, "uLightDir" + suffix, (float) dir.x, (float) dir.y, (float) dir.z);
-                setFloat(lightingShader, "uConeAngleCos" + suffix, coneCos);
-                setFloat(lightingShader, "uRange" + suffix, RANGE);
-                setFloat(lightingShader, "uIntensity" + suffix, 1.0f);
+                setFloat3(shader, "uLightOrigin" + suffix, (float) l.origen().x, (float) l.origen().y, (float) l.origen().z);
+                setFloat3(shader, "uLightDir" + suffix, (float) dir.x, (float) dir.y, (float) dir.z);
+                setFloat(shader, "uConeAngleCos" + suffix, coneCos);
+                setFloat(shader, "uRange" + suffix, l.alcance());
+                setFloat(shader, "uIntensity" + suffix, 1.0f);
             } else {
-                setFloat(lightingShader, "uRange" + suffix, 0.0f);
+                setFloat(shader, "uRange" + suffix, 0.0f);
             }
         }
 
-        drawFullscreenQuad(lightingShader);
+        drawFullscreenQuad(shader);
 
         sceneTarget.unbindWrite();
 

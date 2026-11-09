@@ -258,16 +258,18 @@ public class EntidadMenu {
 
         if (!visible) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            dibujarInterrogante(g, x, y);
+            dibujarInterrogante(g, x, y, bicho.getBbHeight());
         }
     }
 
-    private void dibujarInterrogante(GuiGraphics g, int x, int y) {
+    private void dibujarInterrogante(GuiGraphics g, int x, int y, float alturaBicho) {
         Minecraft mc = Minecraft.getInstance();
+
+        float medio = this.tamanio * Math.max(0.25F, alturaBicho) / 2.0F;
 
         g.pose().pushPose();
 
-        g.pose().translate(x, y - this.tamanio / 2.0F + INTERROGANTE_OFFSET_Y, 300.0F);
+        g.pose().translate(x, y - medio + INTERROGANTE_OFFSET_Y, 300.0F);
         g.pose().scale(ESCALA_INTERROGANTE, ESCALA_INTERROGANTE, 1.0F);
 
         int ancho = mc.font.width(INTERROGANTE);

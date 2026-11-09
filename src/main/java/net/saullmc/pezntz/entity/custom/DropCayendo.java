@@ -14,11 +14,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
-import net.saullmc.pezntz.block.ModBlocks;
-import net.saullmc.pezntz.block.entity.DropEntity;
+import net.saullmc.pezntz.entity.ModEntities;
 
 public class DropCayendo extends Entity {
 
@@ -95,12 +92,11 @@ public class DropCayendo extends Entity {
     private void aterrizar(BlockPos pos) {
         Level nivel = this.level();
 
-        BlockState estado = ModBlocks.DROP.get().defaultBlockState();
-        nivel.setBlock(pos, estado, Block.UPDATE_ALL);
+        DropCaja caja = new DropCaja(ModEntities.DROP_CAJA.get(), nivel);
+        caja.moveTo(this.getX(), this.getSuelo(), this.getZ(), 0.0F, 0.0F);
 
-        if (nivel.getBlockEntity(pos) instanceof DropEntity drop) {
-            drop.aterrizar();
-        }
+        nivel.addFreshEntity(caja);
+        caja.preparar();
 
         SoundEvent evento = BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation(SONIDO_ATERRIZAJE));
         if (evento != null) {

@@ -28,6 +28,7 @@ public class CadaverMenu extends AbstractContainerMenu {
     private final int seccion;
     private final int filas;
     private final int huecosContenedor;
+    private final boolean esDuenio;
 
     public CadaverMenu(int id, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(id, playerInventory, extraData.readBlockPos(), extraData.readInt());
@@ -44,8 +45,10 @@ public class CadaverMenu extends AbstractContainerMenu {
         BlockEntity be = this.level.getBlockEntity(pos);
         if (be instanceof CadaverEntity cadaver) {
             this.contenedor = (seccion == SECCION_MOCHILA) ? cadaver.getMochila() : cadaver.getInventario();
+            this.esDuenio = cadaver.esDuenio(playerInventory.player);
         } else {
             this.contenedor = new ItemStackHandler(this.filas * 9);
+            this.esDuenio = false;
         }
 
         this.huecosContenedor = Math.min(this.filas * 9, this.contenedor.getSlots());
@@ -76,6 +79,14 @@ public class CadaverMenu extends AbstractContainerMenu {
 
     public int getFilas() {
         return this.filas;
+    }
+
+    public BlockPos getPos() {
+        return this.pos;
+    }
+
+    public boolean esDuenio() {
+        return this.esDuenio;
     }
 
     public int getSeccion() {

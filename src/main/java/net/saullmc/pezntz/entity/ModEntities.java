@@ -66,6 +66,11 @@ public class ModEntities {
             ENTITY_TYPES.register("drop_cayendo", () -> EntityType.Builder.<DropCayendo>of(DropCayendo::new, MobCategory.MISC)
                     .sized(2.0f, 2.0f).clientTrackingRange(16).updateInterval(2).build("drop_cayendo"));
 
+    public static final RegistryObject<EntityType<DropCaja>> DROP_CAJA =
+            ENTITY_TYPES.register("drop_caja", () -> EntityType.Builder.<DropCaja>of(DropCaja::new, MobCategory.MISC)
+                    .sized(1.75f, 1.875f).fireImmune().clientTrackingRange(16).updateInterval(2)
+                    .setShouldReceiveVelocityUpdates(true).build("drop_caja"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 public class Drop extends BaseEntityBlock {
 
-    public static final VoxelShape FORMA = Block.box(0, 0, 0, 16, 32, 16);
+    public static final VoxelShape FORMA = Block.box(-8, 0, -8, 24, 32, 24);
 
     public Drop(Properties properties) {
         super(properties);

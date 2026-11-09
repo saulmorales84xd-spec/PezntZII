@@ -82,6 +82,36 @@ public class QuadOverlay {
     private static final ResourceLocation TEX_BARRA_COMBUSTIBLE =
             new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/barra_combustible.png");
 
+    public static final boolean MOSTRAR_BOTONES = true;
+
+    private static final ResourceLocation TEX_BOTON_SHIFT =
+            new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/boton_shift.png");
+
+    private static final ResourceLocation TEX_BOTON_CTRL =
+            new ResourceLocation(PezntZMod.MOD_ID, "textures/gui/boton_ctrl.png");
+
+    public static final int BOTON_ANCHO = 64;
+    public static final int BOTON_ALTO = 16;
+
+    public static final float BOTONES_SCALE = 1.0F;
+
+    public static final float BOTONES_OFFSET_X = 0.0F;
+    public static final float BOTONES_OFFSET_Y = 2.0F;
+
+    public static final float HUECO_ENTRE_BOTONES = 2.0F;
+
+    public static final boolean BOTONES_EN_COLUMNA = true;
+
+    public static final boolean MOSTRAR_SHIFT = true;
+    public static final float SHIFT_ESCALA = 1.0F;
+    public static final float SHIFT_OFFSET_X = 0.0F;
+    public static final float SHIFT_OFFSET_Y = 0.0F;
+
+    public static final boolean MOSTRAR_CTRL = true;
+    public static final float CTRL_ESCALA = 1.0F;
+    public static final float CTRL_OFFSET_X = 0.0F;
+    public static final float CTRL_OFFSET_Y = 0.0F;
+
     public static final IGuiOverlay OVERLAY = (ForgeGui gui, GuiGraphics g, float partialTick,
                                                int screenWidth, int screenHeight) -> {
         Minecraft mc = Minecraft.getInstance();
@@ -132,8 +162,78 @@ public class QuadOverlay {
 
         g.pose().popPose();
 
+        if (MOSTRAR_BOTONES) {
+            float altoBarras = BARRA_ALTO * BARRAS_SCALE
+                    * (quad.usaCombustible() ? 2.0F : 1.0F)
+                    + (quad.usaCombustible() ? HUECO_ENTRE_BARRAS * BARRAS_SCALE : 0.0F);
+
+            dibujarBotones(g, x, anclaY + altoBarras);
+        }
+
         g.pose().popPose();
     };
+
+    private static void dibujarBotones(GuiGraphics g, int panelX, float y) {
+        float escalaShift = BOTONES_SCALE * SHIFT_ESCALA;
+        float escalaCtrl = BOTONES_SCALE * CTRL_ESCALA;
+
+        float anchoShift = MOSTRAR_SHIFT ? BOTON_ANCHO * escalaShift : 0.0F;
+        float altoShift = MOSTRAR_SHIFT ? BOTON_ALTO * escalaShift : 0.0F;
+        float anchoCtrl = MOSTRAR_CTRL ? BOTON_ANCHO * escalaCtrl : 0.0F;
+
+        float hueco = (MOSTRAR_SHIFT && MOSTRAR_CTRL) ? HUECO_ENTRE_BOTONES : 0.0F;
+
+        float centro = panelX + PANEL / 2.0F + BOTONES_OFFSET_X;
+        float arriba = y + BOTONES_OFFSET_Y;
+
+        float shiftX;
+        float shiftY;
+        float ctrlX;
+        float ctrlY;
+
+        if (BOTONES_EN_COLUMNA) {
+            shiftX = centro - anchoShift / 2.0F;
+            shiftY = arriba;
+
+            ctrlX = centro - anchoCtrl / 2.0F;
+            ctrlY = arriba + altoShift + hueco;
+
+        } else {
+            float total = anchoShift + hueco + anchoCtrl;
+
+            shiftX = centro - total / 2.0F;
+            shiftY = arriba;
+
+            ctrlX = shiftX + anchoShift + hueco;
+            ctrlY = arriba;
+        }
+
+        if (MOSTRAR_SHIFT) {
+            boton(g, TEX_BOTON_SHIFT, shiftX + SHIFT_OFFSET_X, shiftY + SHIFT_OFFSET_Y, escalaShift);
+        }
+
+        if (MOSTRAR_CTRL) {
+            boton(g, TEX_BOTON_CTRL, ctrlX + CTRL_OFFSET_X, ctrlY + CTRL_OFFSET_Y, escalaCtrl);
+        }
+    }
+
+    private static void boton(GuiGraphics g, ResourceLocation textura, float x, float y, float escala) {
+        if (escala <= 0.0F) return;
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        g.pose().pushPose();
+        g.pose().translate(x, y, 0.0F);
+        g.pose().scale(escala, escala, 1.0F);
+
+        g.blit(textura, 0, 0, 0.0F, 0.0F, BOTON_ANCHO, BOTON_ALTO, BOTON_ANCHO, BOTON_ALTO);
+
+        g.pose().popPose();
+
+        RenderSystem.disableBlend();
+    }
 
     private static void dibujarBarra(GuiGraphics g, int x, int y, float proporcion, int color,
                                      ResourceLocation fondo, String texto) {

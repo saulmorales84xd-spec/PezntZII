@@ -48,6 +48,6 @@ public class ModOverlays {
 
         event.registerAboveAll("prensa_barra", ProcesadorBarOverlay.OVERLAY);
 
-        event.registerAboveAll("drop_waypoint", DropWaypointOverlay.OVERLAY);
+        event.registerAboveAll("cadaver_aviso", CadaverAvisoOverlay.OVERLAY);
     }
 }

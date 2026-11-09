@@ -1,8 +1,7 @@
 {
   "variants": {
-    "facing=north": { "model": "pezntz:block/drop" },
-    "facing=east":  { "model": "pezntz:block/drop", "y": 90 },
-    "facing=south": { "model": "pezntz:block/drop", "y": 180 },
-    "facing=west":  { "model": "pezntz:block/drop", "y": 270 }
+    "": {
+      "model": "pezntz:block/drop"
+    }
   }
 }

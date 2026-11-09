@@ -4,6 +4,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 
+import net.saullmc.pezntz.client.screen.menu.MenuSeccionScreen;
+
 public class ImagenTooltipCliente implements ClientTooltipComponent {
 
     private final ImagenTooltip datos;
@@ -55,7 +57,8 @@ public class ImagenTooltipCliente implements ClientTooltipComponent {
             g.pose().scale(escala, escala, 1.0F);
 
             g.renderItem(item.stack(), 0, 0);
-            g.renderItemDecorations(font, item.stack(), 0, 0);
+
+            MenuSeccionScreen.decorar(g, font, item.stack(), item.barra(), true);
 
             g.pose().popPose();
         }

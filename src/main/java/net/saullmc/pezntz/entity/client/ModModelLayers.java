@@ -38,4 +38,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation LANCHA_LAYER = new ModelLayerLocation(
             new ResourceLocation(PezntZMod.MOD_ID, "lancha_layer"),"main");
+
+    public static final ModelLayerLocation DROP_LAYER = new ModelLayerLocation(
+            new ResourceLocation(PezntZMod.MOD_ID, "lancha_layer"),"main");
 }

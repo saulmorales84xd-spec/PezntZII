@@ -1,6 +1,7 @@
 package net.saullmc.pezntz.client.screen.menu;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.EntityType;
 import net.saullmc.pezntz.client.screen.FondoBorroso;
 import net.saullmc.pezntz.entity.ModEntities;
 import net.saullmc.pezntz.item.ModItems;
+import net.saullmc.pezntz.item.ModTooltips;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -225,9 +227,31 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.PEZNSINITA_SHOVEL.get()).en(110, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
                     new ItemMenu(ModItems.PEZNSINITA_HOE.get()).en(140, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
 
-                    ItemMenu.caja("9mm", ItemMenu.CAJA_HIERRO, 0).en(65, 320).escala(1.5F),
-                    ItemMenu.caja("9mm", ItemMenu.CAJA_ORO, 0).en(95, 320).escala(1.5F),
-                    ItemMenu.caja("9mm", ItemMenu.CAJA_DIAMANTE, 0).en(125, 320).escala(1.5F),
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_HIERRO, 0).en(65, 320).escala(1.5F)
+                            .nombre("Caja de Munición Pequeña [☆]", 0xFFFFFF)
+                            .tooltip(ModTooltips.KEYS + "[Click Izquierdo] " + ModTooltips.GRIS + "para arrastrar la caja hasta",
+                                    "tus " + ModTooltips.ITEMS + "balas " + ModTooltips.GRIS + "en el inventario.",
+                                    ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "sobre las balas con la caja",
+                                    "para guardarlas.",
+                                    "",
+                                    ModTooltips.KEYS + "[Click Izquierdo] " + ModTooltips.GRIS + "para arrastrar la caja con",
+                                    "balas a un lugar vacio en tu inventario.",
+                                    ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "para retirarlas de la caja.",
+                                    "",
+                                    ModTooltips.ROJO_OSCURO + "Importante: " + ModTooltips.GRIS + "Solamente puedes guardar un",
+                                    "tipo de " + ModTooltips.ITEMS + "balas.",
+                                    "",
+                                    "Capacidad: " + ModTooltips.NUM + "3 montones"),
+
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_ORO, 0).en(95, 320).escala(1.5F)
+                            .nombre("Caja de munición de oro", 0xFFD84A)
+                            .tooltip("Guarda hasta " + ModTooltips.NUM + "6 montones " + ModTooltips.GRIS + "de balas",
+                                    "de un mismo calibre."),
+
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_DIAMANTE, 0).en(125, 320).escala(1.5F)
+                            .nombre("Caja de munición de diamante", 0x5FE8E0)
+                            .tooltip("Guarda hasta " + ModTooltips.NUM + "9 montones " + ModTooltips.GRIS + "de balas",
+                                    "de un mismo calibre."),
 
                     ItemMenu.arma("glock_17").en(35, 360).escala(1.5F),
                     ItemMenu.arma("deagle_golden").en(35, 400).escala(1.5F),
@@ -426,10 +450,10 @@ public class MenuSeccionScreen extends Screen {
             }
 
         } else if (encima != null) {
-            g.renderTooltip(this.font,
-                    getTooltipFromItem(Minecraft.getInstance(), encima.getStack()),
-                    encima.getImagenTooltip(),
-                    mouseX, mouseY);
+            List<Component> lineas = encima.getTooltip();
+            if (!lineas.isEmpty()) {
+                g.renderTooltip(this.font, lineas, encima.getImagenTooltip(), mouseX, mouseY);
+            }
         }
     }
 
@@ -488,7 +512,7 @@ public class MenuSeccionScreen extends Screen {
                 float escala = entrada.getEscala(ESCALA_ITEM);
                 float tamanio = 16.0F * escala;
 
-                dibujarItem(g, entrada.getStack(),
+                dibujarItem(g, entrada,
                         Math.round(x + (CELDA - tamanio) / 2.0F),
                         Math.round(y + (CELDA - tamanio) / 2.0F),
                         escala);
@@ -516,22 +540,41 @@ public class MenuSeccionScreen extends Screen {
                 encima = entrada;
             }
 
-            dibujarItem(g, entrada.getStack(), x, y, escala);
+            dibujarItem(g, entrada, x, y, escala);
         }
 
         return encima;
     }
 
-    private void dibujarItem(GuiGraphics g, ItemStack stack, int x, int y, float escala) {
+    private void dibujarItem(GuiGraphics g, ItemMenu entrada, int x, int y, float escala) {
+        ItemStack stack = entrada.getStack();
+
         g.pose().pushPose();
 
         g.pose().translate(x, y, 0.0F);
         g.pose().scale(escala, escala, 1.0F);
 
         g.renderItem(stack, 0, 0);
-        g.renderItemDecorations(this.font, stack, 0, 0);
+        decorar(g, this.font, stack, entrada.tieneBarra(), entrada.tieneCantidad());
 
         g.pose().popPose();
+    }
+
+    public static void decorar(GuiGraphics g, Font fuente, ItemStack stack,
+                               boolean barra, boolean cantidad) {
+
+        if (barra) {
+            g.renderItemDecorations(fuente, stack, 0, 0);
+            return;
+        }
+
+        if (!cantidad || stack.getCount() <= 1) return;
+
+        String texto = String.valueOf(stack.getCount());
+
+        g.drawString(fuente, texto,
+                19 - 2 - fuente.width(texto), 6 + 3,
+                0xFFFFFF, true);
     }
 
     private void dibujarBarra(GuiGraphics g) {

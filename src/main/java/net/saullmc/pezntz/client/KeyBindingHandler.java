@@ -52,12 +52,21 @@ public class KeyBindingHandler {
             "category.pezntz.keys"
     );
 
+    public static final KeyMapping MAPA_KEY = new KeyMapping(
+            "key.pezntz.mapa",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_M,
+            "category.pezntz.keys"
+    );
+
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(MEDICAL_GUI_KEY);
         event.register(BACKPACK_KEY);
         event.register(CAMBIAR_ASIENTO_KEY);
         event.register(MENU_KEY);
+        event.register(MAPA_KEY);
     }
 
     @Mod.EventBusSubscriber(modid = "pezntz", bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -69,6 +78,12 @@ public class KeyBindingHandler {
             if (MEDICAL_GUI_KEY.consumeClick()) {
                 if (mc.player != null && mc.screen == null) {
                     mc.setScreen(new HealingScreen());
+                }
+            }
+
+            if (MAPA_KEY.consumeClick()) {
+                if (mc.player != null && mc.screen == null) {
+                    mc.setScreen(new net.saullmc.pezntz.client.map.MapaScreen());
                 }
             }
 

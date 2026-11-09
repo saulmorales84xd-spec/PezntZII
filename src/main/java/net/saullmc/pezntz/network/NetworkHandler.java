@@ -81,10 +81,40 @@ public class NetworkHandler {
                 .encoder(SyncBestiarioPacket::toBytes)
                 .consumerMainThread(SyncBestiarioPacket::handle).add();
 
+        net.messageBuilder(RecuperarCadaverPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(RecuperarCadaverPacket::new)
+                .encoder(RecuperarCadaverPacket::toBytes)
+                .consumerMainThread(RecuperarCadaverPacket::handle).add();
+
         net.messageBuilder(DropWaypointPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(DropWaypointPacket::new)
                 .encoder(DropWaypointPacket::toBytes)
                 .consumerMainThread(DropWaypointPacket::handle).add();
+
+        net.messageBuilder(MapaInfoPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(MapaInfoPacket::new)
+                .encoder(MapaInfoPacket::toBytes)
+                .consumerMainThread(MapaInfoPacket::handle).add();
+
+        net.messageBuilder(MapaTrozoPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(MapaTrozoPacket::new)
+                .encoder(MapaTrozoPacket::toBytes)
+                .consumerMainThread(MapaTrozoPacket::handle).add();
+
+        net.messageBuilder(MapaPedirPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(MapaPedirPacket::new)
+                .encoder(MapaPedirPacket::toBytes)
+                .consumerMainThread(MapaPedirPacket::handle).add();
+
+        net.messageBuilder(MapaCambiosPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(MapaCambiosPacket::new)
+                .encoder(MapaCambiosPacket::toBytes)
+                .consumerMainThread(MapaCambiosPacket::handle).add();
+
+        net.messageBuilder(MapaMarcadoresPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(MapaMarcadoresPacket::new)
+                .encoder(MapaMarcadoresPacket::toBytes)
+                .consumerMainThread(MapaMarcadoresPacket::handle).add();
     }
 
     public static <MSG> void sendToDimension(MSG message, ResourceKey<Level> dimension) {

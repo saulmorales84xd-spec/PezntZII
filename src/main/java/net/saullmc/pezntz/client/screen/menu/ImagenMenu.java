@@ -78,12 +78,14 @@ public class ImagenMenu {
         this.itemsEscala = escala;
     }
 
+    public static final boolean BARRA_POR_DEFECTO = false;
+
     public void item(Item item, float x, float y, float escala) {
         this.item(new ItemStack(item), x, y, escala);
     }
 
     public void item(ItemStack stack, float x, float y, float escala) {
-        this.items.add(new ItemEnImagen(stack, x, y, escala));
+        this.items.add(new ItemEnImagen(stack, x, y, escala, BARRA_POR_DEFECTO));
     }
 
     public boolean vacia() {

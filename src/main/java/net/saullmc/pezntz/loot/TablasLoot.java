@@ -80,64 +80,56 @@ public class TablasLoot {
     public static final String MODO_DISPARO = "SEMI";
 
     public static final String[] CALIBRES = {
-            "9mm", "12g", "45acp", "357mag", "50ae", "500mag"
+            "9mm", "22wmr", "500mag", "357mag", "50bmg", "338", "792x57", "12g", "57x28",
+            "556x45", "762x39"
     };
 
-    public static final String[] ARMAS_NORMALES = {
-            "b93r", "cz75", "db_long", "db_short", "deagle", "deagle_golden", "glock_17", "hk_mp5a5",
-            "m1911", "m870", "m9a4", "p320", "p90", "rhino357", "spas_12", "taurus500", "ump45", "uzi",
-            "vector45"
+    public static final int PESO_MUNICION = 10;
+
+    public static final boolean COHETES_RPG = true;
+    public static final String COHETE_RPG = "rpg_rocket";
+    public static final int CADA_CUANTO_COHETE = 200;
+    public static final int COHETES_MIN = 1;
+    public static final int COHETES_MAX = 2;
+
+    public static final String[] ARMAS = {
+            "glock_17", "taurus943", "taurus500", "deagle_golden", "m95", "ai_awp", "kar98",
+            "db_short", "m870", "spas_12", "hk_mp5a5", "uzi", "p90", "m16a1", "scar_l", "ak47",
+            "m4a1", "aug", "m249"
     };
 
-    public static final String[] ARMAS_DIFICILES = {
-            "ai_awp", "ak47", "aug", "fn_fal", "g36k", "hk416d", "hk_g3", "kar98", "m107", "m16a1",
-            "m16a4", "m4a1", "m95", "qbz_191", "scar_h", "scar_l", "sks_tactical", "type_81"
-    };
+    public static final boolean RPG = true;
+    public static final String ARMA_RPG = "rpg7";
+    public static final int CADA_CUANTO_RPG = 200;
 
-    public static final String[] ARMAS_PESADAS = {
-            "m249", "rpg7", "rpk"
-    };
-
-    public static final String[] MIRAS = {
-            "scope_98k", "scope_acog_ta31", "scope_aug_default", "scope_elcan_4x", "scope_lpvo_1_6",
-            "scope_qmk152", "scope_retro_2x", "scope_standard_8x", "scope_vudu", "sight_552",
-            "sight_coyote", "sight_deltapoint_pistol", "sight_deltapoint_rifle", "sight_exp3",
-            "sight_fastfire_pistol", "sight_fastfire_rifle", "sight_okp7", "sight_p90",
-            "sight_pk06_pistol", "sight_pk06_rifle", "sight_rmr_dot", "sight_sro_dot", "sight_srs_02",
-            "sight_t1", "sight_t2", "sight_uh1"
-    };
-
-    public static final String[] CANIONES = {
-            "deagle_golden_long_barrel", "muzzle_brake_cthulhu", "muzzle_brake_cyclone_d2",
-            "muzzle_brake_pioneer", "muzzle_brake_trex", "muzzle_compensator_trident",
-            "muzzle_silencer_knight_qd", "muzzle_silencer_phantom_s1", "muzzle_silencer_ptilopsis",
-            "muzzle_silencer_ursus", "muzzle_silencer_vulture"
+    public static final String[] EMPUNADURAS = {
+            "grip_magpul_afg_2", "grip_rk0", "grip_se_5", "grip_rk1_b25u"
     };
 
     public static final String[] CULATAS = {
-            "oem_stock_heavy", "oem_stock_light", "oem_stock_tactical", "stock_ak12",
-            "stock_carbon_bone_c5", "stock_hk_slim_line", "stock_m4ss", "stock_militech_b5",
-            "stock_moe", "stock_ripstock", "stock_sba3", "stock_tactical_ar"
+            "stock_tactical_ar", "stock_m4ss", "stock_moe", "stock_carbon_bone_c5"
     };
 
-    public static final String[] EMPUNADURAS = {
-            "grip_cobra", "grip_cqr", "grip_magpul_afg_2", "grip_osovets_black", "grip_rk0",
-            "grip_rk1_b25u", "grip_rk6", "grip_se_5", "grip_td", "grip_vertical_military",
-            "grip_vertical_ranger", "grip_vertical_talon"
+    public static final String[] CANIONES = {
+            "deagle_golden_long_barrel", "muzzle_silencer_vulture", "muzzle_silencer_ursus",
+            "muzzle_brake_cyclone_d2"
+    };
+
+    public static final String[] MIRAS = {
+            "scope_lpvo_1_6", "sight_coyote", "scope_qmk152", "sight_srs_02"
+    };
+
+    public static final String[] LASERES = {
+            "laser_compact", "laser_nightstick", "laser_lopro"
     };
 
     public static final String[] CARGADORES = {
-            "extended_mag_1", "extended_mag_2", "extended_mag_3", "light_extended_mag_1",
-            "light_extended_mag_2", "light_extended_mag_3", "shotgun_extended_mag_1",
-            "shotgun_extended_mag_2", "shotgun_extended_mag_3", "sniper_extended_mag_1",
+            "extended_mag_2", "extended_mag_3", "light_extended_mag_2", "light_extended_mag_3",
             "sniper_extended_mag_2", "sniper_extended_mag_3"
     };
 
-    public static final int PESO_ACCESORIO = 10;
-    public static final int PESO_ARMA_NORMAL = 5;
-    public static final int PESO_ARMA_DIFICIL = 2;
-
-    public static final int CADA_CUANTO_PESADA = 100;
+    public static final int PESO_ARMA = 10;
+    public static final int PESO_ACCESORIO = PESO_ARMA;
 
     public static final int BALAS_POR_CAJA = 30;
 
@@ -227,7 +219,7 @@ public class TablasLoot {
 
         Tabla municion = new Tabla()
                 .unSoloTipo(BALAS_POR_CAJA, MONTONES_BALAS_MIN, MONTONES_BALAS_MAX)
-                .municion(CALIBRES)
+                .todaLaMunicion()
                 .conArmeria(PROBABILIDAD_ARMA_CAJA);
 
         poner("cajas_militares", municion.copia());
@@ -338,6 +330,16 @@ public class TablasLoot {
     private static List<ItemStack> montonesDeUnSoloTipo(Tabla tabla, RandomSource azar) {
         List<ItemStack> montones = new ArrayList<>();
 
+        if (tabla.cohete != null && azar.nextInt(Math.max(1, CADA_CUANTO_COHETE)) == 0) {
+            int cohetes = COHETES_MIN + azar.nextInt(Math.max(1, COHETES_MAX - COHETES_MIN + 1));
+            ItemStack stack = construir(tabla.cohete, cohetes, azar);
+
+            if (!stack.isEmpty()) {
+                montones.add(stack);
+                return montones;
+            }
+        }
+
         Entrada elegida = sortear(tabla.sorteo, new HashSet<>(), azar);
         if (elegida == null) return montones;
 
@@ -376,9 +378,8 @@ public class TablasLoot {
         if (tabla.armeria.isEmpty()) return;
         if (azar.nextInt(100) >= tabla.probabilidadArmeria) return;
 
-        if (!tabla.pesadas.isEmpty() && azar.nextInt(CADA_CUANTO_PESADA) == 0) {
-            Entrada pesada = tabla.pesadas.get(azar.nextInt(tabla.pesadas.size()));
-            ItemStack stack = construir(pesada, 1, azar);
+        if (tabla.rpg != null && azar.nextInt(Math.max(1, CADA_CUANTO_RPG)) == 0) {
+            ItemStack stack = construir(tabla.rpg, 1, azar);
 
             if (!stack.isEmpty()) {
                 montones.add(stack);
@@ -530,7 +531,8 @@ public class TablasLoot {
         private final List<Entrada> sorteo = new ArrayList<>();
 
         private final List<Entrada> armeria = new ArrayList<>();
-        private final List<Entrada> pesadas = new ArrayList<>();
+        private Entrada rpg = null;
+        private Entrada cohete = null;
         private int probabilidadArmeria = 0;
 
         private int items = ITEMS_POR_CONTENEDOR;
@@ -579,27 +581,43 @@ public class TablasLoot {
         }
 
         public Tabla municion(String[] calibres) {
+            return this.municion(calibres, PESO_MUNICION);
+        }
+
+        public Tabla municion(String[] calibres, int peso) {
             for (String calibre : calibres) {
-                this.sorteo.add(new Entrada(ITEM_MUNICION, "{AmmoId:\"tacz:" + calibre + "\"}",
-                        PESO_NORMAL, 1, 1, false));
+                this.sorteo.add(entradaMunicion(calibre, peso));
             }
             return this;
+        }
+
+        public Tabla todaLaMunicion() {
+            this.municion(CALIBRES, PESO_MUNICION);
+
+            if (COHETES_RPG) {
+                this.cohete = entradaMunicion(COHETE_RPG, 1);
+            }
+            return this;
+        }
+
+        private static Entrada entradaMunicion(String calibre, int peso) {
+            return new Entrada(ITEM_MUNICION, "{AmmoId:\"tacz:" + calibre + "\"}", peso, 1, 1, false);
         }
 
         public Tabla conArmeria(int probabilidad) {
             this.probabilidadArmeria = probabilidad;
 
-            accesorios(MIRAS);
-            accesorios(CANIONES);
-            accesorios(CULATAS);
             accesorios(EMPUNADURAS);
+            accesorios(CULATAS);
+            accesorios(CANIONES);
+            accesorios(MIRAS);
+            accesorios(LASERES);
             accesorios(CARGADORES);
 
-            armas(ARMAS_NORMALES, PESO_ARMA_NORMAL);
-            armas(ARMAS_DIFICILES, PESO_ARMA_DIFICIL);
+            armas(ARMAS, PESO_ARMA);
 
-            for (String id : ARMAS_PESADAS) {
-                this.pesadas.add(entradaArma(id, 1));
+            if (RPG) {
+                this.rpg = entradaArma(ARMA_RPG, 1);
             }
 
             return this;
@@ -637,7 +655,8 @@ public class TablasLoot {
             nueva.fijos.addAll(this.fijos);
             nueva.sorteo.addAll(this.sorteo);
             nueva.armeria.addAll(this.armeria);
-            nueva.pesadas.addAll(this.pesadas);
+            nueva.rpg = this.rpg;
+            nueva.cohete = this.cohete;
             nueva.probabilidadArmeria = this.probabilidadArmeria;
             nueva.items = this.items;
             nueva.unSoloTipo = this.unSoloTipo;
