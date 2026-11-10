@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -50,9 +49,11 @@ public class MapaScreen extends Screen {
 
     public static final int BOTON_ARRASTRAR = 1;
 
-    public static final boolean RECORDAR_VISTA = true;
+    public static final boolean RECORDAR_VISTA = false;
 
     public static final boolean SUAVIZAR = true;
+
+    public static final boolean PIXELADO_AL_ACERCAR = true;
 
     public static final boolean MOSTRAR_TEXTURAS = true;
 
@@ -241,24 +242,12 @@ public class MapaScreen extends Screen {
         float x1 = pantallaX(d.x0 + d.bloquesLado());
         float y1 = pantallaY(d.z0 + d.bloquesLado());
 
-        double escalaGui = Minecraft.getInstance().getWindow().getGuiScale();
-        double pixelesPorBloque = Math.max(1.0E-6D, this.zoom * escalaGui);
+        TexturaMapa tex = MapaCliente.texturaMapa();
+        if (tex == null) return;
 
-        int nivel = 0;
-        double densidad = 0.0D;
+        tex.filtro(SUAVIZAR, PIXELADO_AL_ACERCAR);
 
-        for (int n = 0; n < MapaCliente.niveles(); n++) {
-            nivel = n;
-            double texelesPorBloque = MapaCliente.ladoNivel(n) / (double) Math.max(1, d.bloquesLado());
-            densidad = texelesPorBloque / pixelesPorBloque;
-
-            if (densidad <= 1.0D) break;
-        }
-
-        ResourceLocation textura = MapaCliente.textura(nivel);
-
-        AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(textura);
-        tex.setFilter(SUAVIZAR && densidad >= 0.5D, false);
+        ResourceLocation textura = MapaCliente.textura();
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, textura);

@@ -1,6 +1,5 @@
 package net.saullmc.pezntz.client.map;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.logging.LogUtils;
@@ -22,8 +21,6 @@ import net.saullmc.pezntz.mapa.MarcadorMapa;
 import net.saullmc.pezntz.network.MapaCambiosPacket;
 import net.saullmc.pezntz.network.MapaPedirPacket;
 import net.saullmc.pezntz.network.NetworkHandler;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -69,9 +66,10 @@ public class MapaCliente {
     private static final List<MapaCambiosPacket> PENDIENTES = new ArrayList<>();
     private static final Set<Integer> REPINTAR = new HashSet<>();
 
-    private static final List<ResourceLocation> NIVELES = new ArrayList<>();
-    private static final List<DynamicTexture> TEXTURAS = new ArrayList<>();
-    private static final List<Integer> LADOS = new ArrayList<>();
+    private static final ResourceLocation ID_TEXTURA = new ResourceLocation(PezntZMod.MOD_ID, "mapa/imagen");
+
+    @Nullable
+    private static TexturaMapa textura = null;
 
     private static ColoresMapa colores = new ColoresMapa();
 
@@ -96,7 +94,7 @@ public class MapaCliente {
     }
 
     public static boolean listo() {
-        return datos != null && !NIVELES.isEmpty();
+        return datos != null && textura != null;
     }
 
     public static boolean hayMapa() {
@@ -112,16 +110,13 @@ public class MapaCliente {
         return recibidos / (float) descarga.length;
     }
 
-    public static int niveles() {
-        return NIVELES.size();
+    public static ResourceLocation textura() {
+        return ID_TEXTURA;
     }
 
-    public static ResourceLocation textura(int nivel) {
-        return NIVELES.get(Math.max(0, Math.min(nivel, NIVELES.size() - 1)));
-    }
-
-    public static int ladoNivel(int nivel) {
-        return LADOS.get(Math.max(0, Math.min(nivel, LADOS.size() - 1)));
+    @Nullable
+    public static TexturaMapa texturaMapa() {
+        return textura;
     }
 
     public static void recibirMarcadores(List<MarcadorMapa> nuevos) {
@@ -264,23 +259,11 @@ public class MapaCliente {
                         return;
                     }
 
-                    for (int n = 0; n < imagenes.size(); n++) {
-                        NativeImage img = imagenes.get(n);
-                        ResourceLocation id = new ResourceLocation(PezntZMod.MOD_ID, "mapa/nivel_" + n);
+                    TexturaMapa nueva = new TexturaMapa(imagenes);
+                    mc.getTextureManager().register(ID_TEXTURA, nueva);
+                    textura = nueva;
 
-                        DynamicTexture textura = new DynamicTexture(img);
-                        mc.getTextureManager().register(id, textura);
-
-                        textura.bind();
-                        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-                        GlStateManager._texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-
-                        NIVELES.add(id);
-                        TEXTURAS.add(textura);
-                        LADOS.add(img.getWidth());
-                    }
-
-                    enVivo = LADOS.get(0) == d.lado;
+                    enVivo = nueva.ancho() == d.lado;
 
                     if (!REPINTAR.isEmpty()) {
                         repintar(new ArrayList<>(REPINTAR));
@@ -309,7 +292,7 @@ public class MapaCliente {
         lista.add(base);
 
         NativeImage actual = base;
-        while (actual.getWidth() / 2 >= LADO_MINIMO_NIVEL) {
+        while (actual.getWidth() > 1 || actual.getHeight() > 1) {
             actual = reducir(actual);
             lista.add(actual);
         }
@@ -397,18 +380,17 @@ public class MapaCliente {
 
         if (pintando) {
             REPINTAR.addAll(cambiadas);
-        } else if (!TEXTURAS.isEmpty() && enVivo) {
+        } else if (textura != null && enVivo) {
             repintar(cambiadas);
         }
     }
 
     private static void repintar(Collection<Integer> cambiadas) {
         DatosMapa d = datos;
-        if (d == null || TEXTURAS.isEmpty() || cambiadas.isEmpty()) return;
+        TexturaMapa tex = textura;
+        if (d == null || tex == null || tex.niveles() == 0 || cambiadas.isEmpty()) return;
 
-        NativeImage imagen = TEXTURAS.get(0).getPixels();
-        if (imagen == null) return;
-
+        NativeImage imagen = tex.nivel(0);
         int lado = d.lado;
 
         Set<Integer> tocadas = new HashSet<>();
@@ -447,12 +429,11 @@ public class MapaCliente {
             maxJ = Math.max(maxJ, j);
         }
 
-        subir(TEXTURAS.get(0), imagen, minI, minJ, maxI, maxJ);
+        tex.subirRegion(0, minI, minJ, maxI, maxJ);
 
-        for (int n = 1; n < TEXTURAS.size(); n++) {
-            NativeImage anterior = TEXTURAS.get(n - 1).getPixels();
-            NativeImage actual = TEXTURAS.get(n).getPixels();
-            if (anterior == null || actual == null) break;
+        for (int n = 1; n < tex.niveles(); n++) {
+            NativeImage anterior = tex.nivel(n - 1);
+            NativeImage actual = tex.nivel(n);
 
             minI = Math.max(0, minI >> 1);
             minJ = Math.max(0, minJ >> 1);
@@ -465,27 +446,15 @@ public class MapaCliente {
                 }
             }
 
-            subir(TEXTURAS.get(n), actual, minI, minJ, maxI, maxJ);
+            tex.subirRegion(n, minI, minJ, maxI, maxJ);
         }
-    }
-
-    private static void subir(DynamicTexture textura, NativeImage imagen, int minI, int minJ, int maxI, int maxJ) {
-        if (maxI < minI || maxJ < minJ) return;
-
-        textura.bind();
-        imagen.upload(0, minI, minJ, minI, minJ, maxI - minI + 1, maxJ - minJ + 1, false, true, false, false);
     }
 
     private static void liberarTexturas() {
-        Minecraft mc = Minecraft.getInstance();
+        if (textura == null) return;
 
-        for (ResourceLocation id : NIVELES) {
-            mc.getTextureManager().release(id);
-        }
-
-        NIVELES.clear();
-        TEXTURAS.clear();
-        LADOS.clear();
+        Minecraft.getInstance().getTextureManager().register(ID_TEXTURA, new DynamicTexture(1, 1, false));
+        textura = null;
     }
 
     public static void liberar() {

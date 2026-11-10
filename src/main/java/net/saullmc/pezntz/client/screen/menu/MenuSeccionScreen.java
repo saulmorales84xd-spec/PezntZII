@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.block.ModBlocks;
 import net.minecraft.world.entity.EntityType;
@@ -104,7 +105,13 @@ public class MenuSeccionScreen extends Screen {
             case 2 -> List.of(
 
                     new EntidadMenu(EntityType.ZOMBIE).en(90, 0).tamanio(30).giro(220,0).secreto()
-                            .titulo("Infectado"),
+                            .titulo("Infectado",0x962424)
+                            .linea("Humano transformado por el Virus. Ya no razona")
+                            .linea("ni recuerda nada, ataca a cualquier cosa que")
+                            .linea("se mueva. Aunque son lentos y predecibles,")
+                            .linea("pueden ser muy peligrosos en grupo.")
+                            .lineaVacia()
+                            .linea("♥ Vida:",0xbe3232),
 
                     new EntidadMenu(ModEntities.ZOMBIE_HINCHADO.get()).en(-40, 70).tamanio(30).giro(220,0).secreto()
                             .titulo("Zombie hinchado"),
@@ -174,9 +181,9 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.LANTERN.get()).en(140, 20).escala(1.25F).imagenItem(ModItems.CHATARRA.get(),5.7F, 0.7F).imagenItem(Items.IRON_INGOT, 0.7F, 5.7F).imagenItem(ModItems.BATERIAS.get(),5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 5.7F).imagenItem(Items.IRON_INGOT,5.7F, 10.7F),
                     new ItemMenu(ModItems.ABRELATAS.get()).en(170, 20).escala(1.25F).imagenItem(ModItems.CHATARRA.get(),10.7F, 0.7F).imagenItem(Items.IRON_INGOT,5.7F, 5.7F).imagenItem(Items.IRON_INGOT, 0.7F, 10.7F),
                     new ItemMenu(ModItems.BIDON_GASOLINA.get()).en(200, 20).escala(1.25F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(),0.7F, 0.7F).imagenItem(Items.IRON_INGOT,5.7F, 0.7F).imagenItem(ModItems.BOTELLA_ALCOHOL.get(), 10.7F, 0.7F).imagenItem(Items.LEATHER, 0.7F, 5.7F).imagenItem(ModItems.CINTA.get(), 5.7F, 5.7F).imagenItem(Items.LEATHER, 10.7F, 5.7F).imagenItem(Items.LEATHER, 0.7F, 10.7F).imagenItem(Items.LEATHER, 5.7F, 10.7F).imagenItem(Items.LEATHER, 10.7F, 10.7F),
-                    new ItemMenu(ModItems.KIT_VEHICULOS.get()).en(230, 20).escala(1.25F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 0.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 10.7F, 0.7F).imagenItem(Items.IRON_INGOT, 0.7F, 5.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 5.7F, 5.7F).imagenItem(Items.IRON_INGOT, 10.7F, 5.7F).imagenItem(Items.IRON_INGOT, 0.7F, 10.7F).imagenItem(Items.GOLD_INGOT, 5.7F, 10.7F).imagenItem(Items.IRON_INGOT, 10.7F, 10.7F),
+                    new ItemMenu(ModItems.KIT_VEHICULOS.get()).en(230, 20).escala(1.25F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 0.7F, 0.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 10.7F, 0.7F).imagenItem(ModItems.TUERCA.get(), 0.7F, 5.7F).imagenItem(ModItems.CHATARRA_REFORZADA.get(), 5.7F, 5.7F).imagenItem(ModItems.RESORTE.get(), 10.7F, 5.7F).imagenItem(Items.IRON_INGOT, 0.7F, 10.7F).imagenItem(Items.GOLD_INGOT, 5.7F, 10.7F).imagenItem(Items.IRON_INGOT, 10.7F, 10.7F),
 
-                    new ItemMenu(Item.byBlock(ModBlocks.PRENSA.get())).en(-40, 60).escala(1.25F),
+                    new ItemMenu(Item.byBlock(ModBlocks.PRENSA.get())).en(-40, 60).escala(1.25F).imagenItem(ModItems.TUERCA.get(),0.7F, 0.7F).imagenItem(ModItems.RESORTE.get(),5.7F, 0.7F).imagenItem(ModItems.CLAVOS.get(),10.7F, 0.7F).imagenItem(Items.IRON_INGOT,0.7F, 5.7F).imagenItem(Items.COPPER_INGOT,5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 5.7F).imagenItem(Blocks.COPPER_BLOCK.asItem(),0.7F, 10.7F).imagenItem(Items.IRON_INGOT,5.7F, 10.7F).imagenItem(Blocks.COPPER_BLOCK.asItem(),10.7F, 10.7F),
                     new ItemMenu(Item.byBlock(ModBlocks.BARRIL_1.get())).en(-10, 60).escala(1.25F),
                     new ItemMenu(Item.byBlock(ModBlocks.CAJA_2.get())).en(20, 60).escala(1.25F),
                     new ItemMenu(Item.byBlock(ModBlocks.CAJON_DOBLE.get())).en(50, 60).escala(1.25F),
@@ -227,10 +234,10 @@ public class MenuSeccionScreen extends Screen {
                     new ItemMenu(ModItems.PEZNSINITA_SHOVEL.get()).en(110, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
                     new ItemMenu(ModItems.PEZNSINITA_HOE.get()).en(140, 280).escala(1.25F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),0.7F, 0.7F).imagenItem(ModItems.PEZNSINITA_INGOT.get(),5.7F, 0.7F).imagenItem(Items.STICK,5.7F, 5.7F).imagenItem(Items.STICK,5.7F, 10.7F),
 
-                    ItemMenu.caja("9mm", ItemMenu.CAJA_HIERRO, 0).en(65, 320).escala(1.5F)
-                            .nombre("Caja de Munición Pequeña [☆]", 0xFFFFFF)
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_HIERRO, 0).en(65, 320).escala(1.5F).imagenItem(ModItems.TUERCA.get(),0.7F, 0.7F).imagenItem(ModItems.RESORTE.get(),5.7F, 0.7F).imagenItem(ModItems.CLAVOS.get(),10.7F, 0.7F).imagenItem(Items.IRON_INGOT,0.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 5.7F).imagenItem(Items.IRON_INGOT,10.7F, 5.7F).imagenItem(Blocks.IRON_BLOCK.asItem(),0.7F, 10.7F).imagenItem(Items.IRON_INGOT,5.7F, 10.7F).imagenItem(Blocks.IRON_BLOCK.asItem(), 10.7F, 10.7F)
+                            .nombre("Caja de Munición Pequeña [☆]", 0x6b8178)
                             .tooltip(ModTooltips.KEYS + "[Click Izquierdo] " + ModTooltips.GRIS + "para arrastrar la caja hasta",
-                                    "tus " + ModTooltips.ITEMS + "balas " + ModTooltips.GRIS + "en el inventario.",
+                                    "tus balas " + ModTooltips.GRIS + "en el inventario.",
                                     ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "sobre las balas con la caja",
                                     "para guardarlas.",
                                     "",
@@ -239,43 +246,105 @@ public class MenuSeccionScreen extends Screen {
                                     ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "para retirarlas de la caja.",
                                     "",
                                     ModTooltips.ROJO_OSCURO + "Importante: " + ModTooltips.GRIS + "Solamente puedes guardar un",
-                                    "tipo de " + ModTooltips.ITEMS + "balas.",
+                                    "tipo de balas.",
                                     "",
-                                    "Capacidad: " + ModTooltips.NUM + "3 montones"),
+                                    "Capacidad: " + ModTooltips.NUM + "180 Balas"),
 
-                    ItemMenu.caja("9mm", ItemMenu.CAJA_ORO, 0).en(95, 320).escala(1.5F)
-                            .nombre("Caja de munición de oro", 0xFFD84A)
-                            .tooltip("Guarda hasta " + ModTooltips.NUM + "6 montones " + ModTooltips.GRIS + "de balas",
-                                    "de un mismo calibre."),
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_ORO, 0).en(95, 320).escala(1.5F).imagenItem(ModItems.TUERCA.get(),0.7F, 0.7F).imagenItem(ModItems.RESORTE.get(),5.7F, 0.7F).imagenItem(ModItems.CLAVOS.get(),10.7F, 0.7F).imagenItem(Items.GOLD_INGOT,0.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 5.7F).imagenItem(Items.GOLD_INGOT,10.7F, 5.7F).imagenItem(Blocks.GOLD_BLOCK.asItem(),0.7F, 10.7F).imagenItem(Items.GOLD_INGOT,5.7F, 10.7F).imagenItem(Blocks.GOLD_BLOCK.asItem(), 10.7F, 10.7F)
+                            .nombre("Caja de Munición Mediana [☆☆]", 0x6b8178)
+                            .tooltip(ModTooltips.KEYS + "[Click Izquierdo] " + ModTooltips.GRIS + "para arrastrar la caja hasta",
+                                    "tus balas " + ModTooltips.GRIS + "en el inventario.",
+                                    ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "sobre las balas con la caja",
+                                    "para guardarlas.",
+                                    "",
+                                    ModTooltips.KEYS + "[Click Izquierdo] " + ModTooltips.GRIS + "para arrastrar la caja con",
+                                    "balas a un lugar vacio en tu inventario.",
+                                    ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "para retirarlas de la caja.",
+                                    "",
+                                    ModTooltips.ROJO_OSCURO + "Importante: " + ModTooltips.GRIS + "Solamente puedes guardar un",
+                                    "tipo de balas.",
+                                    "",
+                                    "Capacidad: " + ModTooltips.NUM + "360 Balas"),
 
-                    ItemMenu.caja("9mm", ItemMenu.CAJA_DIAMANTE, 0).en(125, 320).escala(1.5F)
-                            .nombre("Caja de munición de diamante", 0x5FE8E0)
-                            .tooltip("Guarda hasta " + ModTooltips.NUM + "9 montones " + ModTooltips.GRIS + "de balas",
-                                    "de un mismo calibre."),
+                    ItemMenu.caja("9mm", ItemMenu.CAJA_DIAMANTE, 0).en(125, 320).escala(1.5F).imagenItem(ModItems.TUERCA.get(),0.7F, 0.7F).imagenItem(ModItems.RESORTE.get(),5.7F, 0.7F).imagenItem(ModItems.CLAVOS.get(),10.7F, 0.7F).imagenItem(Items.DIAMOND,0.7F, 5.7F).imagenItem(ModItems.PEZNSINITA_BRUTE.get(),5.7F, 5.7F).imagenItem(Items.DIAMOND,10.7F, 5.7F).imagenItem(Blocks.DIAMOND_BLOCK.asItem(),0.7F, 10.7F).imagenItem(Items.DIAMOND,5.7F, 10.7F).imagenItem(Blocks.DIAMOND_BLOCK.asItem(), 10.7F, 10.7F)
+                            .nombre("Caja de Munición Grande [☆☆☆]", 0x6b8178)
+                            .tooltip(ModTooltips.KEYS + "[Click Izquierdo] " + ModTooltips.GRIS + "para arrastrar la caja hasta",
+                                    "tus balas " + ModTooltips.GRIS + "en el inventario.",
+                                    ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "sobre las balas con la caja",
+                                    "para guardarlas.",
+                                    "",
+                                    ModTooltips.KEYS + "[Click Izquierdo] " + ModTooltips.GRIS + "para arrastrar la caja con",
+                                    "balas a un lugar vacio en tu inventario.",
+                                    ModTooltips.KEYS + "[Click Derecho] " + ModTooltips.GRIS + "para retirarlas de la caja.",
+                                    "",
+                                    ModTooltips.ROJO_OSCURO + "Importante: " + ModTooltips.GRIS + "Solamente puedes guardar un",
+                                    "tipo de balas.",
+                                    "",
+                                    "Capacidad: " + ModTooltips.NUM + "540 Balas"),
 
-                    ItemMenu.arma("glock_17").en(35, 360).escala(1.5F),
-                    ItemMenu.arma("deagle_golden").en(35, 400).escala(1.5F),
-                    ItemMenu.arma("hk_mp5a5").en(65, 360).escala(1.5F),
-                    ItemMenu.arma("p90").en(65, 400).escala(1.5F),
-                    ItemMenu.arma("m870").en(95, 360).escala(1.5F),
-                    ItemMenu.arma("spas_12").en(95, 400).escala(1.5F),
-                    ItemMenu.arma("ak47").en(125, 360).escala(1.5F),
-                    ItemMenu.arma("scar_l").en(125, 400).escala(1.5F),
-                    ItemMenu.arma("kar98").en(155, 360).escala(1.5F),
-                    ItemMenu.arma("m95").en(155, 400).escala(1.5F),
 
-                    ItemMenu.municion("9mm", 1).en(-40, 440).escala(1.3F),
-                    ItemMenu.municion("45acp", 1).en(-10, 440).escala(1.3F),
-                    ItemMenu.municion("545x39", 1).en(20, 440).escala(1.3F),
-                    ItemMenu.municion("58x42", 1).en(50, 440).escala(1.3F),
-                    ItemMenu.municion("792x57", 1).en(80, 440).escala(1.3F),
-                    ItemMenu.municion("762x54", 1).en(110, 440).escala(1.3F),
-                    ItemMenu.municion("500mag", 1).en(140, 440).escala(1.3F),
-                    ItemMenu.municion("30_06", 1).en(170, 440).escala(1.3F),
-                    ItemMenu.municion("12g", 1).en(200, 440).escala(1.3F),
-                    ItemMenu.municion("rpg_rocket", 1).en(230, 440).escala(1.3F)
+                    ItemMenu.arma("glock_17").en(-110, 360).escala(1.3F),
+                    ItemMenu.arma("taurus943").en(-110, 400).escala(1.3F),
+                    ItemMenu.arma("taurus500").en(-80, 360).escala(1.3F),
+                    ItemMenu.arma("deagle_golden").en(-80, 400).escala(1.3F),
+                    ItemMenu.arma("db_short").en(-40, 360).escala(1.3F),
+                    ItemMenu.arma("m870").en(-40, 400).escala(1.3F),
+                    ItemMenu.arma("spas_12").en(-10, 380).escala(1.3F),
+                    ItemMenu.arma("hk_mp5a5").en(30, 360).escala(1.3F),
+                    ItemMenu.arma("uzi").en(30, 400).escala(1.3F),
+                    ItemMenu.arma("p90").en(60, 380).escala(1.3F),
+                    ItemMenu.arma("m16a1").en(100, 360).escala(1.4F),
+                    ItemMenu.arma("scar_l").en(100, 400).escala(1.4F),
+                    ItemMenu.arma("ak47").en(130, 360).escala(1.4F),
+                    ItemMenu.arma("m4a1").en(130, 400).escala(1.4F),
+                    ItemMenu.arma("aug").en(160, 380).escala(1.4F),
+                    ItemMenu.arma("m95").en(200, 360).escala(1.4F),
+                    ItemMenu.arma("ai_awp").en(200, 400).escala(1.4F),
+                    ItemMenu.arma("kar98").en(230, 380).escala(1.4F),
+                    ItemMenu.arma("m249").en(270, 360).escala(1.4F),
+                    ItemMenu.arma("rpg7").en(270, 400).escala(1.4F),
 
-            );
+
+                    ItemMenu.municion("9mm", 1).en(-80, 440).escala(1.3F),
+                    ItemMenu.municion("22wmr", 1).en(-50, 440).escala(1.3F),
+                    ItemMenu.municion("500mag", 1).en(-20, 440).escala(1.3F),
+                    ItemMenu.municion("357mag", 1).en(10, 440).escala(1.3F),
+                    ItemMenu.municion("12g", 1).en(40, 440).escala(1.3F),
+                    ItemMenu.municion("57x28", 1).en(70, 440).escala(1.3F),
+                    ItemMenu.municion("556x45", 1).en(100, 440).escala(1.3F),
+                    ItemMenu.municion("762x39", 1).en(130, 440).escala(1.3F),
+                    ItemMenu.municion("50bmg", 1).en(160, 440).escala(1.3F),
+                    ItemMenu.municion("338", 1).en(190, 440).escala(1.3F),
+                    ItemMenu.municion("792x57", 1).en(220, 440).escala(1.3F),
+                    ItemMenu.municion("rpg_rocket", 1).en(250, 440).escala(1.3F),
+
+                    ItemMenu.accesorio("grip_magpul_afg_2").en(-120, 480).escala(1.2F),
+                    ItemMenu.accesorio("grip_rk0").en(-120, 520).escala(1.2F),
+                    ItemMenu.accesorio("grip_se_5").en(-90, 480).escala(1.2F),
+                    ItemMenu.accesorio("grip_rk1_b25u").en(-90, 520).escala(1.2F),
+                    ItemMenu.accesorio("extended_mag_2").en(-50, 480).escala(1.2F),
+                    ItemMenu.accesorio("extended_mag_3").en(-20, 480).escala(1.2F),
+                    ItemMenu.accesorio("light_extended_mag_2").en(-50, 520).escala(1.2F),
+                    ItemMenu.accesorio("light_extended_mag_3").en(-20, 520).escala(1.2F),
+                    ItemMenu.accesorio("sniper_extended_mag_2").en(-50, 560).escala(1.2F),
+                    ItemMenu.accesorio("sniper_extended_mag_3").en(-20, 560).escala(1.2F),
+                    ItemMenu.accesorio("stock_tactical_ar").en(20, 480).escala(1.2F),
+                    ItemMenu.accesorio("stock_m4ss").en(20, 520).escala(1.2F),
+                    ItemMenu.accesorio("stock_moe").en(50, 480).escala(1.2F),
+                    ItemMenu.accesorio("stock_carbon_bone_c5").en(50, 520).escala(1.2F),
+                    ItemMenu.accesorio("deagle_golden_long_barrel").en(90, 480).escala(1.2F),
+                    ItemMenu.accesorio("muzzle_silencer_vulture").en(90, 520).escala(1.2F),
+                    ItemMenu.accesorio("muzzle_silencer_ursus").en(120, 480).escala(1.2F),
+                    ItemMenu.accesorio("muzzle_brake_cyclone_d2").en(120, 520).escala(1.2F),
+                    ItemMenu.accesorio("scope_lpvo_1_6").en(160, 480).escala(1.2F),
+                    ItemMenu.accesorio("sight_coyote").en(160, 520).escala(1.2F),
+                    ItemMenu.accesorio("scope_qmk152").en(190, 480).escala(1.2F),
+                    ItemMenu.accesorio("sight_srs_02").en(190, 520).escala(1.2F),
+                    ItemMenu.accesorio("laser_compact").en(230, 480).escala(1.2F),
+                    ItemMenu.accesorio("laser_nightstick").en(230, 520).escala(1.2F),
+                    ItemMenu.accesorio("laser_lopro").en(260, 500).escala(1.2F)
+
+                    );
 
             default -> List.of(
                     ItemMenu.arma("ak47").en(40, -20).escala(1.5F).imagen("pezntz:textures/gui/receta.png", 16, 16)
