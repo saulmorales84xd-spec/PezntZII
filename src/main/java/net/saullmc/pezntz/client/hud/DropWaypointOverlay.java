@@ -22,6 +22,7 @@ import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -33,9 +34,13 @@ public class DropWaypointOverlay {
     public static final int TEXTURA_ANCHO = 16;
     public static final int TEXTURA_ALTO = 16;
 
-    public static final float ESCALA_ICONO = 1.5F;
+    public static final boolean TAMANIO_FIJO_EN_EL_MUNDO = true;
 
-    public static final float ESCALA_TEXTO = 1.0F;
+    public static final float BLOQUES_POR_PIXEL = 1.0F / 16.0F;
+
+    public static final float ESCALA_ICONO = 0.5F;
+
+    public static final float ESCALA_TEXTO = 0.5F;
 
     public static final float ESCALA_NOMBRE = 1.0F;
     public static final float ESCALA_DISTANCIA = 1.0F;
@@ -57,13 +62,17 @@ public class DropWaypointOverlay {
     public static final boolean A_TRAVES_DE_PAREDES = true;
     public static final boolean OCULTAR_CON_F1 = true;
 
-    public static final float OPACIDAD_ICONO = 1.0F;
+    public static final float OPACIDAD_ICONO = 0.6F;
+
+    public static final float OPACIDAD_TEXTO = 0.6F;
 
     public static final String NOMBRE = "Airdrop";
 
     public static final boolean MOSTRAR_NOMBRE = true;
     public static final boolean MOSTRAR_DISTANCIA = true;
     public static final boolean MOSTRAR_CONTADOR = true;
+
+    public static final int DECIMALES_DISTANCIA = 2;
 
     public static final String SUFIJO_DISTANCIA = " m";
 
@@ -139,7 +148,9 @@ public class DropWaypointOverlay {
         double factor = Math.min(distancia, DISTANCIA_DIBUJO) / distancia;
         Vec3 dibujo = rel.scale(factor);
 
-        float pixel = (float) (2.0D * profundidad * factor / (m11 * altoGui));
+        float pixel = TAMANIO_FIJO_EN_EL_MUNDO
+                ? (float) (BLOQUES_POR_PIXEL * factor)
+                : (float) (2.0D * profundidad * factor / (m11 * altoGui));
 
         List<Linea> lineas = new ArrayList<>();
 
@@ -148,8 +159,9 @@ public class DropWaypointOverlay {
         }
 
         if (MOSTRAR_DISTANCIA) {
-            int metros = (int) Math.round(mc.player.position().distanceTo(ancla));
-            lineas.add(new Linea(metros + SUFIJO_DISTANCIA, COLOR_DISTANCIA, ESCALA_DISTANCIA));
+            double metros = mc.player.position().distanceTo(ancla);
+            String texto = String.format(Locale.ROOT, "%." + Math.max(0, DECIMALES_DISTANCIA) + "f", metros);
+            lineas.add(new Linea(texto + SUFIJO_DISTANCIA, COLOR_DISTANCIA, ESCALA_DISTANCIA));
         }
 
         if (MOSTRAR_CONTADOR) {
@@ -219,13 +231,18 @@ public class DropWaypointOverlay {
             pose.translate(-ancho / 2.0F + TEXTO_OFFSET_X, y + TEXTO_OFFSET_Y, 0.0F);
             pose.scale(escala, escala, escala);
 
-            fuente.drawInBatch(linea.texto(), 0.0F, 0.0F, linea.color(), SOMBRA_TEXTO,
+            fuente.drawInBatch(linea.texto(), 0.0F, 0.0F, conAlfa(linea.color(), OPACIDAD_TEXTO), SOMBRA_TEXTO,
                     pose.last().pose(), buffers, modo, 0, LUZ_TOTAL);
 
             pose.popPose();
 
             y += fuente.lineHeight * escala + HUECO_ENTRE_LINEAS;
         }
+    }
+
+    private static int conAlfa(int color, float opacidad) {
+        int a = Math.max(26, Math.min(255, Math.round(opacidad * 255.0F)));
+        return (a << 24) | (color & 0xFFFFFF);
     }
 
     private static String formatear(int ticks) {

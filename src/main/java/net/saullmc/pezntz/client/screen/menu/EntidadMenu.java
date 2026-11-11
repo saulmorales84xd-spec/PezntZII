@@ -20,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.saullmc.pezntz.client.BestiarioCliente;
+import net.saullmc.pezntz.item.ModTooltips;
 import org.joml.Quaternionf;
 
 import javax.annotation.Nullable;
@@ -109,7 +110,7 @@ public class EntidadMenu {
     }
 
     public EntidadMenu titulo(String texto, int color) {
-        this.tooltip.add(0, pintar(texto, color));
+        this.tooltip.add(0, unir(ModTooltips.formatear(ModTooltips.hex(color) + texto)));
         return this;
     }
 
@@ -123,7 +124,17 @@ public class EntidadMenu {
     }
 
     public EntidadMenu linea(String texto, int color) {
-        this.tooltip.add(pintar(texto, color));
+        if (texto.isEmpty()) {
+            this.tooltip.add(Component.empty());
+            return this;
+        }
+
+        this.tooltip.addAll(ModTooltips.formatear(ModTooltips.hex(color) + texto));
+        return this;
+    }
+
+    public EntidadMenu lineas(String... textos) {
+        for (String texto : textos) this.linea(texto);
         return this;
     }
 
@@ -137,9 +148,16 @@ public class EntidadMenu {
         return this;
     }
 
-    private static MutableComponent pintar(String texto, int color) {
-        return Component.literal(texto)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color & 0xFFFFFF)));
+    private static Component unir(List<Component> partes) {
+        if (partes.isEmpty()) return Component.empty();
+        if (partes.size() == 1) return partes.get(0);
+
+        MutableComponent junto = Component.empty();
+        for (int i = 0; i < partes.size(); i++) {
+            if (i > 0) junto.append(" ");
+            junto.append(partes.get(i));
+        }
+        return junto;
     }
 
     public EntidadMenu imagen(String ruta, int ancho, int alto) {

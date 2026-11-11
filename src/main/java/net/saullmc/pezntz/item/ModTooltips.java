@@ -44,6 +44,8 @@ public class ModTooltips {
     public static final String CON = hex(0x6aabb7);
     public static final String BIO = hex(0xcaa226);
     public static final String PART = hex(0x1ceedd);
+    public static final String ROJ = hex(0xbe3232);
+
 
     public static final String BR = "{br}";
 
@@ -472,19 +474,19 @@ public class ModTooltips {
 
         registrar(ModItems.INFO_CABEZA.get(),
                 "Si recibes daño de Fuego, Lava, Caída, del Fundidor", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
-                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en la" + BR + PART + "cabeza." + BR + BR + PART + "➤ Ceguera." + BR + PART + "➤ Nauseas");
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen daño en la" + BR + PART + "cabeza." + BR + BR + PART + "➤ Ceguera." + BR + PART + "➤ Nauseas");
 
         registrar(ModItems.INFO_CUERPO.get(),
                 "Si recibes daño de Fuego, Lava, Caída, del Infectado", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
-                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en el" + BR + PART + "cuerpo." + BR + BR + PART + "➤ Debilidad.");
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen daño en el" + BR + PART + "cuerpo." + BR + BR + PART + "➤ Debilidad.");
 
         registrar(ModItems.INFO_BRAZOS.get(),
                 "Si recibes daño de Fuego, Lava, Caída, del Infectado", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
-                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en los" + BR + PART + "brazos." + BR + BR + PART + "➤ Debilidad.");
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen daño en los" + BR + PART + "brazos." + BR + BR + PART + "➤ Debilidad.");
 
         registrar(ModItems.INFO_PIERNAS.get(),
                 "Si recibes daño de Fuego, Lava, Caída, del Arrastrador", "o Explosiones, tendrás diferentes efectos según", "cúantos puntos de vida tengas en cada parte del", "cuerpo."
-                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen dalo en las" + BR + PART + "piernas." + BR + BR + PART + "➤ Lentitud.");
+                        + BR + BR + PART +"ᗢ Efectos que puedes recibir si te hacen daño en las" + BR + PART + "piernas." + BR + BR + PART + "➤ Lentitud.");
 
         colorNombre(ModItems.BACKPACK.get(), 0xffff55);
         colorNombre(ModItems.PEZNSINITA_BRUTE.get(), 0xff7625);

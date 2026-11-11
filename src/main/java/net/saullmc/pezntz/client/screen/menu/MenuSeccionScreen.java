@@ -111,28 +111,95 @@ public class MenuSeccionScreen extends Screen {
                             .linea("se mueva. Aunque son lentos y predecibles,")
                             .linea("pueden ser muy peligrosos en grupo.")
                             .lineaVacia()
-                            .linea("♥ Vida:",0xbe3232),
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "20")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "3 " + ModTooltips.CON + "➤ Cuerpo y Brazos")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "No tiene. "),
 
                     new EntidadMenu(ModEntities.ZOMBIE_HINCHADO.get()).en(-40, 70).tamanio(30).giro(220,0).secreto()
-                            .titulo("Zombie hinchado"),
+                            .titulo("Hinchado",0x962424)
+                            .linea("Los Hinchados se inflan hasta")
+                            .linea("explotar, destruyendo todo a su")
+                            .linea("alrededor.")
+                            .lineaVacia()
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "Según la distancia " + ModTooltips.CON + "➤ Cuerpo y Brazos")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Explota y destruye todo a su alrededor. "),
 
-                    new EntidadMenu(ModEntities.ZOMBIE_TANQUE.get()).en(90, 160).tamanio(20).giro(220,0).secreto()
-                            .titulo("Zombie tanque"),
+            new EntidadMenu(ModEntities.ZOMBIE_TANQUE.get()).en(90, 160).tamanio(20).giro(220,0).secreto()
+                            .titulo("Tanque",0x962424)
+                            .linea("Humano masivamente mutado por la infección.")
+                            .linea("Su densidad muscular y ósea aumentó a niveles")
+                            .linea("monstruosos, volviéndolo prácticamente inmune")
+                            .linea("convencional. Es lento, pero un solo impacto")
+                            .linea("puede ser fatal.")
+                            .lineaVacia()
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Cuerpo y Brazos")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Lento y muy fuerte. Imposible")
+                            .linea("de empujar."),
 
-                    new EntidadMenu(ModEntities.ZOMBIE_ARRASTRADOR.get()).en(50, 50).tamanio(30).giro(220,0).secreto()
-                            .titulo("Zombie arrastrador"),
+            new EntidadMenu(ModEntities.ZOMBIE_ARRASTRADOR.get()).en(50, 50).tamanio(30).giro(220,0).secreto()
+                            .titulo("Arrastrador",0x962424)
+                            .linea("Se arrastra por el suelo y ataca a corta")
+                            .linea("distancia. Inflige daño en los pies, pudiendo")
+                            .linea("provocarte problemas de movilidad.")
+                            .lineaVacia()
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Piernas")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "No tiene. "),
 
-                    new EntidadMenu(ModEntities.ZOMBIE_TOXICO.get()).en(130, 70).tamanio(30).giro(220,0).secreto()
-                            .titulo("Zombie toxico"),
+            new EntidadMenu(ModEntities.ZOMBIE_TOXICO.get()).en(130, 70).tamanio(30).giro(220,0).secreto()
+                            .titulo("Fundidor",0x962424)
+                            .linea("Infectado con una alteración en su sistema")
+                            .linea("digestivo que genera fluidos corrosivos.")
+                            .linea("Incapaz de atacar de cerca, lanza proyectiles")
+                            .linea("de ácido a distancia que derriban la armadura")
+                            .linea("y queman la piel.")
+                            .lineaVacia()
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Cabeza")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Lanza bolas de acidos que puedes ")
+                            .linea("destruir si las golpeas"),
 
-                    new EntidadMenu(ModEntities.ZOMBIE_PARASITADOR.get()).en(220, 70).tamanio(30).giro(220,0).secreto()
-                            .titulo("Zombie parasitador"),
+            new EntidadMenu(ModEntities.ZOMBIE_PARASITADOR.get()).en(220, 70).tamanio(30).giro(220,0).secreto()
+                            .titulo("Parasitador",0x962424)
+                            .linea("Criatura alterada que segrega una toxina paralizante")
+                            .linea("a través de sus garras. Un solo impacto directo")
+                            .linea("paraliza el sistema nervioso del sobreviviente")
+                            .linea("dejándolo indefenso e incapaz de moverse por varios")
+                            .linea("segundos.")
+                            .lineaVacia()
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Piernas")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Te paraliza durante unos segundos, ")
+                            .linea("pulsa repetidamente [espacio] para eliminar la")
+                            .linea("paralisis"),
 
-                    new EntidadMenu(ModEntities.RATA_CARRONERA.get()).en(0, 140).tamanio(30).giro(220,0).secreto()
-                            .titulo("Rata carronera"),
+            new EntidadMenu(ModEntities.RATA_CARRONERA.get()).en(0, 140).tamanio(30).giro(220,0).secreto()
+                            .titulo("Rata carronera",0x962424)
+                            .linea("Animal de gran tamaño y mucha resistencia.")
+                            .linea("Ataca con golpes contundentes. Imposible de")
+                            .linea("desplazarlo con un ataque cuerpo a cuerpo.")
+                            .lineaVacia()
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Cuerpo y Brazos")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Lento y muy fuerte. Imposible")
+                            .linea("de empujar."),
 
                     new EntidadMenu(ModEntities.MOSQUITO_ZUMBADOR.get()).en(180, 140).tamanio(30).giro(220,0).secreto()
-                            .titulo("Mosquito zumbador"));
+                            .titulo("Mosquito zumbador",0x962424)
+                            .linea("Insecto mutado por la contaminación del entorno.")
+                            .linea("Su picadura transmite toxinas mientras se alimenta")
+                            .linea("de los sobrevivientes. Su velocidad y capacidad")
+                            .linea("para volar en enjambre lo convierten en un objetivo")
+                            .linea("de los sobrevivientes. Su velocidad y capacidad")
+                            .linea("difícil de golpear.")
+                            .lineaVacia()
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Brazos")
+                            .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Capacidad de volaar y esquivar. ")
+                            .linea("proyectiles")
+            );
 
             default -> List.of();
         };
