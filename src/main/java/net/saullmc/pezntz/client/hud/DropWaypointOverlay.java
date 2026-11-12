@@ -19,6 +19,7 @@ import net.saullmc.pezntz.PezntZMod;
 import net.saullmc.pezntz.client.DropCliente;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,16 @@ public class DropWaypointOverlay {
 
     public static final float OPACIDAD_TEXTO = 0.6F;
 
+    public static final boolean OPACO_AL_MIRARLO = true;
+
+    public static final float OPACIDAD_ICONO_MIRANDO = 1.0F;
+
+    public static final float OPACIDAD_TEXTO_MIRANDO = 1.0F;
+
+    public static final float ZONA_MIRANDO = 0.5F;
+
+    public static final float SUAVIZADO_ZONA = 0.1F;
+
     public static final String NOMBRE = "Airdrop";
 
     public static final boolean MOSTRAR_NOMBRE = true;
@@ -107,6 +118,12 @@ public class DropWaypointOverlay {
         float m11 = evento.getProjectionMatrix().m11();
         if (!(m11 > 0.0F)) m11 = (float) (1.0D / Math.tan(Math.toRadians(35.0D)));
 
+        float m00 = evento.getProjectionMatrix().m00();
+        if (!(m00 > 0.0F)) m00 = m11 * mc.getWindow().getHeight() / (float) Math.max(1, mc.getWindow().getWidth());
+
+        Vector3f arriba = camara.getUpVector();
+        Vector3f izquierda = camara.getLeftVector();
+
         int altoGui = Math.max(1, mc.getWindow().getGuiScaledHeight());
 
         float partialTick = evento.getPartialTick();
@@ -121,22 +138,32 @@ public class DropWaypointOverlay {
         RenderSystem.applyModelViewMatrix();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
+        boolean habiaProfundidad = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+        if (A_TRAVES_DE_PAREDES) RenderSystem.disableDepthTest();
+
         for (Map.Entry<Integer, DropCliente.Dato> entrada : drops.entrySet()) {
             Vec3 ancla = DropCliente.techo(entrada.getKey(), entrada.getValue(), partialTick)
                     .add(0.0D, SEPARACION_HITBOX, 0.0D);
 
-            dibujar(mc, pose, buffers, fuente, camara, ojo, mira, m11, altoGui, ancla, entrada.getValue());
+            dibujar(mc, pose, buffers, fuente, camara, ojo, mira, arriba, izquierda, m00, m11, altoGui,
+                    ancla, entrada.getValue());
         }
 
         buffers.endBatch();
+
+        if (habiaProfundidad) {
+            RenderSystem.enableDepthTest();
+        } else {
+            RenderSystem.disableDepthTest();
+        }
 
         vista.popPose();
         RenderSystem.applyModelViewMatrix();
     }
 
     private static void dibujar(Minecraft mc, PoseStack pose, MultiBufferSource buffers, Font fuente,
-                                Camera camara, Vec3 ojo, Vector3f mira, float m11, int altoGui,
-                                Vec3 ancla, DropCliente.Dato dato) {
+                                Camera camara, Vec3 ojo, Vector3f mira, Vector3f arriba, Vector3f izquierda,
+                                float m00, float m11, int altoGui, Vec3 ancla, DropCliente.Dato dato) {
 
         Vec3 rel = ancla.subtract(ojo);
         double distancia = rel.length();
@@ -151,6 +178,10 @@ public class DropWaypointOverlay {
         float pixel = TAMANIO_FIJO_EN_EL_MUNDO
                 ? (float) (BLOQUES_POR_PIXEL * factor)
                 : (float) (2.0D * profundidad * factor / (m11 * altoGui));
+
+        float mirando = OPACO_AL_MIRARLO ? cuantoLoMiras(rel, profundidad, arriba, izquierda, m00, m11) : 0.0F;
+        float alfaIcono = OPACIDAD_ICONO + (OPACIDAD_ICONO_MIRANDO - OPACIDAD_ICONO) * mirando;
+        float alfaTexto = OPACIDAD_TEXTO + (OPACIDAD_TEXTO_MIRANDO - OPACIDAD_TEXTO) * mirando;
 
         List<Linea> lineas = new ArrayList<>();
 
@@ -189,19 +220,39 @@ public class DropWaypointOverlay {
         float y = -total;
 
         if (TEXTO_DEBAJO) {
-            icono(pose, buffers, anchoIcono, altoIcono, y);
+            icono(pose, buffers, anchoIcono, altoIcono, y, alfaIcono);
             y += altoIcono + hueco;
-            textos(pose, buffers, fuente, lineas, y);
+            textos(pose, buffers, fuente, lineas, y, alfaTexto);
         } else {
-            textos(pose, buffers, fuente, lineas, y);
+            textos(pose, buffers, fuente, lineas, y, alfaTexto);
             y += altoTexto + hueco;
-            icono(pose, buffers, anchoIcono, altoIcono, y);
+            icono(pose, buffers, anchoIcono, altoIcono, y, alfaIcono);
         }
 
         pose.popPose();
     }
 
-    private static void icono(PoseStack pose, MultiBufferSource buffers, float ancho, float alto, float y) {
+    private static float cuantoLoMiras(Vec3 rel, double profundidad, Vector3f arriba, Vector3f izquierda,
+                                       float m00, float m11) {
+        double derecha = -(rel.x * izquierda.x() + rel.y * izquierda.y() + rel.z * izquierda.z());
+        double alto = rel.x * arriba.x() + rel.y * arriba.y() + rel.z * arriba.z();
+
+        double x = derecha / profundidad * m00;
+        double y = alto / profundidad * m11;
+        double lejosDelCentro = Math.sqrt(x * x + y * y);
+
+        double inicio = ZONA_MIRANDO;
+        double fin = ZONA_MIRANDO + Math.max(0.0D, SUAVIZADO_ZONA);
+
+        if (lejosDelCentro <= inicio) return 1.0F;
+        if (lejosDelCentro >= fin) return 0.0F;
+
+        double t = (lejosDelCentro - inicio) / (fin - inicio);
+        return (float) (1.0D - t * t * (3.0D - 2.0D * t));
+    }
+
+    private static void icono(PoseStack pose, MultiBufferSource buffers, float ancho, float alto, float y,
+                              float opacidad) {
         RenderType tipo = A_TRAVES_DE_PAREDES ? RenderType.textSeeThrough(TEXTURA) : RenderType.text(TEXTURA);
         VertexConsumer vc = buffers.getBuffer(tipo);
 
@@ -212,7 +263,7 @@ public class DropWaypointOverlay {
         float y0 = y + ICONO_OFFSET_Y;
         float y1 = y0 + alto;
 
-        int a = Math.max(0, Math.min(255, Math.round(OPACIDAD_ICONO * 255.0F)));
+        int a = Math.max(0, Math.min(255, Math.round(opacidad * 255.0F)));
 
         vc.vertex(m, x0, y0, 0.0F).color(255, 255, 255, a).uv(0.0F, 0.0F).uv2(LUZ_TOTAL).endVertex();
         vc.vertex(m, x0, y1, 0.0F).color(255, 255, 255, a).uv(0.0F, 1.0F).uv2(LUZ_TOTAL).endVertex();
@@ -220,7 +271,8 @@ public class DropWaypointOverlay {
         vc.vertex(m, x1, y0, 0.0F).color(255, 255, 255, a).uv(1.0F, 0.0F).uv2(LUZ_TOTAL).endVertex();
     }
 
-    private static void textos(PoseStack pose, MultiBufferSource buffers, Font fuente, List<Linea> lineas, float y) {
+    private static void textos(PoseStack pose, MultiBufferSource buffers, Font fuente, List<Linea> lineas, float y,
+                               float opacidad) {
         Font.DisplayMode modo = A_TRAVES_DE_PAREDES ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL;
 
         for (Linea linea : lineas) {
@@ -231,7 +283,7 @@ public class DropWaypointOverlay {
             pose.translate(-ancho / 2.0F + TEXTO_OFFSET_X, y + TEXTO_OFFSET_Y, 0.0F);
             pose.scale(escala, escala, escala);
 
-            fuente.drawInBatch(linea.texto(), 0.0F, 0.0F, conAlfa(linea.color(), OPACIDAD_TEXTO), SOMBRA_TEXTO,
+            fuente.drawInBatch(linea.texto(), 0.0F, 0.0F, conAlfa(linea.color(), opacidad), SOMBRA_TEXTO,
                     pose.last().pose(), buffers, modo, 0, LUZ_TOTAL);
 
             pose.popPose();

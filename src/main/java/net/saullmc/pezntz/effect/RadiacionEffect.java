@@ -20,10 +20,21 @@ public class RadiacionEffect extends MobEffect {
         return intervalo <= 0 || duration % intervalo == 0;
     }
 
+    private static boolean haciendoDanio = false;
+
+    public static boolean estaHaciendoDanio() {
+        return haciendoDanio;
+    }
+
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.level().isClientSide()) return;
 
-        entity.hurt(entity.damageSources().magic(), DANIO);
+        haciendoDanio = true;
+        try {
+            entity.hurt(entity.damageSources().magic(), DANIO);
+        } finally {
+            haciendoDanio = false;
+        }
     }
 }

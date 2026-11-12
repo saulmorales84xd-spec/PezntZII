@@ -26,12 +26,13 @@ in vec4 pzMapa;
 out vec4 fragColor;
 
 void main() {
+    vec3 pzCara = pz_normal_cara(pzPos, pzNormal);
     vec4 pzTextura = texture(Sampler0, texCoord0);
     vec4 color = pzTextura * vertexColor * ColorModulator;
     if (color.a < 0.5) {
         discard;
     }
-    vec3 pzLinterna = pz_luz_linterna(pzPos, pz_normal(pzNormal), 1.0);
+    vec3 pzLinterna = pz_luz_linterna(pzPos, pzCara, 1.0);
     color.rgb += pzTextura.rgb * pzColorBase.rgb * ColorModulator.rgb * pz_extra(pzMapa.rgb, pzLinterna);
 
     fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);

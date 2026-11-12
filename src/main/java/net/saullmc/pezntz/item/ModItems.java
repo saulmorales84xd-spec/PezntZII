@@ -6,6 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.saullmc.pezntz.PezntZMod;
+import net.saullmc.pezntz.block.ModBlocks;
 import net.saullmc.pezntz.item.custom.*;
 import net.saullmc.pezntz.sound.ModSounds;
 import net.saullmc.pezntz.item.custom.ArmaduraModItem;
@@ -155,7 +156,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().food(ModFoods.BARRA_GRANOLA)));
 
     public static final RegistryObject<Item> FRUTO_ESTIMULANTE = ITEMS.register("fruto_estimulante",
-            () -> new Item(new Item.Properties().food(ModFoods.FRUTO_ESTIMULANTE)));
+            () -> new ItemNameBlockItem(ModBlocks.ARBUSTO_ESTIMULANTE.get(),new Item.Properties().food(ModFoods.FRUTO_ESTIMULANTE)));
 
     public static final RegistryObject<Item> LANTERN = ITEMS.register("lantern",
             () -> new FlashlightItem(new Item.Properties().durability(600)));

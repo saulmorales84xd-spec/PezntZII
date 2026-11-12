@@ -149,6 +149,7 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModBlocks.CUERPO_4.get());
                         pOutput.accept(ModBlocks.CUERPO_5.get());
                         pOutput.accept(ModBlocks.CUERPO_6.get());
+                        pOutput.accept(ModBlocks.ARBUSTO_ESTIMULANTE.get());
 
                         pOutput.accept(ModBlocks.BLOQUE_AZUFRE_1.get());
                         pOutput.accept(ModBlocks.BLOQUE_AZUFRE_2.get());

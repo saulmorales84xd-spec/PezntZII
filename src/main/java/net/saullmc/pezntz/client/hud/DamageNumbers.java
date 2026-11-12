@@ -37,6 +37,14 @@ public class DamageNumbers {
     public static final int COLOR_DANIO = 0xFF5555;
     public static final int COLOR_CURACION = 0x55FF55;
 
+    public static final int DECIMALES = 1;
+
+    public static final boolean QUITAR_DECIMAL_CERO = true;
+
+    public static final float ESPACIO_ANTES_DEL_PUNTO = 1.0F;
+
+    public static final float ESPACIO_DESPUES_DEL_PUNTO = 1.0F;
+
     private static final List<Numero> NUMEROS = new ArrayList<>();
 
     private static class Numero {
@@ -45,6 +53,8 @@ public class DamageNumbers {
         final double y;
         final double z;
         final String texto;
+        final String entero;
+        final String decimales;
         final int color;
         final float lado;
 
@@ -55,6 +65,10 @@ public class DamageNumbers {
             this.y = y;
             this.z = z;
             this.texto = texto;
+
+            int punto = texto.indexOf('.');
+            this.entero = punto < 0 ? texto : texto.substring(0, punto);
+            this.decimales = punto < 0 ? "" : texto.substring(punto + 1);
             this.color = color;
             this.lado = lado;
             this.nacimiento = nacimiento;
@@ -86,7 +100,19 @@ public class DamageNumbers {
 
 
     private static String formatear(float valor) {
-        return Integer.toString(Math.max(1, Math.round(valor)));
+        int decimales = Math.max(0, DECIMALES);
+        if (decimales == 0) return Integer.toString(Math.max(1, Math.round(valor)));
+
+        String texto = new java.math.BigDecimal(Float.toString(valor))
+                .setScale(decimales, java.math.RoundingMode.HALF_UP)
+                .toPlainString();
+
+        if (QUITAR_DECIMAL_CERO && texto.indexOf('.') >= 0) {
+            texto = texto.replaceAll("0+$", "");
+            if (texto.endsWith(".")) texto = texto.substring(0, texto.length() - 1);
+        }
+
+        return texto;
     }
 
     public static void limpiar() {
@@ -138,13 +164,35 @@ public class DamageNumbers {
 
             poseStack.translate(-numero.lado / ESCALA * 0.5F, 0.0F, 0.0F);
 
-            int ancho = font.width(numero.texto);
             int color = (Math.max(4, (int) (alpha * 255)) << 24) | numero.color;
 
             Matrix4f matriz = poseStack.last().pose();
 
-            font.drawInBatch(numero.texto, -ancho / 2.0F, 0.0F, color, false,
-                    matriz, buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+            if (numero.decimales.isEmpty()) {
+                int ancho = font.width(numero.texto);
+                font.drawInBatch(numero.texto, -ancho / 2.0F, 0.0F, color, false,
+                        matriz, buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+            } else {
+                float anchoEntero = font.width(numero.entero);
+                float anchoPunto = font.width(".");
+                float anchoDecimales = font.width(numero.decimales);
+
+                float ancho = anchoEntero + ESPACIO_ANTES_DEL_PUNTO + anchoPunto
+                        + ESPACIO_DESPUES_DEL_PUNTO + anchoDecimales;
+
+                float xTexto = -ancho / 2.0F;
+
+                font.drawInBatch(numero.entero, xTexto, 0.0F, color, false,
+                        matriz, buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+                xTexto += anchoEntero + ESPACIO_ANTES_DEL_PUNTO;
+
+                font.drawInBatch(".", xTexto, 0.0F, color, false,
+                        matriz, buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+                xTexto += anchoPunto + ESPACIO_DESPUES_DEL_PUNTO;
+
+                font.drawInBatch(numero.decimales, xTexto, 0.0F, color, false,
+                        matriz, buffers, Font.DisplayMode.NORMAL, 0, 15728880);
+            }
 
             poseStack.popPose();
         }

@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.saullmc.pezntz.item.TooltipsTacz;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,7 @@ public class PickupLogOverlay {
         } else if (COLA.size() < MAX_EN_COLA) {
             COLA.add(nueva);
         }
-       }
+    }
 
     public static void clear() {
         VISIBLES.clear();
@@ -105,7 +106,7 @@ public class PickupLogOverlay {
             int cuantas = Math.min(MAX_LINEAS, COLA.size());
             for (int i = 0; i < cuantas; i++) {
                 Entrada e = COLA.remove(0);
-               e.tickAlta = ahora + i * ESCALONADO_TICKS;
+                e.tickAlta = ahora + i * ESCALONADO_TICKS;
                 VISIBLES.add(e);
             }
         }
@@ -133,7 +134,8 @@ public class PickupLogOverlay {
 
             int y = abajo - (VISIBLES.size() - i) * ALTO_LINEA;
 
-            Component nombre = e.stack.getHoverName();
+            Component nuestro = TooltipsTacz.nombre(e.stack);
+            Component nombre = nuestro != null ? nuestro : e.stack.getHoverName();
             String cantidad = e.cantidad > 1 ? "x" + e.cantidad : "";
 
             int anchoNombre = mc.font.width(nombre);

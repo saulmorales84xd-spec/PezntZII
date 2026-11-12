@@ -79,9 +79,11 @@ public class PlayerDamageEvents {
 
                 float danioTotal = event.getAmount();
 
+                String[] prioridad = RepartoDanio.prioridadDe(player, event.getSource());
+
                 String parte = event.getSource().is(DamageTypes.FALL)
                         ? RepartoDanio.PIERNAS
-                        : RepartoDanio.elegirParte(Math.random());
+                        : RepartoDanio.elegirParte(healthData, prioridad, Math.random());
 
                 float fraccion = RepartoDanio.fraccionAPartes(player, healthData);
                 float aPartes  = danioTotal * fraccion;
@@ -94,10 +96,10 @@ public class PlayerDamageEvents {
                 aPartes *= (1.0F - RepartoDanio.proteccionDe(player, parte));
 
                 float sobra = healthData.damagePart(parte, aPartes);
-                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.CUERPO, sobra);
-                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.BRAZOS, sobra);
-                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.PIERNAS, sobra);
-                if (sobra > 0) sobra = healthData.damagePart(RepartoDanio.CABEZA, sobra);
+                for (String siguiente : RepartoDanio.ordenDeSobra(prioridad, parte)) {
+                    if (sobra <= 0) break;
+                    sobra = healthData.damagePart(siguiente, sobra);
+                }
 
                 float danioVanilla = aVanilla + sobra;
 

@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.saullmc.pezntz.event.RepartoDanio;
 import net.saullmc.pezntz.effect.ModEffects;
 import net.saullmc.pezntz.entity.ModEntities;
 import net.saullmc.pezntz.item.ModItems;
@@ -68,6 +69,7 @@ public class BolaAcido extends ThrowableItemProjectile {
         if (pResult.getEntity() instanceof LivingEntity targetHit) {
 
             targetHit.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0));
+            RepartoDanio.marcarVenenoDeFundidor(targetHit, 60);
             targetHit.addEffect(new MobEffectInstance(ModEffects.MANCHA_ZOMBIE.get(), 60, 0, false, false, false));
         }
         this.discard();

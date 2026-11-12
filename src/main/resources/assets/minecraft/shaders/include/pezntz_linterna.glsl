@@ -57,6 +57,37 @@ vec3 pz_normal(vec3 pzN) {
     return pzN / largo;
 }
 
+// Normal REAL de la cara, para los bloques del mundo.
+//
+// Minecraft (y Forge con calculateAllNormals = false, que es lo normal) guarda en cada
+// cara de bloque la normal "redondeada" a la direccion mas cercana: norte, sur, este,
+// oeste, arriba o abajo. En los cubos eso es exacto, pero en las caras giradas
+// (estalagmitas, amatista, flores, pasto, antorchas de pared...) queda hasta 45 grados
+// chueca, y desde algunos angulos la linterna creia que la cara estaba de espaldas a la
+// luz: se veia negra.
+//
+// Aqui la normal se saca de como cambia la posicion entre un pixel y su vecino, asi que
+// es la de la cara que de verdad se esta pintando. Como la cara que se ve siempre mira
+// hacia la camara (que esta en 0,0,0), se voltea para que apunte hacia ella.
+//
+// IMPORTANTE: llamarla al principio del main, antes de cualquier discard.
+vec3 pz_normal_cara(vec3 pzP, vec3 pzN) {
+    vec3 cara = cross(dFdx(pzP), dFdy(pzP));
+    float largo = length(cara);
+
+    if (largo < 1.0e-12) {
+        return pz_normal(pzN);
+    }
+
+    cara /= largo;
+
+    if (dot(cara, pzP) > 0.0) {
+        cara = -cara;
+    }
+
+    return cara;
+}
+
 float pz_foco(vec3 pzP, vec3 pzN, float pzUsarNormal, vec3 pzO, vec3 pzD, float pzA) {
     vec3  haciaPunto = pzP - pzO;
     float dist = length(haciaPunto);

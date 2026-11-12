@@ -195,6 +195,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> CUERPO_6 = registerBlock("cuerpo_6",
             () -> new BloqueContenedor(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion(), BloqueContenedor.BAJO));
 
+    public static final RegistryObject<Block> ARBUSTO_ESTIMULANTE = BLOCKS.register("arbusto_estimulante",
+            () -> new ArbustoEstimulante(BlockBehaviour.Properties.copy(Blocks.SWEET_BERRY_BUSH)));
+
     public static final RegistryObject<Block> CADAVER = BLOCKS.register("cadaver",
             () -> new Cadaver(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL).strength(-1.0F).noOcclusion().explosionResistance(3600000.0F)));
 
