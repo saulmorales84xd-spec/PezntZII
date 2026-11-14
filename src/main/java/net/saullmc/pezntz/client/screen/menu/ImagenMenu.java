@@ -92,6 +92,14 @@ public class ImagenMenu {
         return this.imagen == null && this.items.isEmpty();
     }
 
+    public boolean usaTexturaPorDefecto() {
+        return this.imagen == null;
+    }
+
+    public List<ItemEnImagen> getItems() {
+        return this.items;
+    }
+
     public Optional<TooltipComponent> construir() {
         boolean porDefecto = (this.imagen == null);
 

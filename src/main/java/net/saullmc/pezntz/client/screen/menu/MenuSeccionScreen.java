@@ -80,7 +80,7 @@ public class MenuSeccionScreen extends Screen {
     public static final int VOLVER_OFFSET_X = 0;
     public static final int VOLVER_OFFSET_Y = 60;
 
-    public static final int VOLVER_COLOR_SOBRE = 0x40FFFFFF;
+    public static final int VOLVER_COLOR_SOBRE = 0xFFFFFF;
 
     public static final String SONIDO_VOLVER = "minecraft:ui.button.click";
     public static final float TONO_VOLVER = 0.9F;
@@ -121,11 +121,11 @@ public class MenuSeccionScreen extends Screen {
                             .linea("explotar, destruyendo todo a su")
                             .linea("alrededor.")
                             .lineaVacia()
-                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "100")
                             .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "Según la distancia " + ModTooltips.CON + "➤ Cuerpo y Brazos")
                             .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Explota y destruye todo a su alrededor. "),
 
-            new EntidadMenu(ModEntities.ZOMBIE_TANQUE.get()).en(90, 160).tamanio(20).giro(220,0).secreto()
+                    new EntidadMenu(ModEntities.ZOMBIE_TANQUE.get()).en(90, 160).tamanio(20).giro(220,0).secreto()
                             .titulo("Tanque",0x962424)
                             .linea("Humano masivamente mutado por la infección.")
                             .linea("Su densidad muscular y ósea aumentó a niveles")
@@ -133,22 +133,22 @@ public class MenuSeccionScreen extends Screen {
                             .linea("convencional. Es lento, pero un solo impacto")
                             .linea("puede ser fatal.")
                             .lineaVacia()
-                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "200")
                             .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Cuerpo y Brazos")
                             .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Lento y muy fuerte. Imposible")
                             .linea("de empujar."),
 
-            new EntidadMenu(ModEntities.ZOMBIE_ARRASTRADOR.get()).en(50, 50).tamanio(30).giro(220,0).secreto()
+                    new EntidadMenu(ModEntities.ZOMBIE_ARRASTRADOR.get()).en(50, 50).tamanio(30).giro(220,0).secreto()
                             .titulo("Arrastrador",0x962424)
                             .linea("Se arrastra por el suelo y ataca a corta")
                             .linea("distancia. Inflige daño en los pies, pudiendo")
                             .linea("provocarte problemas de movilidad.")
                             .lineaVacia()
-                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "30")
                             .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Piernas")
                             .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "No tiene. "),
 
-            new EntidadMenu(ModEntities.ZOMBIE_TOXICO.get()).en(130, 70).tamanio(30).giro(220,0).secreto()
+                    new EntidadMenu(ModEntities.ZOMBIE_TOXICO.get()).en(130, 70).tamanio(30).giro(220,0).secreto()
                             .titulo("Fundidor",0x962424)
                             .linea("Infectado con una alteración en su sistema")
                             .linea("digestivo que genera fluidos corrosivos.")
@@ -156,12 +156,12 @@ public class MenuSeccionScreen extends Screen {
                             .linea("de ácido a distancia que derriban la armadura")
                             .linea("y queman la piel.")
                             .lineaVacia()
-                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "20")
                             .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Cabeza")
                             .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Lanza bolas de acidos que puedes ")
                             .linea("destruir si las golpeas"),
 
-            new EntidadMenu(ModEntities.ZOMBIE_PARASITADOR.get()).en(220, 70).tamanio(30).giro(220,0).secreto()
+                    new EntidadMenu(ModEntities.ZOMBIE_PARASITADOR.get()).en(220, 70).tamanio(30).giro(220,0).secreto()
                             .titulo("Parasitador",0x962424)
                             .linea("Criatura alterada que segrega una toxina paralizante")
                             .linea("a través de sus garras. Un solo impacto directo")
@@ -169,19 +169,19 @@ public class MenuSeccionScreen extends Screen {
                             .linea("dejándolo indefenso e incapaz de moverse por varios")
                             .linea("segundos.")
                             .lineaVacia()
-                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "40")
                             .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Piernas")
                             .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Te paraliza durante unos segundos, ")
                             .linea("pulsa repetidamente [espacio] para eliminar la")
                             .linea("paralisis"),
 
-            new EntidadMenu(ModEntities.RATA_CARRONERA.get()).en(0, 140).tamanio(30).giro(220,0).secreto()
+                    new EntidadMenu(ModEntities.RATA_CARRONERA.get()).en(0, 140).tamanio(30).giro(220,0).secreto()
                             .titulo("Rata carronera",0x962424)
                             .linea("Animal de gran tamaño y mucha resistencia.")
                             .linea("Ataca con golpes contundentes. Imposible de")
                             .linea("desplazarlo con un ataque cuerpo a cuerpo.")
                             .lineaVacia()
-                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "60")
                             .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Cuerpo y Brazos")
                             .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Lento y muy fuerte. Imposible")
                             .linea("de empujar."),
@@ -195,7 +195,7 @@ public class MenuSeccionScreen extends Screen {
                             .linea("de los sobrevivientes. Su velocidad y capacidad")
                             .linea("difícil de golpear.")
                             .lineaVacia()
-                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "50")
+                            .linea(ModTooltips.ROJ + "❤ Vida: " + ModTooltips.GRIS + "40")
                             .linea(ModTooltips.NUM + "\uD83D\uDC80 Daño Base: " + ModTooltips.GRIS + "4 " + ModTooltips.CON + "➤ Brazos")
                             .linea(ModTooltips.ITEMS + "☣ Habilidad: " + ModTooltips.GRIS + "Capacidad de volaar y esquivar. ")
                             .linea("proyectiles")
@@ -423,7 +423,7 @@ public class MenuSeccionScreen extends Screen {
                     ItemMenu.accesorio("laser_nightstick").en(230, 560).escala(1.2F),
                     ItemMenu.accesorio("laser_lopro").en(260, 540).escala(1.2F)
 
-                    );
+            );
 
             default -> List.of();
         };
@@ -788,12 +788,59 @@ public class MenuSeccionScreen extends Screen {
             return true;
         }
 
+        if (boton == 0) {
+            ClicMenu clic = entradaConMenu((int) mouseX, (int) mouseY);
+            if (clic != null) {
+                MenuCrafteoScreen.abrir(this, clic.entrada(), clic.x(), clic.y(), clic.tamanio(), clic.tamanio());
+                return true;
+            }
+        }
+
         if (boton == 1) {
             volver();
             return true;
         }
 
         return super.mouseClicked(mouseX, mouseY, boton);
+    }
+
+    private record ClicMenu(ItemMenu entrada, float x, float y, float tamanio) {
+    }
+
+    @Nullable
+    private ClicMenu entradaConMenu(int mouseX, int mouseY) {
+        if (hayRecorte() && (mouseY < recorteArriba() || mouseY >= recorteAbajo())) return null;
+
+        for (int i = this.libres.size() - 1; i >= 0; i--) {
+            ItemMenu entrada = this.libres.get(i);
+            if (!entrada.tieneMenu()) continue;
+
+            int tamanio = Math.max(1, Math.round(16.0F * entrada.getEscala(ESCALA_ITEM)));
+            int x = this.rejillaX + entrada.getX();
+            int y = this.rejillaY + entrada.getY() - this.desplazamiento * paso();
+
+            if (dentro(mouseX, mouseY, x, y, tamanio, tamanio)) return new ClicMenu(entrada, x, y, tamanio);
+        }
+
+        for (int fila = 0; fila < FILAS_VISIBLES; fila++) {
+            for (int col = 0; col < COLUMNAS; col++) {
+                int indice = (fila + this.desplazamiento) * COLUMNAS + col;
+                if (indice >= this.rejilla.size()) continue;
+
+                ItemMenu entrada = this.rejilla.get(indice);
+                if (!entrada.tieneMenu()) continue;
+
+                int x = this.rejillaX + col * (CELDA + HUECO);
+                int y = this.rejillaY + fila * (CELDA + HUECO);
+
+                if (dentro(mouseX, mouseY, x, y, CELDA, CELDA)) {
+                    float tamanio = 16.0F * entrada.getEscala(ESCALA_ITEM);
+                    return new ClicMenu(entrada, x + (CELDA - tamanio) / 2.0F, y + (CELDA - tamanio) / 2.0F, tamanio);
+                }
+            }
+        }
+
+        return null;
     }
 
     private void volver() {

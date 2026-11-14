@@ -52,7 +52,7 @@ public class Motocicleta extends VehiculoBase {
 
     @Override
     public float getGastoPorBloque() {
-        return 3.0F;
+        return 1F;
     }
 
     public static final float HUD_ESCALA = 1.6F;
@@ -76,7 +76,7 @@ public class Motocicleta extends VehiculoBase {
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 150.0D)
+                .add(Attributes.MAX_HEALTH, 200.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }

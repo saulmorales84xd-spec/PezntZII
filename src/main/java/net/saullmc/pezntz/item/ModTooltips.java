@@ -45,7 +45,7 @@ public class ModTooltips {
     public static final String BIO = hex(0xcaa226);
     public static final String PART = hex(0x1ceedd);
     public static final String ROJ = hex(0xbe3232);
-
+    public static final String BLANCO = hex(0xffffff);
 
     public static final String BR = "{br}";
 
@@ -181,6 +181,10 @@ public class ModTooltips {
         registrar(ModItems.CINTA.get(),
                 "Combina este material con otros ", "recursos para obtener nuevos ", "objetos.",
                 "Puedes encontrarlo en " + BYI + "cajas," + BR + BYI + "cuerpos " + GRIS + "y " + BYI + "contenedores.");
+
+        registrar(ModItems.KIT_VEHICULOS.get(),
+                "Presiona " + KEYS + "Click Derecho " + GRIS + "sobre un " + BR + MOBS + "vehÍculo "+ GRIS + "para repararlo." + BR + BR +
+                "Este lo repará 1000 puntos de vida");
 
         registrar(ModItems.BATERIAS.get(),
                 "Coloca este objeto junto a una " + BR + ITEMS + "linterna " + GRIS + "para recargarla. ", "Esta la recargará un " + NUM + "20 %.");

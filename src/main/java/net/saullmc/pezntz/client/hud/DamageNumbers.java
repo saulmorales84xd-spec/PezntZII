@@ -15,7 +15,10 @@ import net.saullmc.pezntz.PezntZMod;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = PezntZMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DamageNumbers {
@@ -26,7 +29,15 @@ public class DamageNumbers {
 
     public static final float ALTURA_EXTRA = 0.55F;
 
-    public static final float DESPLAZAMIENTO_LATERAL = 0.35F;
+    public static final float SEPARACION_LADOS = 0.6F;
+
+    public static final float[] LADOS = {-1.0F, 0.0F, 1.0F};
+
+    public static final boolean NO_REPETIR_LADO = true;
+
+    public static final float VARIACION_LADO = 0.12F;
+
+    public static final float VARIACION_ALTURA = 0.25F;
 
     public static final float ESCALA = 0.05F;
 
@@ -47,6 +58,10 @@ public class DamageNumbers {
 
     private static final List<Numero> NUMEROS = new ArrayList<>();
 
+    private static final Map<Integer, Integer> ULTIMO_LADO = new HashMap<>();
+
+    private static final Random AZAR = new Random();
+
     private static class Numero {
 
         final double x;
@@ -57,10 +72,11 @@ public class DamageNumbers {
         final String decimales;
         final int color;
         final float lado;
+        final float alturaExtra;
 
         final long nacimiento;
 
-        Numero(double x, double y, double z, String texto, int color, float lado, long nacimiento) {
+        Numero(double x, double y, double z, String texto, int color, float lado, float alturaExtra, long nacimiento) {
             this.x = x;
             this.y = y;
             this.z = z;
@@ -71,6 +87,7 @@ public class DamageNumbers {
             this.decimales = punto < 0 ? "" : texto.substring(punto + 1);
             this.color = color;
             this.lado = lado;
+            this.alturaExtra = alturaExtra;
             this.nacimiento = nacimiento;
         }
     }
@@ -84,13 +101,16 @@ public class DamageNumbers {
 
         String texto = (curacion ? "+" : "-") + formatear(cantidad);
 
-        float lado = (NUMEROS.size() % 2 == 0 ? 1.0F : -1.0F) * DESPLAZAMIENTO_LATERAL;
+        float lado = elegirLado(entityId) * SEPARACION_LADOS
+                + (AZAR.nextFloat() * 2.0F - 1.0F) * VARIACION_LADO;
+
+        float alturaExtra = AZAR.nextFloat() * VARIACION_ALTURA;
 
         NUMEROS.add(new Numero(
                 entidad.getX(),
                 entidad.getY() + entidad.getBbHeight() + ALTURA_EXTRA,
                 entidad.getZ(),
-                texto, curacion ? COLOR_CURACION : COLOR_DANIO, lado,
+                texto, curacion ? COLOR_CURACION : COLOR_DANIO, lado, alturaExtra,
                 mc.level.getGameTime()));
 
         while (NUMEROS.size() > MAXIMO) {
@@ -98,6 +118,26 @@ public class DamageNumbers {
         }
     }
 
+
+    private static float elegirLado(int entityId) {
+        if (LADOS.length == 0) return 0.0F;
+        if (LADOS.length == 1) return LADOS[0];
+
+        Integer anterior = ULTIMO_LADO.get(entityId);
+
+        int elegido;
+        if (NO_REPETIR_LADO && anterior != null && anterior < LADOS.length) {
+            elegido = AZAR.nextInt(LADOS.length - 1);
+            if (elegido >= anterior) elegido++;
+        } else {
+            elegido = AZAR.nextInt(LADOS.length);
+        }
+
+        if (ULTIMO_LADO.size() > 512) ULTIMO_LADO.clear();
+        ULTIMO_LADO.put(entityId, elegido);
+
+        return LADOS[elegido];
+    }
 
     private static String formatear(float valor) {
         int decimales = Math.max(0, DECIMALES);
@@ -117,6 +157,7 @@ public class DamageNumbers {
 
     public static void limpiar() {
         NUMEROS.clear();
+        ULTIMO_LADO.clear();
     }
 
     @SubscribeEvent
@@ -159,10 +200,9 @@ public class DamageNumbers {
 
             poseStack.mulPose(camara.rotation());
 
+            poseStack.translate(-numero.lado, numero.alturaExtra, 0.0F);
 
             poseStack.scale(-ESCALA, -ESCALA, ESCALA);
-
-            poseStack.translate(-numero.lado / ESCALA * 0.5F, 0.0F, 0.0F);
 
             int color = (Math.max(4, (int) (alpha * 255)) << 24) | numero.color;
 

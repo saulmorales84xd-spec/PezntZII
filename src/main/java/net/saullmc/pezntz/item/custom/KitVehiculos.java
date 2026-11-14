@@ -67,9 +67,5 @@ public class KitVehiculos extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.literal("Click derecho sobre un vehiculo")
-                .withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(Component.literal("Repara " + Math.round(CURACION) + " de vida")
-                .withStyle(ChatFormatting.GREEN));
     }
 }

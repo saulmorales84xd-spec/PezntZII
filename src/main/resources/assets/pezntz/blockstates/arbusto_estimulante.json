@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "pezntz:block/arbusto_estimulante_stage0"
+    },
+    "age=1": {
+      "model": "pezntz:block/arbusto_estimulante_stage1"
+    },
+    "age=2": {
+      "model": "pezntz:block/arbusto_estimulante_stage2"
+    },
+    "age=3": {
+      "model": "pezntz:block/arbusto_estimulante_stage3"
+    }
+  }
+}

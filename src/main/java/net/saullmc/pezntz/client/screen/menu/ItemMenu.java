@@ -45,6 +45,8 @@ public class ItemMenu {
 
     private final ImagenMenu img = new ImagenMenu();
 
+    private final MenuCrafteo menu = new MenuCrafteo();
+
     private int x = SIN_PONER;
     private int y = SIN_PONER;
 
@@ -249,6 +251,103 @@ public class ItemMenu {
         this.conNombre = false;
         this.tooltipListo = null;
         return this;
+    }
+
+    public ItemMenu conMenu() {
+        this.menu.forzar();
+        return this;
+    }
+
+    public ItemMenu sinMenu() {
+        this.menu.quitar();
+        return this;
+    }
+
+    public ItemMenu menuEscala(float escala) {
+        this.menu.escala(escala);
+        return this;
+    }
+
+    public ItemMenu menuNombre(String texto) {
+        return this.menuNombre(texto, COLOR_NOMBRE);
+    }
+
+    public ItemMenu menuNombre(String texto, int color) {
+        this.menu.nombre(texto, color);
+        return this;
+    }
+
+    public ItemMenu menuNombreMueve(float x, float y) {
+        this.menu.nombreMueve(x, y);
+        return this;
+    }
+
+    public ItemMenu menuNombreEscala(float escala) {
+        this.menu.nombreEscala(escala);
+        return this;
+    }
+
+    public ItemMenu menuItemPrincipal(float x, float y, float tamanio) {
+        this.menu.itemPrincipal(x, y, tamanio);
+        return this;
+    }
+
+    public ItemMenu menuSinItemPrincipal() {
+        this.menu.sinItemPrincipal();
+        return this;
+    }
+
+    public ItemMenu menuSinReceta() {
+        this.menu.sinReceta();
+        return this;
+    }
+
+    public ItemMenu menuRecetaMueve(float x, float y) {
+        this.menu.recetaMueve(x, y);
+        return this;
+    }
+
+    public ItemMenu menuItem(Item item, float x, float y) {
+        return this.menuItem(new ItemStack(item), x, y, 1.0F);
+    }
+
+    public ItemMenu menuItem(Item item, float x, float y, float escala) {
+        return this.menuItem(new ItemStack(item), x, y, escala);
+    }
+
+    public ItemMenu menuItem(ItemStack stack, float x, float y) {
+        return this.menuItem(stack, x, y, 1.0F);
+    }
+
+    public ItemMenu menuItem(ItemStack stack, float x, float y, float escala) {
+        this.menu.item(stack, x, y, escala);
+        return this;
+    }
+
+    public ItemMenu menuTexto(String texto, float x, float y) {
+        return this.menuTexto(texto, x, y, MenuCrafteo.TEXTO_ESCALA);
+    }
+
+    public ItemMenu menuTexto(String texto, float x, float y, float escala) {
+        this.menu.texto(texto, x, y, escala);
+        return this;
+    }
+
+    public boolean tieneMenu() {
+        return this.menu.activo(!this.img.vacia());
+    }
+
+    public MenuCrafteo getMenu() {
+        return this.menu;
+    }
+
+    public ImagenMenu getImagen() {
+        return this.img;
+    }
+
+    @javax.annotation.Nullable
+    public Component getNombrePropio() {
+        return this.nombre != null ? nombreFormateado() : null;
     }
 
     public List<Component> getTooltip() {

@@ -10,7 +10,7 @@ import net.saullmc.pezntz.item.ModItems;
 
 public class Quad extends VehiculoBase {
 
-    public static final float MAX_FUEL = 2500.0F;
+    public static final float MAX_FUEL = 4000.0F;
 
     private static final float[][] ASIENTOS = {
             {-0.1F, 0.3F},   // conductor
@@ -38,7 +38,7 @@ public class Quad extends VehiculoBase {
 
     @Override
     public float getGastoPorBloque() {
-        return 2.5F;
+        return 1.5F;
     }
 
     public static final float HUD_ESCALA = 1.0F;
@@ -62,7 +62,7 @@ public class Quad extends VehiculoBase {
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 200.0D)
+                .add(Attributes.MAX_HEALTH, 300.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }

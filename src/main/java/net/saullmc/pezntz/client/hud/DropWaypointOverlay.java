@@ -22,6 +22,7 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -39,9 +40,15 @@ public class DropWaypointOverlay {
 
     public static final float BLOQUES_POR_PIXEL = 1.0F / 16.0F;
 
-    public static final float ESCALA_ICONO = 0.5F;
+    public static final boolean NO_ACHICAR_DE_LEJOS = true;
 
-    public static final float ESCALA_TEXTO = 0.5F;
+    public static final boolean NO_CRECER_DE_CERCA = false;
+
+    public static final double DISTANCIA_TAMANIO_NORMAL = 12.0D;
+
+    public static final float ESCALA_ICONO = 0.6F;
+
+    public static final float ESCALA_TEXTO = 0.6F;
 
     public static final float ESCALA_NOMBRE = 1.0F;
     public static final float ESCALA_DISTANCIA = 1.0F;
@@ -73,9 +80,9 @@ public class DropWaypointOverlay {
 
     public static final float OPACIDAD_TEXTO_MIRANDO = 1.0F;
 
-    public static final float ZONA_MIRANDO = 0.5F;
+    public static final float MARGEN_MIRA = 2.0F;
 
-    public static final float SUAVIZADO_ZONA = 0.1F;
+    public static final float TRANSICION_SEGUNDOS = 0.15F;
 
     public static final String NOMBRE = "Airdrop";
 
@@ -83,7 +90,7 @@ public class DropWaypointOverlay {
     public static final boolean MOSTRAR_DISTANCIA = true;
     public static final boolean MOSTRAR_CONTADOR = true;
 
-    public static final int DECIMALES_DISTANCIA = 2;
+    public static final int DECIMALES_DISTANCIA = 1;
 
     public static final String SUFIJO_DISTANCIA = " m";
 
@@ -99,6 +106,10 @@ public class DropWaypointOverlay {
 
     private record Linea(String texto, int color, float escala) {
     }
+
+    private static final Map<Integer, Float> ENFOQUE = new HashMap<>();
+
+    private static long ultimoCuadro = 0L;
 
     @SubscribeEvent
     public static void alRenderizar(RenderLevelStageEvent evento) {
@@ -118,9 +129,6 @@ public class DropWaypointOverlay {
         float m11 = evento.getProjectionMatrix().m11();
         if (!(m11 > 0.0F)) m11 = (float) (1.0D / Math.tan(Math.toRadians(35.0D)));
 
-        float m00 = evento.getProjectionMatrix().m00();
-        if (!(m00 > 0.0F)) m00 = m11 * mc.getWindow().getHeight() / (float) Math.max(1, mc.getWindow().getWidth());
-
         Vector3f arriba = camara.getUpVector();
         Vector3f izquierda = camara.getLeftVector();
 
@@ -131,6 +139,12 @@ public class DropWaypointOverlay {
         PoseStack pose = evento.getPoseStack();
         MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         Font fuente = mc.font;
+
+        long ahora = System.nanoTime();
+        float pasado = ultimoCuadro == 0L ? 0.0F : Math.min(0.1F, (ahora - ultimoCuadro) / 1.0E9F);
+        ultimoCuadro = ahora;
+
+        ENFOQUE.keySet().retainAll(drops.keySet());
 
         PoseStack vista = RenderSystem.getModelViewStack();
         vista.pushPose();
@@ -145,8 +159,8 @@ public class DropWaypointOverlay {
             Vec3 ancla = DropCliente.techo(entrada.getKey(), entrada.getValue(), partialTick)
                     .add(0.0D, SEPARACION_HITBOX, 0.0D);
 
-            dibujar(mc, pose, buffers, fuente, camara, ojo, mira, arriba, izquierda, m00, m11, altoGui,
-                    ancla, entrada.getValue());
+            dibujar(mc, pose, buffers, fuente, camara, ojo, mira, arriba, izquierda, m11, altoGui,
+                    ancla, entrada.getKey(), entrada.getValue(), pasado);
         }
 
         buffers.endBatch();
@@ -163,7 +177,7 @@ public class DropWaypointOverlay {
 
     private static void dibujar(Minecraft mc, PoseStack pose, MultiBufferSource buffers, Font fuente,
                                 Camera camara, Vec3 ojo, Vector3f mira, Vector3f arriba, Vector3f izquierda,
-                                float m00, float m11, int altoGui, Vec3 ancla, DropCliente.Dato dato) {
+                                float m11, int altoGui, Vec3 ancla, int id, DropCliente.Dato dato, float pasado) {
 
         Vec3 rel = ancla.subtract(ojo);
         double distancia = rel.length();
@@ -176,12 +190,8 @@ public class DropWaypointOverlay {
         Vec3 dibujo = rel.scale(factor);
 
         float pixel = TAMANIO_FIJO_EN_EL_MUNDO
-                ? (float) (BLOQUES_POR_PIXEL * factor)
+                ? (float) (BLOQUES_POR_PIXEL * factor * ajusteDeTamanio(profundidad))
                 : (float) (2.0D * profundidad * factor / (m11 * altoGui));
-
-        float mirando = OPACO_AL_MIRARLO ? cuantoLoMiras(rel, profundidad, arriba, izquierda, m00, m11) : 0.0F;
-        float alfaIcono = OPACIDAD_ICONO + (OPACIDAD_ICONO_MIRANDO - OPACIDAD_ICONO) * mirando;
-        float alfaTexto = OPACIDAD_TEXTO + (OPACIDAD_TEXTO_MIRANDO - OPACIDAD_TEXTO) * mirando;
 
         List<Linea> lineas = new ArrayList<>();
 
@@ -212,6 +222,16 @@ public class DropWaypointOverlay {
         float hueco = lineas.isEmpty() ? 0.0F : HUECO_TRAS_MARCA;
         float total = altoIcono + hueco + altoTexto;
 
+        float mirando = 0.0F;
+        if (OPACO_AL_MIRARLO) {
+            boolean loMiras = loEstasMirando(dibujo, arriba, izquierda, pixel, fuente, lineas,
+                    anchoIcono, altoIcono, altoTexto, hueco, total);
+            mirando = suavizar(id, loMiras ? 1.0F : 0.0F, pasado);
+        }
+
+        float alfaIcono = OPACIDAD_ICONO + (OPACIDAD_ICONO_MIRANDO - OPACIDAD_ICONO) * mirando;
+        float alfaTexto = OPACIDAD_TEXTO + (OPACIDAD_TEXTO_MIRANDO - OPACIDAD_TEXTO) * mirando;
+
         pose.pushPose();
         pose.translate(dibujo.x, dibujo.y, dibujo.z);
         pose.mulPose(camara.rotation());
@@ -232,23 +252,67 @@ public class DropWaypointOverlay {
         pose.popPose();
     }
 
-    private static float cuantoLoMiras(Vec3 rel, double profundidad, Vector3f arriba, Vector3f izquierda,
-                                       float m00, float m11) {
-        double derecha = -(rel.x * izquierda.x() + rel.y * izquierda.y() + rel.z * izquierda.z());
-        double alto = rel.x * arriba.x() + rel.y * arriba.y() + rel.z * arriba.z();
+    private static double ajusteDeTamanio(double profundidad) {
+        if (DISTANCIA_TAMANIO_NORMAL <= 0.0D) return 1.0D;
 
-        double x = derecha / profundidad * m00;
-        double y = alto / profundidad * m11;
-        double lejosDelCentro = Math.sqrt(x * x + y * y);
+        double proporcion = profundidad / DISTANCIA_TAMANIO_NORMAL;
 
-        double inicio = ZONA_MIRANDO;
-        double fin = ZONA_MIRANDO + Math.max(0.0D, SUAVIZADO_ZONA);
+        if (NO_ACHICAR_DE_LEJOS && proporcion > 1.0D) return proporcion;
+        if (NO_CRECER_DE_CERCA && proporcion < 1.0D) return proporcion;
 
-        if (lejosDelCentro <= inicio) return 1.0F;
-        if (lejosDelCentro >= fin) return 0.0F;
+        return 1.0D;
+    }
 
-        double t = (lejosDelCentro - inicio) / (fin - inicio);
-        return (float) (1.0D - t * t * (3.0D - 2.0D * t));
+    private static boolean loEstasMirando(Vec3 dibujo, Vector3f arriba, Vector3f izquierda, float pixel,
+                                          Font fuente, List<Linea> lineas,
+                                          float anchoIcono, float altoIcono, float altoTexto,
+                                          float hueco, float total) {
+        if (pixel <= 0.0F) return false;
+
+        double derecha = -(dibujo.x * izquierda.x() + dibujo.y * izquierda.y() + dibujo.z * izquierda.z());
+        double alto = dibujo.x * arriba.x() + dibujo.y * arriba.y() + dibujo.z * arriba.z();
+
+        double miraX = -derecha / pixel;
+        double miraY = alto / pixel;
+
+        float iconoY = TEXTO_DEBAJO ? -total : -total + altoTexto + hueco;
+        float textoY = TEXTO_DEBAJO ? -total + altoIcono + hueco : -total;
+
+        float izq = -anchoIcono / 2.0F + ICONO_OFFSET_X;
+        float der = izq + anchoIcono;
+        float sup = iconoY + ICONO_OFFSET_Y;
+        float inf = sup + altoIcono;
+
+        if (!lineas.isEmpty()) {
+            float anchoTexto = 0.0F;
+            for (Linea linea : lineas) {
+                anchoTexto = Math.max(anchoTexto, fuente.width(linea.texto()) * ESCALA_TEXTO * linea.escala());
+            }
+
+            izq = Math.min(izq, -anchoTexto / 2.0F + TEXTO_OFFSET_X);
+            der = Math.max(der, anchoTexto / 2.0F + TEXTO_OFFSET_X);
+            sup = Math.min(sup, textoY + TEXTO_OFFSET_Y);
+            inf = Math.max(inf, textoY + TEXTO_OFFSET_Y + altoTexto);
+        }
+
+        return miraX >= izq - MARGEN_MIRA && miraX <= der + MARGEN_MIRA
+                && miraY >= sup - MARGEN_MIRA && miraY <= inf + MARGEN_MIRA;
+    }
+
+    private static float suavizar(int id, float objetivo, float pasado) {
+        if (TRANSICION_SEGUNDOS <= 0.0F) {
+            ENFOQUE.put(id, objetivo);
+            return objetivo;
+        }
+
+        float actual = ENFOQUE.getOrDefault(id, objetivo);
+        float paso = pasado / TRANSICION_SEGUNDOS;
+
+        if (actual < objetivo) actual = Math.min(objetivo, actual + paso);
+        else if (actual > objetivo) actual = Math.max(objetivo, actual - paso);
+
+        ENFOQUE.put(id, actual);
+        return actual;
     }
 
     private static void icono(PoseStack pose, MultiBufferSource buffers, float ancho, float alto, float y,

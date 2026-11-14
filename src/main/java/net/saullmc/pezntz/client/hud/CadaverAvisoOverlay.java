@@ -21,8 +21,7 @@ public class CadaverAvisoOverlay {
     public static final boolean ACTIVO = true;
 
     public static final String TEXTO =
-            KEYS + "Shift " + hex(0xFFFFFF) + "+ " + NUM + "Click derecho " + GRIS + "para "
-                    + MOBS + "abrir " + GRIS + "la " + BYI + "mochila";
+            KEYS + "Shift + Click derecho " + GRIS + "para abrir la " + ITEMS + "mochila";
 
     public static final String TEXTO_DUENIO = GRIS + "Cadaver de " + ZOM;
 
